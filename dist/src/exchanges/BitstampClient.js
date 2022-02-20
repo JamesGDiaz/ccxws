@@ -294,7 +294,7 @@ class BitstampClient extends BasicClient_1.BasicClient {
                 this._requestLevel2Snapshot(market);
             }
             finally {
-                await Util_1.wait(this.REST_REQUEST_DELAY_MS);
+                await (0, Util_1.wait)(this.REST_REQUEST_DELAY_MS);
                 this._restSem.leave();
             }
         });

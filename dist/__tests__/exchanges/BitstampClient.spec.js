@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const BitstampClient_1 = require("../../src/exchanges/BitstampClient");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new BitstampClient_1.BitstampClient(),
     clientName: "BitstampClient",
     exchangeName: "Bitstamp",

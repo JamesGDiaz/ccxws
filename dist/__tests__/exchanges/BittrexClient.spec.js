@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const https = __importStar(require("../../src/Https"));
 const BittrexClient_1 = require("../../src/exchanges/BittrexClient");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new BittrexClient_1.BittrexClient(),
     clientName: "BittrexClient",
     exchangeName: "Bittrex",

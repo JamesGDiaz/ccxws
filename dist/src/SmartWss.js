@@ -100,7 +100,7 @@ class SmartWss extends events_1.EventEmitter {
         // eslint-disable-next-line no-constant-condition
         while (true) {
             try {
-                await Util_1.wait(this._retryTimeoutMs);
+                await (0, Util_1.wait)(this._retryTimeoutMs);
                 await this._attemptConnect();
                 return;
             }

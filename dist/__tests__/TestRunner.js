@@ -31,25 +31,25 @@ function testClient(spec) {
         });
         describe("capabilities", () => {
             it(`should ${spec.hasTickers ? "support" : "not support"} tickers`, () => {
-                chai_1.expect(state.client.hasTickers).to.equal(spec.hasTickers);
+                (0, chai_1.expect)(state.client.hasTickers).to.equal(spec.hasTickers);
             });
             it(`should ${spec.hasTrades ? "support" : "not support"} trades`, () => {
-                chai_1.expect(state.client.hasTrades).to.equal(spec.hasTrades);
+                (0, chai_1.expect)(state.client.hasTrades).to.equal(spec.hasTrades);
             });
             it(`should ${spec.hasCandles ? "support" : "not support"} candles`, () => {
-                chai_1.expect(state.client.hasCandles).to.equal(spec.hasCandles);
+                (0, chai_1.expect)(state.client.hasCandles).to.equal(spec.hasCandles);
             });
             it(`should ${spec.hasLevel2Snapshots ? "support" : "not support"} level2 snapshots`, () => {
-                chai_1.expect(state.client.hasLevel2Snapshots).to.equal(spec.hasLevel2Snapshots);
+                (0, chai_1.expect)(state.client.hasLevel2Snapshots).to.equal(spec.hasLevel2Snapshots);
             });
             it(`should ${spec.hasLevel2Updates ? "support" : "not support"} level2 updates`, () => {
-                chai_1.expect(state.client.hasLevel2Updates).to.equal(spec.hasLevel2Updates);
+                (0, chai_1.expect)(state.client.hasLevel2Updates).to.equal(spec.hasLevel2Updates);
             });
             it(`should ${spec.hasLevel3Snapshots ? "support" : "not support"} level3 snapshots`, () => {
-                chai_1.expect(state.client.hasLevel3Snapshots).to.equal(spec.hasLevel3Snapshots);
+                (0, chai_1.expect)(state.client.hasLevel3Snapshots).to.equal(spec.hasLevel3Snapshots);
             });
             it(`should ${spec.hasLevel3Updates ? "support" : "not support"} level3 updates`, () => {
-                chai_1.expect(state.client.hasLevel3Updates).to.equal(spec.hasLevel3Updates);
+                (0, chai_1.expect)(state.client.hasLevel3Updates).to.equal(spec.hasLevel3Updates);
             });
         });
         if (spec.hasTickers && spec.ticker) {
@@ -96,7 +96,7 @@ function testClient(spec) {
         function assertEvents(expected, done) {
             return () => {
                 try {
-                    chai_1.expect(actual).to.deep.equal(expected);
+                    (0, chai_1.expect)(actual).to.deep.equal(expected);
                     setTimeout(done, 1000); // delay this to prevent async "connection" events to complete
                 }
                 catch (ex) {
@@ -233,7 +233,7 @@ function testTickers(spec, state) {
             for (const market of spec.markets) {
                 client.unsubscribeTicker(market);
             }
-            await exports.wait(500);
+            await (0, exports.wait)(500);
         });
         describe("results", () => {
             before(function () {
@@ -241,16 +241,16 @@ function testTickers(spec, state) {
                     return this.skip();
             });
             it("market should be the subscribing market", () => {
-                chai_1.expect(result.market).to.be.oneOf(spec.markets);
+                (0, chai_1.expect)(result.market).to.be.oneOf(spec.markets);
             });
             it("ticker.exchange should be the exchange name", () => {
-                chai_1.expect(result.ticker.exchange).to.equal(spec.exchangeName);
+                (0, chai_1.expect)(result.ticker.exchange).to.equal(spec.exchangeName);
             });
             it("ticker.base should match market.base", () => {
-                chai_1.expect(result.ticker.base).to.be.oneOf(spec.marketBaseList);
+                (0, chai_1.expect)(result.ticker.base).to.be.oneOf(spec.marketBaseList);
             });
             it("ticker.quote should match market.quote", () => {
-                chai_1.expect(result.ticker.quote).to.be.oneOf(spec.marketQuoteList);
+                (0, chai_1.expect)(result.ticker.quote).to.be.oneOf(spec.marketQuoteList);
             });
             if (spec.ticker.hasTimestamp) {
                 testTimestampMs(result, "ticker.timestamp");
@@ -319,7 +319,7 @@ function testTrades(spec, state) {
             for (const market of spec.tradeMarkets) {
                 client.unsubscribeTrades(market);
             }
-            await exports.wait(spec.unsubWaitMs);
+            await (0, exports.wait)(spec.unsubWaitMs);
         });
         describe("results", () => {
             before(function () {
@@ -327,16 +327,16 @@ function testTrades(spec, state) {
                     return this.skip();
             });
             it("market should be the subscribing market", () => {
-                chai_1.expect(result.market).to.be.oneOf(spec.tradeMarkets);
+                (0, chai_1.expect)(result.market).to.be.oneOf(spec.tradeMarkets);
             });
             it("trade.exchange should be the exchange name", () => {
-                chai_1.expect(result.trade.exchange).to.equal(spec.exchangeName);
+                (0, chai_1.expect)(result.trade.exchange).to.equal(spec.exchangeName);
             });
             it("trade.base should match market.base", () => {
-                chai_1.expect(result.trade.base).to.be.oneOf(spec.marketBaseList);
+                (0, chai_1.expect)(result.trade.base).to.be.oneOf(spec.marketBaseList);
             });
             it("trade.quote should match market.quote", () => {
-                chai_1.expect(result.trade.quote).to.be.oneOf(spec.marketQuoteList);
+                (0, chai_1.expect)(result.trade.quote).to.be.oneOf(spec.marketQuoteList);
             });
             if (spec.trade.hasTradeId) {
                 testString(result, "trade.tradeId");
@@ -352,12 +352,12 @@ function testTrades(spec, state) {
             }
             if (spec.trade.tradeIdPattern) {
                 it(`trade.tradeId should match pattern ${spec.trade.tradeIdPattern}`, () => {
-                    chai_1.expect(result.trade.tradeId).to.match(spec.trade.tradeIdPattern);
+                    (0, chai_1.expect)(result.trade.tradeId).to.match(spec.trade.tradeIdPattern);
                 });
             }
             testTimestampMs(result, "trade.unix");
             it("trade.side should be either 'buy' or 'sell'", () => {
-                chai_1.expect(result.trade.side).to.match(/buy|sell/);
+                (0, chai_1.expect)(result.trade.side).to.match(/buy|sell/);
             });
             testNumberString(result, "trade.price");
             testNumberString(result, "trade.amount");
@@ -392,7 +392,7 @@ function testCandles(spec, state) {
             for (const market of spec.markets) {
                 client.unsubscribeCandles(market);
             }
-            await exports.wait(spec.unsubWaitMs);
+            await (0, exports.wait)(spec.unsubWaitMs);
         });
         describe("results", () => {
             before(function () {
@@ -400,7 +400,7 @@ function testCandles(spec, state) {
                     return this.skip();
             });
             it("market should be the subscribing market", () => {
-                chai_1.expect(result.market).to.be.oneOf(spec.markets);
+                (0, chai_1.expect)(result.market).to.be.oneOf(spec.markets);
             });
             testCandleResult(spec, result);
         });
@@ -439,7 +439,7 @@ function testLevel2Snapshots(spec, state) {
             for (const market of spec.markets) {
                 client.unsubscribeLevel2Snapshots(market);
             }
-            await exports.wait(spec.unsubWaitMs);
+            await (0, exports.wait)(spec.unsubWaitMs);
         });
         describe("results", () => {
             before(function () {
@@ -447,7 +447,7 @@ function testLevel2Snapshots(spec, state) {
                     return this.skip();
             });
             it("market should be the subscribing market", () => {
-                chai_1.expect(result.market).to.be.oneOf(spec.markets);
+                (0, chai_1.expect)(result.market).to.be.oneOf(spec.markets);
             });
             testLevel2Result(spec, result, "snapshot");
         });
@@ -489,7 +489,7 @@ function testLevel2Updates(spec, state) {
             for (const market of spec.markets) {
                 client.unsubscribeLevel2Updates(market);
             }
-            await exports.wait(spec.unsubWaitMs);
+            await (0, exports.wait)(spec.unsubWaitMs);
         });
         describe("results", () => {
             before(function () {
@@ -500,12 +500,12 @@ function testLevel2Updates(spec, state) {
             });
             if (spec.l2update.hasSnapshot) {
                 it("snapshot market should be the subscribing market", () => {
-                    chai_1.expect(result.snapMarket).to.be.oneOf(spec.markets);
+                    (0, chai_1.expect)(result.snapMarket).to.be.oneOf(spec.markets);
                 });
                 testLevel2Result(spec, result, "snapshot");
             }
             it("update market should be the subscribing market", () => {
-                chai_1.expect(result.updateMarket).to.be.oneOf(spec.markets);
+                (0, chai_1.expect)(result.updateMarket).to.be.oneOf(spec.markets);
             });
             testLevel2Result(spec, result, "update");
             if (spec.l2update.tests) {
@@ -516,13 +516,13 @@ function testLevel2Updates(spec, state) {
 }
 function testLevel2Result(spec, result, type) {
     it(`${type}.exchange should be the exchange name`, () => {
-        chai_1.expect(result[type].exchange).to.equal(spec.exchangeName);
+        (0, chai_1.expect)(result[type].exchange).to.equal(spec.exchangeName);
     });
     it(`${type}.base should match market.base`, () => {
-        chai_1.expect(result[type].base).to.be.oneOf(spec.marketBaseList);
+        (0, chai_1.expect)(result[type].base).to.be.oneOf(spec.marketBaseList);
     });
     it(`${type}.quote should match market.quote`, () => {
-        chai_1.expect(result[type].quote).to.be.oneOf(spec.marketQuoteList);
+        (0, chai_1.expect)(result[type].quote).to.be.oneOf(spec.marketQuoteList);
     });
     if (spec[`l2${type}`].hasTimestampMs) {
         testTimestampMs(result, `${type}.timestampMs`);
@@ -553,34 +553,34 @@ function testLevel2Result(spec, result, type) {
     }
     it(`${type}.bid/ask.price should be a string`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).price;
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     it(`${type}.bid/ask.price should parse to a number`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).price;
-        chai_1.expect(parseFloat(actual)).to.not.be.NaN;
+        (0, chai_1.expect)(parseFloat(actual)).to.not.be.NaN;
     });
     it(`${type}.bid/ask.size should be a string`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).size;
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     it(`${type}.bid/ask.size should parse to a number`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).size;
-        chai_1.expect(parseFloat(actual)).to.not.be.NaN;
+        (0, chai_1.expect)(parseFloat(actual)).to.not.be.NaN;
     });
     if (spec[`l2${type}`].hasCount) {
         it(`${type}.bid/ask.count should be a string`, () => {
             const actual = (result[type].bids[0] || result[type].asks[0]).count;
-            chai_1.expect(actual).to.be.a("string");
+            (0, chai_1.expect)(actual).to.be.a("string");
         });
         it(`${type}.bid/ask.count should parse to a number`, () => {
             const actual = (result[type].bids[0] || result[type].asks[0]).count;
-            chai_1.expect(parseFloat(actual)).to.not.be.NaN;
+            (0, chai_1.expect)(parseFloat(actual)).to.not.be.NaN;
         });
     }
     else {
         it(`${type}.bid/ask.count should undefined`, () => {
             const actual = (result[type].bids[0] || result[type].asks[0]).count;
-            chai_1.expect(actual).to.be.undefined;
+            (0, chai_1.expect)(actual).to.be.undefined;
         });
     }
 }
@@ -627,7 +627,7 @@ function testLevel3Updates(spec, state) {
             for (const market of spec.markets) {
                 client.unsubscribeLevel3Updates(market);
             }
-            await exports.wait(spec.unsubWaitMs);
+            await (0, exports.wait)(spec.unsubWaitMs);
         });
         describe("results", () => {
             before(function () {
@@ -635,7 +635,7 @@ function testLevel3Updates(spec, state) {
                     return this.skip();
             });
             it("market should be the subscribing market", () => {
-                chai_1.expect(result.market).to.be.oneOf(spec.markets);
+                (0, chai_1.expect)(result.market).to.be.oneOf(spec.markets);
             });
             if (spec.l3update.hasSnapshot) {
                 testLevel3Result(spec, result, "snapshot");
@@ -646,13 +646,13 @@ function testLevel3Updates(spec, state) {
 }
 function testLevel3Result(spec, result, type) {
     it(`${type}.exchange should be the exchange name`, () => {
-        chai_1.expect(result[type].exchange).to.equal(spec.exchangeName);
+        (0, chai_1.expect)(result[type].exchange).to.equal(spec.exchangeName);
     });
     it(`${type}.base should match market.base`, () => {
-        chai_1.expect(result[type].base).to.be.oneOf(spec.marketBaseList);
+        (0, chai_1.expect)(result[type].base).to.be.oneOf(spec.marketBaseList);
     });
     it(`${type}.quote should match market.quote`, () => {
-        chai_1.expect(result[type].quote).to.be.oneOf(spec.marketQuoteList);
+        (0, chai_1.expect)(result[type].quote).to.be.oneOf(spec.marketQuoteList);
     });
     if (spec[`l3${type}`].hasTimestampMs) {
         testTimestampMs(result, `${type}.timestampMs`);
@@ -668,76 +668,76 @@ function testLevel3Result(spec, result, type) {
     }
     it(`${type}.bid/ask.orderId should be a string`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).orderId;
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     if (spec[`l3${type}`].orderIdPattern) {
         it(`${type}.bid/ask.orderId should match ${spec[`l3${type}`].orderIdPattern}`, () => {
             const actual = (result[type].bids[0] || result[type].asks[0]).orderId;
-            chai_1.expect(actual).to.match(spec[`l3${type}`].orderIdPattern);
+            (0, chai_1.expect)(actual).to.match(spec[`l3${type}`].orderIdPattern);
         });
     }
     it(`${type}.bid/ask.price should be a string`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).price;
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     it(`${type}.bid/ask.price should parse to a number`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).price;
-        chai_1.expect(parseFloat(actual)).to.not.be.NaN;
+        (0, chai_1.expect)(parseFloat(actual)).to.not.be.NaN;
     });
     it(`${type}.bid/ask.size should be a string`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).size;
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     it(`${type}.bid/ask.size should parse to a number`, () => {
         const actual = (result[type].bids[0] || result[type].asks[0]).size;
-        chai_1.expect(parseFloat(actual)).to.not.be.NaN;
+        (0, chai_1.expect)(parseFloat(actual)).to.not.be.NaN;
     });
 }
 //////////////////////////////////////////////////////
 function testPositiveNumber(result, prop) {
     it(`${prop} should be a number`, () => {
         const actual = deepValue(result, prop);
-        chai_1.expect(actual).to.be.a("number");
+        (0, chai_1.expect)(actual).to.be.a("number");
     });
     it(`${prop} should be positive`, () => {
         const actual = deepValue(result, prop);
-        chai_1.expect(actual).to.be.gte(0);
+        (0, chai_1.expect)(actual).to.be.gte(0);
     });
 }
 function testNumberString(result, prop) {
     it(`${prop} should be a string`, () => {
         const actual = deepValue(result, prop);
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     it(`${prop} should parse to a number`, () => {
         const actual = deepValue(result, prop);
-        chai_1.expect(parseFloat(actual)).to.not.be.NaN;
+        (0, chai_1.expect)(parseFloat(actual)).to.not.be.NaN;
     });
 }
 function testUndefined(result, propPath) {
     it(`${propPath} should be undefined`, () => {
         const actual = deepValue(result, propPath);
-        chai_1.expect(actual).to.be.undefined;
+        (0, chai_1.expect)(actual).to.be.undefined;
     });
 }
 function testTimestampMs(result, propPath) {
     it(`${propPath} should be a number`, () => {
         const actual = deepValue(result, propPath);
-        chai_1.expect(actual).to.be.a("number");
+        (0, chai_1.expect)(actual).to.be.a("number");
     });
     it(`${propPath} should be in milliseconds`, () => {
         const actual = deepValue(result, propPath);
-        chai_1.expect(actual).to.be.greaterThan(1531677480000);
+        (0, chai_1.expect)(actual).to.be.greaterThan(1531677480000);
     });
 }
 function testString(result, propPath) {
     it(`${propPath} should be a string`, () => {
         const actual = deepValue(result, propPath);
-        chai_1.expect(actual).to.be.a("string");
+        (0, chai_1.expect)(actual).to.be.a("string");
     });
     it(`${propPath} should not be empty`, () => {
         const actual = deepValue(result, propPath);
-        chai_1.expect(actual).to.not.equal("");
+        (0, chai_1.expect)(actual).to.not.equal("");
     });
 }
 function deepValue(obj, path) {

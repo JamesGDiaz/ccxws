@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const CexClient_1 = require("../../src/exchanges/CexClient");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new CexClient_1.CexClient({
         apiKey: process.env.CEX_API_KEY,
         apiSecret: process.env.CEX_API_SECRET,

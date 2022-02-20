@@ -60,7 +60,7 @@ const assertions = {
         hasTimestampMs: true,
     },
 };
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new DeribitClient_1.DeribitClient(),
     clientName: "DeribitClient - Swaps",
     exchangeName: "Deribit",
@@ -77,7 +77,7 @@ TestRunner_1.testClient({
     testCloseEvents: true,
     ...assertions,
 });
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new DeribitClient_1.DeribitClient(),
     clientName: "DeribitClient - Futures",
     exchangeName: "Deribit",
@@ -92,7 +92,7 @@ TestRunner_1.testClient({
     },
     ...assertions,
 });
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new DeribitClient_1.DeribitClient(),
     clientName: "DeribitClient - Options",
     exchangeName: "Deribit",

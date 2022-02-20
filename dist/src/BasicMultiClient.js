@@ -31,12 +31,12 @@ class BasicMultiClient extends events_1.EventEmitter {
         this.hasLevel3Snapshots = false;
         this.hasLevel3Updates = false;
         this.throttleMs = 250;
-        this.sem = semaphore_1.default(3); // this can be overriden to allow more or less
+        this.sem = (0, semaphore_1.default)(3); // this can be overriden to allow more or less
     }
     async reconnect() {
         for (const client of Array.from(this._clients.values())) {
             (await client).reconnect();
-            await Util_1.wait(this.throttleMs); // delay the reconnection throttling
+            await (0, Util_1.wait)(this.throttleMs); // delay the reconnection throttling
         }
     }
     async close() {
@@ -123,7 +123,7 @@ class BasicMultiClient extends events_1.EventEmitter {
                 client.on("closed", () => this.emit("closed", clientArgs.market));
                 client.on("error", err => this.emit("error", err, clientArgs.market));
                 const clearSem = async () => {
-                    await Util_1.wait(this.throttleMs);
+                    await (0, Util_1.wait)(this.throttleMs);
                     this.sem.leave();
                     resolve(client);
                 };

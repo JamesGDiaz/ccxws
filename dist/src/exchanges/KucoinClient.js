@@ -70,9 +70,9 @@ class KucoinClient extends BasicClient_1.BasicClient {
         this._pingIntervalTime = 50000;
         this.restThrottleMs = restThrottleMs;
         this.connectInitTimeoutMs = 5000;
-        this._sendMessage = Throttle_1.throttle(this.__sendMessage.bind(this), sendThrottleMs);
-        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
-        this._requestLevel3Snapshot = Throttle_1.throttle(this.__requestLevel3Snapshot.bind(this), restThrottleMs);
+        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), sendThrottleMs);
+        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
+        this._requestLevel3Snapshot = (0, Throttle_1.throttle)(this.__requestLevel3Snapshot.bind(this), restThrottleMs);
     }
     _beforeClose() {
         this._sendMessage.cancel();
@@ -130,7 +130,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
             }
             catch (ex) {
                 this._onError(ex);
-                await Util_1.wait(this.connectInitTimeoutMs);
+                await (0, Util_1.wait)(this.connectInitTimeoutMs);
             }
         }
         // Construct a socket and bind all events
@@ -485,7 +485,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
         }
         catch (ex) {
             this.emit("error", ex);
-            await Util_1.wait(this.restThrottleMs);
+            await (0, Util_1.wait)(this.restThrottleMs);
             this.__requestLevel2Snapshot(market);
         }
     }
@@ -721,7 +721,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
         }
         catch (ex) {
             this.emit("error", ex);
-            await Util_1.wait(this.restThrottleMs);
+            await (0, Util_1.wait)(this.restThrottleMs);
             this.__requestLevel3Snapshot(market);
         }
     }

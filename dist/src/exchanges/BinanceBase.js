@@ -75,10 +75,10 @@ class BinanceBase extends BasicClient_1.BasicClient {
         this._messageId = 0;
         this._tickersActive = false;
         this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
-        this._batchSub = Batch_1.batch(this.__batchSub.bind(this), socketBatchSize);
-        this._batchUnsub = Batch_1.batch(this.__batchUnsub.bind(this), socketBatchSize);
-        this._sendMessage = Throttle_1.throttle(this.__sendMessage.bind(this), socketThrottleMs);
-        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
+        this._batchSub = (0, Batch_1.batch)(this.__batchSub.bind(this), socketBatchSize);
+        this._batchUnsub = (0, Batch_1.batch)(this.__batchUnsub.bind(this), socketBatchSize);
+        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), socketThrottleMs);
+        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
     }
     //////////////////////////////////////////////
     _onClosing() {

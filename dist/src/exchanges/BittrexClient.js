@@ -75,7 +75,7 @@ class BittrexClient extends BasicClient_1.BasicClient {
         this._processTrades = this._processTrades.bind(this);
         this._processCandles = this._processCandles.bind(this);
         this._processLevel2Update = this._processLevel2Update.bind(this);
-        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), throttleL2Snapshot);
+        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), throttleL2Snapshot);
     }
     ////////////////////////////////////
     // PROTECTED
@@ -183,7 +183,7 @@ class BittrexClient extends BasicClient_1.BasicClient {
                 wssPath = `wss://socket-v3.bittrex.com/signalr/connect?clientProtocol=1.5&transport=webSockets&connectionToken=${token}&connectionData=${data}&tid=10`;
             }
             catch (ex) {
-                await Util_1.wait(this.connectInitTimeoutMs);
+                await (0, Util_1.wait)(this.connectInitTimeoutMs);
                 this._onError(ex);
             }
         }

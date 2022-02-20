@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const HitBtcClient_1 = require("../../src/exchanges/HitBtcClient");
 const Https_1 = require("../../src/Https");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new HitBtcClient_1.HitBtcClient(),
     clientName: "HitBTCClient",
     exchangeName: "HitBTC",
@@ -20,7 +20,7 @@ TestRunner_1.testClient({
         },
     ],
     fetchAllMarkets: async () => {
-        const results = await Https_1.get("https://api.hitbtc.com/api/2/public/symbol");
+        const results = await (0, Https_1.get)("https://api.hitbtc.com/api/2/public/symbol");
         return results.map(p => ({ id: p.id, base: p.baseCurrency, quote: p.quoteCurrency }));
     },
     testAllMarketsTrades: true,

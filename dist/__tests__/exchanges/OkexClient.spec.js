@@ -44,7 +44,7 @@ const assertions = {
         hasChecksum: true,
     },
 };
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new OkexClient_1.OkexClient(),
     exchangeName: "OKEx",
     clientName: "OKExClient - Spot",
@@ -66,12 +66,12 @@ TestRunner_1.testClient({
     testCloseEvents: true,
     ...assertions,
 });
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new OkexClient_1.OkexClient(),
     exchangeName: "OKEx",
     clientName: "OKExClient - Futures",
     fetchMarkets: async () => {
-        const results = await Https_1.get("https://www.okex.com/api/futures/v3/instruments");
+        const results = await (0, Https_1.get)("https://www.okex.com/api/futures/v3/instruments");
         return results
             .filter(p => p.base_currency === "BTC")
             .map(p => ({
@@ -83,12 +83,12 @@ TestRunner_1.testClient({
     },
     ...assertions,
 });
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new OkexClient_1.OkexClient(),
     exchangeName: "OKEx",
     clientName: "OKExClient - Swap",
     fetchMarkets: async () => {
-        const results = await Https_1.get("https://www.okex.com/api/swap/v3/instruments");
+        const results = await (0, Https_1.get)("https://www.okex.com/api/swap/v3/instruments");
         return results
             .filter(p => ["BTC", "ETH", "LTC"].includes(p.base_currency))
             .map(p => ({
@@ -100,12 +100,12 @@ TestRunner_1.testClient({
     },
     ...assertions,
 });
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new OkexClient_1.OkexClient(),
     exchangeName: "OKEx",
     clientName: "OKExClient - Options",
     fetchMarkets: async () => {
-        const results = await Https_1.get("https://www.okex.com/api/option/v3/instruments/BTC-USD");
+        const results = await (0, Https_1.get)("https://www.okex.com/api/option/v3/instruments/BTC-USD");
         return results
             .map(p => ({
             id: p.instrument_id,

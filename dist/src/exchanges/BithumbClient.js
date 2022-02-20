@@ -58,10 +58,10 @@ class BithumbClient extends BasicClient_1.BasicClient {
         this.hasLevel2Updates = true;
         this.remoteIdMap = new Map();
         this.restThrottleMs = 50;
-        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), this.restThrottleMs); // prettier-ignore
-        this._sendSubTicker = Debounce_1.debounce(this.__sendSubTicker.bind(this));
-        this._sendSubTrades = Debounce_1.debounce(this.__sendSubTrades.bind(this));
-        this._sendSubLevel2Updates = Debounce_1.debounce(this.__sendSubLevel2Updates.bind(this));
+        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), this.restThrottleMs); // prettier-ignore
+        this._sendSubTicker = (0, Debounce_1.debounce)(this.__sendSubTicker.bind(this));
+        this._sendSubTrades = (0, Debounce_1.debounce)(this.__sendSubTrades.bind(this));
+        this._sendSubLevel2Updates = (0, Debounce_1.debounce)(this.__sendSubLevel2Updates.bind(this));
     }
     __sendSubTicker() {
         const symbols = Array.from(this._tickerSubs.keys());

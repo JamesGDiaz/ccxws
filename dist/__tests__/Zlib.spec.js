@@ -27,7 +27,7 @@ describe("unzip", () => {
         const cb = (err, val) => {
             vals.push(val);
             if (vals.length === 5) {
-                chai_1.expect(vals).to.deep.equal([
+                (0, chai_1.expect)(vals).to.deep.equal([
                     Buffer.from("1"),
                     Buffer.from("2"),
                     Buffer.from("3"),
@@ -59,9 +59,9 @@ describe("unzip", () => {
         const cb = (err, val) => {
             vals.push(err || val);
             if (vals.length === 3) {
-                chai_1.expect(vals[0]).to.deep.equal(Buffer.from("1"));
-                chai_1.expect(vals[1]).to.be.instanceOf(Error);
-                chai_1.expect(vals[2]).to.deep.equal(Buffer.from("2"));
+                (0, chai_1.expect)(vals[0]).to.deep.equal(Buffer.from("1"));
+                (0, chai_1.expect)(vals[1]).to.be.instanceOf(Error);
+                (0, chai_1.expect)(vals[2]).to.deep.equal(Buffer.from("2"));
                 done();
             }
         };
@@ -76,7 +76,7 @@ describe("inflateRaw", () => {
         const cb = (err, val) => {
             vals.push(val);
             if (vals.length === 5) {
-                chai_1.expect(vals).to.deep.equal([
+                (0, chai_1.expect)(vals).to.deep.equal([
                     Buffer.from("1"),
                     Buffer.from("2"),
                     Buffer.from("3"),

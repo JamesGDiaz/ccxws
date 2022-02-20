@@ -112,12 +112,12 @@ const sequenceIdValidateWithEmptyHeartbeatsSpec = {
         hasSequenceId: true,
     },
 };
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientName: "BitfinexClient - default options",
     clientFactory: () => new BitfinexClient_1.BitfinexClient(),
     ...regularSpec,
 });
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientName: "BitfinexClient - custom options",
     clientFactory: () => new BitfinexClient_1.BitfinexClient({
         enableEmptyHeartbeatEvents: true,

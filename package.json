@@ -26,6 +26,11 @@
     "type": "git",
     "url": "https://githubJamesGDiaz/ccxws"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn build"
+    }
+  },
   "dependencies": {
     "crc": "^3.8.0",
     "decimal.js": "^10.2.0",
@@ -48,6 +53,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-prefer-arrow": "^1.2.3",
+    "husky": "^7.0.4",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
     "prettier": "^2.3.0",

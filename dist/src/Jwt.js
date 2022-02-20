@@ -19,7 +19,7 @@ function base64UrlEncode(value) {
     return base64Encode(value).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 function hmacSign(algorithm, secret, data) {
-    const hmac = crypto_1.createHmac(algorithm, secret);
+    const hmac = (0, crypto_1.createHmac)(algorithm, secret);
     hmac.update(data);
     return hmac.digest();
 }

@@ -174,7 +174,7 @@ class BitmexClient extends BasicClient_1.BasicClient {
     }
     _constructTrades(datum, market) {
         const { size, side, timestamp, price, trdMatchID } = datum;
-        const unix = moment_1.default(timestamp).valueOf();
+        const unix = (0, moment_1.default)(timestamp).valueOf();
         return new Trade_1.Trade({
             exchange: "BitMEX",
             base: market.base,
@@ -212,7 +212,7 @@ class BitmexClient extends BasicClient_1.BasicClient {
     }
    */
     _constructCandle(datum) {
-        const ts = moment_1.default(datum.timestamp).valueOf();
+        const ts = (0, moment_1.default)(datum.timestamp).valueOf();
         return new Candle_1.Candle(ts, datum.open.toFixed(8), datum.high.toFixed(8), datum.low.toFixed(8), datum.close.toFixed(8), datum.volume.toFixed(8));
     }
     /**

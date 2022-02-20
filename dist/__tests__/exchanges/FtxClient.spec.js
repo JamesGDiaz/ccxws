@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const FtxClient_1 = require("../../src/exchanges/FtxClient");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new FtxClient_1.FtxClient(),
     clientName: "FtxClient",
     exchangeName: "FTX",

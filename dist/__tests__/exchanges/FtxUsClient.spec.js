@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const FtxUsClient_1 = require("../../src/exchanges/FtxUsClient");
 const https = __importStar(require("../../src/Https"));
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new FtxUsClient_1.FtxUsClient(),
     clientName: "FtxUsClient",
     exchangeName: "FTX US",

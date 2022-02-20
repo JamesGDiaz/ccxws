@@ -29,10 +29,10 @@ describe("Watcher", () => {
             sut.start();
         });
         it("should trigger a stop", () => {
-            chai_1.expect(sut.stop.callCount).to.equal(1);
+            (0, chai_1.expect)(sut.stop.callCount).to.equal(1);
         });
         it("should start the interval", () => {
-            chai_1.expect(sut._intervalHandle).to.not.be.undefined;
+            (0, chai_1.expect)(sut._intervalHandle).to.not.be.undefined;
         });
     });
     describe("stop", () => {
@@ -40,7 +40,7 @@ describe("Watcher", () => {
             sut.stop();
         });
         it("should clear the interval", () => {
-            chai_1.expect(sut._intervalHandle).to.be.undefined;
+            (0, chai_1.expect)(sut._intervalHandle).to.be.undefined;
         });
     });
     describe("on messages", () => {
@@ -49,31 +49,31 @@ describe("Watcher", () => {
         });
         it("other should not mark", () => {
             client.emit("other");
-            chai_1.expect(sut._lastMessage).to.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.be.undefined;
         });
         it("ticker should mark", () => {
             client.emit("ticker");
-            chai_1.expect(sut._lastMessage).to.not.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.not.be.undefined;
         });
         it("trade should mark", () => {
             client.emit("trade");
-            chai_1.expect(sut._lastMessage).to.not.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.not.be.undefined;
         });
         it("l2snapshot should mark", () => {
             client.emit("l2snapshot");
-            chai_1.expect(sut._lastMessage).to.not.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.not.be.undefined;
         });
         it("l2update should mark", () => {
             client.emit("l2update");
-            chai_1.expect(sut._lastMessage).to.not.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.not.be.undefined;
         });
         it("l3snapshot should mark", () => {
             client.emit("l3snapshot");
-            chai_1.expect(sut._lastMessage).to.not.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.not.be.undefined;
         });
         it("l3update should mark", () => {
             client.emit("l3update");
-            chai_1.expect(sut._lastMessage).to.not.be.undefined;
+            (0, chai_1.expect)(sut._lastMessage).to.not.be.undefined;
         });
     });
     describe("on expire", () => {
@@ -82,7 +82,7 @@ describe("Watcher", () => {
         });
         it("it should call reconnect on the client", async () => {
             await wait(500);
-            chai_1.expect(client.reconnect.callCount).to.be.gt(0);
+            (0, chai_1.expect)(client.reconnect.callCount).to.be.gt(0);
         });
     });
 }).retries(3);

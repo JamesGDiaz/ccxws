@@ -63,7 +63,7 @@ class BiboxClient extends events_1.EventEmitter {
         this.hasLevel3Updates = false;
         this.subsPerClient = 20;
         this.throttleMs = 200;
-        this._subscribe = Throttle_1.throttle(this.__subscribe.bind(this), this.throttleMs);
+        this._subscribe = (0, Throttle_1.throttle)(this.__subscribe.bind(this), this.throttleMs);
         this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
     }
     subscribeTicker(market) {
@@ -99,7 +99,7 @@ class BiboxClient extends events_1.EventEmitter {
     async reconnect() {
         for (const client of this._clients) {
             client.reconnect();
-            await Util_1.wait(this.timeoutMs);
+            await (0, Util_1.wait)(this.timeoutMs);
         }
     }
     __subscribe(market, subscriptionType) {

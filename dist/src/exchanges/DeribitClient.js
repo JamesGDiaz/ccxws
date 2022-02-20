@@ -29,7 +29,7 @@ class DeribitClient extends BasicClient_1.BasicClient {
         this.hasLevel2Updates = true;
         this.id = 0;
         this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
-        this._send = Throttle_1.throttle(this.__send.bind(this), 50);
+        this._send = (0, Throttle_1.throttle)(this.__send.bind(this), 50);
     }
     _beforeClose() {
         this._send.cancel();

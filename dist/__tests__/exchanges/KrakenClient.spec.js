@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const KrakenClient_1 = require("../../src/exchanges/KrakenClient");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new KrakenClient_1.KrakenClient(),
     clientName: "KrakenClient",
     exchangeName: "Kraken",

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const GateioClient_1 = require("../../src/exchanges/GateioClient");
-TestRunner_1.testClient({
+(0, TestRunner_1.testClient)({
     clientFactory: () => new GateioClient_1.GateioClient(),
     clientName: "GateioClient",
     exchangeName: "Gateio",
