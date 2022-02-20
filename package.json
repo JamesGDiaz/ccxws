@@ -16,13 +16,17 @@
   "main": "dist/src/index.js",
   "scripts": {
     "prepublish": "npm run build",
+    "postinstall": "cd node_modules/ccxws && npm install && npm run build && rm -rf node_modules && cd ../..",
     "build": "tsc",
     "format:fix": "prettier --write  \"src/**\" \"__tests__/**\"",
     "format": "prettier --check \"src/**\" \"__tests__/**\"",
     "lint": "eslint src __tests__",
     "test": "nyc --reporter=lcov --reporter=text --extension=.ts mocha --require ts-node/register --recursive \"__tests__/**/*.spec.ts\""
   },
-  "repository": "JamesGDiaz/ccxws",
+  "repository": {
+    "type": "git",
+    "url": "https://githubJamesGDiaz/ccxws"
+  },
   "dependencies": {
     "crc": "^3.8.0",
     "decimal.js": "^10.2.0",
