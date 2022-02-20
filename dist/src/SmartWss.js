@@ -11,7 +11,7 @@ const events_1 = require("events");
 const ws_1 = __importDefault(require("ws"));
 const Util_1 = require("./Util");
 class SmartWss extends events_1.EventEmitter {
-    constructor(wssPath, retryTimeoutMs = 15000) {
+    constructor(wssPath, retryTimeoutMs = 500) {
         super();
         this.wssPath = wssPath;
         this._retryTimeoutMs = retryTimeoutMs;
