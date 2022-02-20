@@ -19,6 +19,7 @@ import * as zlib from "../ZlibUtils";
  */
 export class DigifinexClient extends BasicClient {
     public id: number;
+    public _pingInterval: NodeJS.Timeout;
 
     constructor({ wssPath = "wss://openapi.digifinex.com/ws/v1/", watcherMs, retryTimeoutMs }: ClientOptions = {}) {
         super(wssPath, "Digifinex", undefined, watcherMs, retryTimeoutMs);
