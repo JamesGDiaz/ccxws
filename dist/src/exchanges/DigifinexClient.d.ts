@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { BasicClient } from "../BasicClient";
 import { ClientOptions } from "../ClientOptions";
 import { Level2Snapshot } from "../Level2Snapshots";
@@ -10,7 +11,12 @@ import { Trade } from "../Trade";
  */
 export declare class DigifinexClient extends BasicClient {
     id: number;
+    _pingInterval: NodeJS.Timeout;
     constructor({ wssPath, watcherMs, retryTimeoutMs }?: ClientOptions);
+    protected _beforeConnect(): void;
+    protected _startPing(): void;
+    protected _stopPing(): void;
+    protected _sendPing(): void;
     protected _sendSubTicker(remote_id: any): void;
     protected _sendUnsubTicker(remote_id: any): void;
     protected _sendSubTrades(remote_id: any): void;
