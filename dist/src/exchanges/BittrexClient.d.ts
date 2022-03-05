@@ -54,16 +54,13 @@ export declare class BittrexClient extends BasicClient {
     protected _onMessage(raw: any): void;
     /**
    {
-      "sequence": 3584000,
+      "sequence": "int",
       "deltas": [
         {
-          symbol: 'BTC-USDT',
-          high: '12448.02615735',
-          low: '11773.32163568',
-          volume: '640.86060471',
-          quoteVolume: '7714634.67704918',
-          percentChange: '3.98',
-          updatedAt: '2020-08-17T20:16:27.617Z'
+          "symbol": "string",
+          "lastTradeRate": "number (double)",
+          "bidRate": "number (double)",
+          "askRate": "number (double)"
         }
       ]
     }

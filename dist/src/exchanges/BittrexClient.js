@@ -105,7 +105,7 @@ class BittrexClient extends BasicClient_1.BasicClient {
         this._wss.send(JSON.stringify({
             H: "c3",
             M: "Subscribe",
-            A: [["market_summaries"]],
+            A: [["tickers"]],
             I: ++this._messageId,
         }));
     }
@@ -230,7 +230,7 @@ class BittrexClient extends BasicClient_1.BasicClient {
             if (msg.M === "heartbeat") {
                 this._watcher.markAlive();
             }
-            if (msg.M === "marketSummaries") {
+            if (msg.M === "tickers") {
                 for (const a of msg.A) {
                     zlib.inflateRaw(Buffer.from(a, "base64"), this._processTickers);
                 }
@@ -254,16 +254,13 @@ class BittrexClient extends BasicClient_1.BasicClient {
     }
     /**
    {
-      "sequence": 3584000,
+      "sequence": "int",
       "deltas": [
         {
-          symbol: 'BTC-USDT',
-          high: '12448.02615735',
-          low: '11773.32163568',
-          volume: '640.86060471',
-          quoteVolume: '7714634.67704918',
-          percentChange: '3.98',
-          updatedAt: '2020-08-17T20:16:27.617Z'
+          "symbol": "string",
+          "lastTradeRate": "number (double)",
+          "bidRate": "number (double)",
+          "askRate": "number (double)"
         }
       ]
     }
@@ -290,22 +287,22 @@ class BittrexClient extends BasicClient_1.BasicClient {
         }
     }
     _constructTicker(msg, market) {
-        const { high, low, volume, quoteVolume, percentChange, updatedAt } = msg;
+        const { lastTradeRate, bidRate, askRate } = msg;
         return new Ticker_1.Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            timestamp: moment.utc(updatedAt).valueOf(),
-            last: undefined,
+            timestamp: moment.utc().valueOf(),
+            last: lastTradeRate,
             open: undefined,
-            high: high,
-            low: low,
-            volume: volume,
-            quoteVolume: quoteVolume,
+            high: undefined,
+            low: undefined,
+            volume: undefined,
+            quoteVolume: undefined,
             change: undefined,
-            changePercent: percentChange,
-            bid: undefined,
-            ask: undefined,
+            changePercent: undefined,
+            bid: bidRate,
+            ask: askRate,
         });
     }
     /**
