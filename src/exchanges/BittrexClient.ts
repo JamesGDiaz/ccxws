@@ -104,7 +104,7 @@ export class BittrexClient extends BasicClient {
             JSON.stringify({
                 H: "c3",
                 M: "Subscribe",
-                A: [["market_summaries"]],
+                A: [["tickers"]],
                 I: ++this._messageId,
             }),
         );
@@ -258,7 +258,7 @@ export class BittrexClient extends BasicClient {
                 this._watcher.markAlive();
             }
 
-            if (msg.M === "marketSummaries") {
+            if (msg.M === "tickers") {
                 for (const a of msg.A) {
                     zlib.inflateRaw(Buffer.from(a, "base64"), this._processTickers);
                 }
@@ -324,22 +324,22 @@ export class BittrexClient extends BasicClient {
     }
 
     protected _constructTicker(msg, market) {
-        const { high, low, volume, quoteVolume, percentChange, updatedAt } = msg;
+        const { lastTradeRate, bidRate, askRate } = msg;
         return new Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            timestamp: moment.utc(updatedAt).valueOf(),
-            last: undefined,
+            timestamp: moment.utc().valueOf(),
+            last: lastTradeRate,
             open: undefined,
-            high: high,
-            low: low,
-            volume: volume,
-            quoteVolume: quoteVolume,
+            high: undefined,
+            low: undefined,
+            volume: undefined,
+            quoteVolume: undefined,
             change: undefined,
-            changePercent: percentChange,
-            bid: undefined,
-            ask: undefined,
+            changePercent: undefined,
+            bid: bidRate,
+            ask: askRate,
         });
     }
 
