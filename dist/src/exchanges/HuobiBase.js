@@ -5,7 +5,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -55,13 +59,13 @@ class HuobiBase extends BasicClient_1.BasicClient {
     }
     _sendSubTicker(remote_id) {
         this._wss.send(JSON.stringify({
-            sub: `market.${remote_id}.detail`,
+            sub: `market.${remote_id}.ticker`,
             id: remote_id,
         }));
     }
     _sendUnsubTicker(remote_id) {
         this._wss.send(JSON.stringify({
-            unsub: `market.${remote_id}.detail`,
+            unsub: `market.${remote_id}.ticker`,
             id: remote_id,
         }));
     }
@@ -151,7 +155,7 @@ class HuobiBase extends BasicClient_1.BasicClient {
                 this.emit("candle", candle, market);
             }
             // tickers
-            if (msgs.ch.endsWith(".detail")) {
+            if (msgs.ch.endsWith(".ticker")) {
                 const remoteId = msgs.ch.split(".")[1];
                 const market = this._tickerSubs.get(remoteId);
                 if (!market)
@@ -189,7 +193,7 @@ class HuobiBase extends BasicClient_1.BasicClient {
         });
     }
     _constructTicker(data, market) {
-        const { open, close, high, low, vol, amount } = data;
+        const { open, high, low, close, vol, amount, bid, bidSize, ask, askSize } = data;
         const dayChange = close - open;
         const dayChangePercent = ((close - open) / open) * 100;
         return new Ticker_1.Ticker({
@@ -205,6 +209,10 @@ class HuobiBase extends BasicClient_1.BasicClient {
             quoteVolume: vol.toFixed(8),
             change: dayChange.toFixed(8),
             changePercent: dayChangePercent.toFixed(8),
+            bid: bid.toFixed(10),
+            bidVolume: bidSize.toFixed(10),
+            ask: ask.toFixed(10),
+            askVolume: askSize.toFixed(10)
         });
     }
     _constructTradesFromMessage(datum, market) {
