@@ -36,7 +36,7 @@ export class HuobiBase extends BasicClient {
     protected _sendSubTicker(remote_id: string) {
         this._wss.send(
             JSON.stringify({
-                sub: `market.${remote_id}.detail`,
+                sub: `market.${remote_id}.ticker`,
                 id: remote_id,
             }),
         );
@@ -45,7 +45,7 @@ export class HuobiBase extends BasicClient {
     protected _sendUnsubTicker(remote_id: string) {
         this._wss.send(
             JSON.stringify({
-                unsub: `market.${remote_id}.detail`,
+                unsub: `market.${remote_id}.ticker`,
                 id: remote_id,
             }),
         );
@@ -174,7 +174,7 @@ export class HuobiBase extends BasicClient {
             }
 
             // tickers
-            if (msgs.ch.endsWith(".detail")) {
+            if (msgs.ch.endsWith(".ticker")) {
                 const remoteId = msgs.ch.split(".")[1];
                 const market = this._tickerSubs.get(remoteId);
                 if (!market) return;
@@ -214,7 +214,7 @@ export class HuobiBase extends BasicClient {
     }
 
     protected _constructTicker(data, market) {
-        const { open, close, high, low, vol, amount } = data;
+        const { open, high, low, close, vol, amount, bid, bidSize, ask, askSize } = data;
         const dayChange = close - open;
         const dayChangePercent = ((close - open) / open) * 100;
         return new Ticker({
@@ -230,6 +230,10 @@ export class HuobiBase extends BasicClient {
             quoteVolume: vol.toFixed(8),
             change: dayChange.toFixed(8),
             changePercent: dayChangePercent.toFixed(8),
+            bid: bid.toFixed(10),
+            bidVolume: bidSize.toFixed(10),
+            ask: ask.toFixed(10),
+            askVolume: askSize.toFixed(10)
         });
     }
 
