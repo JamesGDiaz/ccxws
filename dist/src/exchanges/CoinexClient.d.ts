@@ -1,29 +1,20 @@
 /// <reference types="node" />
 import { BasicClient } from "../BasicClient";
-import { BasicMultiClient } from "../BasicMultiClient";
 import { CandlePeriod } from "../CandlePeriod";
-import { IClient } from "../IClient";
 import { Level2Snapshot } from "../Level2Snapshots";
 import { Level2Update } from "../Level2Update";
 import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
 export declare type CoinexClientOptions = {};
-export declare class CoinexClient extends BasicMultiClient {
-    options: CoinexClientOptions;
-    candlePeriod: CandlePeriod;
-    constructor(options?: CoinexClientOptions);
-    protected _createBasicClient(): IClient;
-}
-export declare class CoinexSingleClient extends BasicClient {
+export declare class CoinexClient extends BasicClient {
     retryErrorTimeout: number;
-    parent: CoinexClient;
     protected _id: number;
     protected _idSubMap: Map<any, any>;
     protected _pingInterval: NodeJS.Timeout;
-    constructor({ wssPath, watcherMs, parent }: {
+    constructor({ wssPath, watcherMs, retryTimeoutMs, }: {
         wssPath?: string;
         watcherMs?: number;
-        parent: any;
+        retryTimeoutMs?: number;
     });
     get candlePeriod(): CandlePeriod;
     protected _beforeConnect(): void;

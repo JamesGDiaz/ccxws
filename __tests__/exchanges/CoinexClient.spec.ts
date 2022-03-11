@@ -2,7 +2,7 @@ import { testClient } from "../TestRunner";
 import { CoinexClient } from "../../src/exchanges/CoinexClient";
 
 testClient({
-    clientFactory: () => new CoinexClient(),
+    clientFactory: () => new CoinexClient({}),
     clientName: "CoinexClient",
     exchangeName: "Coinex",
     markets: [

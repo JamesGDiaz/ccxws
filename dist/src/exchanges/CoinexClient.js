@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinexSingleClient = exports.CoinexClient = void 0;
+exports.CoinexClient = void 0;
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -9,7 +9,6 @@ exports.CoinexSingleClient = exports.CoinexClient = void 0;
 /* eslint-disable @typescript-eslint/no-implied-eval */
 const moment = require("moment");
 const BasicClient_1 = require("../BasicClient");
-const BasicMultiClient_1 = require("../BasicMultiClient");
 const CandlePeriod_1 = require("../CandlePeriod");
 const Level2Point_1 = require("../Level2Point");
 const Level2Snapshots_1 = require("../Level2Snapshots");
@@ -18,24 +17,27 @@ const NotImplementedFn_1 = require("../NotImplementedFn");
 const SubscriptionType_1 = require("../SubscriptionType");
 const Ticker_1 = require("../Ticker");
 const Trade_1 = require("../Trade");
-class CoinexClient extends BasicMultiClient_1.BasicMultiClient {
-    constructor(options = {}) {
+/*export class CoinexClient extends BasicMultiClient {
+    public options: CoinexClientOptions;
+    public candlePeriod: CandlePeriod;
+
+    constructor(options: CoinexClientOptions = {}) {
         super();
         this.options = options;
         this.hasTickers = true;
         this.hasTrades = true;
         this.hasCandles = false;
         this.hasLevel2Updates = true;
-        this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
+        this.candlePeriod = CandlePeriod._1m;
     }
-    _createBasicClient() {
+
+    protected _createBasicClient(): IClient {
         return new CoinexSingleClient({ ...this.options, parent: this });
     }
-}
-exports.CoinexClient = CoinexClient;
-class CoinexSingleClient extends BasicClient_1.BasicClient {
-    constructor({ wssPath = "wss://socket.coinex.com/", watcherMs = 900 * 1000, parent }) {
-        super(wssPath, "Coinex", undefined, watcherMs);
+}*/
+class CoinexClient extends BasicClient_1.BasicClient {
+    constructor({ wssPath = "wss://socket.coinex.com/", watcherMs = 900 * 1000, retryTimeoutMs = 1000, }) {
+        super(wssPath, "Coinex", undefined, watcherMs, retryTimeoutMs);
         this._sendSubCandles = NotImplementedFn_1.NotImplementedFn;
         this._sendUnsubCandles = NotImplementedFn_1.NotImplementedFn;
         this._sendSubLevel2Snapshots = NotImplementedFn_1.NotImplementedFn;
@@ -48,13 +50,12 @@ class CoinexSingleClient extends BasicClient_1.BasicClient {
         this.hasTrades = true;
         this.hasCandles = false;
         this.hasLevel2Updates = true;
-        this.retryErrorTimeout = 15000;
+        this.retryErrorTimeout = retryTimeoutMs;
         this._id = 0;
         this._idSubMap = new Map();
-        this.parent = parent;
     }
     get candlePeriod() {
-        return this.parent.candlePeriod;
+        return CandlePeriod_1.CandlePeriod._1m;
     }
     _beforeConnect() {
         this._wss.on("connected", this._startPing.bind(this));
@@ -254,5 +255,5 @@ class CoinexSingleClient extends BasicClient_1.BasicClient {
         });
     }
 }
-exports.CoinexSingleClient = CoinexSingleClient;
+exports.CoinexClient = CoinexClient;
 //# sourceMappingURL=CoinexClient.js.map

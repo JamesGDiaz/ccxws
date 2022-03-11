@@ -22,7 +22,7 @@ export type CoinexClientOptions = {
     //
 };
 
-export class CoinexClient extends BasicMultiClient {
+/*export class CoinexClient extends BasicMultiClient {
     public options: CoinexClientOptions;
     public candlePeriod: CandlePeriod;
 
@@ -39,30 +39,32 @@ export class CoinexClient extends BasicMultiClient {
     protected _createBasicClient(): IClient {
         return new CoinexSingleClient({ ...this.options, parent: this });
     }
-}
+}*/
 
-export class CoinexSingleClient extends BasicClient {
+export class CoinexClient extends BasicClient {
     public retryErrorTimeout: number;
-    public parent: CoinexClient;
 
     protected _id: number;
     protected _idSubMap: Map<any, any>;
     protected _pingInterval: NodeJS.Timeout;
 
-    constructor({ wssPath = "wss://socket.coinex.com/", watcherMs = 900 * 1000, parent }) {
-        super(wssPath, "Coinex", undefined, watcherMs);
+    constructor({
+        wssPath = "wss://socket.coinex.com/",
+        watcherMs = 900 * 1000,
+        retryTimeoutMs = 1000,
+    }) {
+        super(wssPath, "Coinex", undefined, watcherMs, retryTimeoutMs);
         this.hasTickers = true;
         this.hasTrades = true;
         this.hasCandles = false;
         this.hasLevel2Updates = true;
-        this.retryErrorTimeout = 15000;
+        this.retryErrorTimeout = retryTimeoutMs;
         this._id = 0;
         this._idSubMap = new Map();
-        this.parent = parent;
     }
 
     public get candlePeriod() {
-        return this.parent.candlePeriod;
+        return CandlePeriod._1m;
     }
 
     protected _beforeConnect() {
