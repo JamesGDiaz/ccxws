@@ -264,6 +264,8 @@ export class CoinexClient extends BasicClient {
             quote: market.quote,
             timestamp: Date.now(),
             last: last,
+            ask: last,
+            bid: last,
             open: open,
             high: high,
             low: low,
