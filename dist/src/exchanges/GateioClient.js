@@ -170,6 +170,8 @@ class GateioClient extends BasicClient_1.BasicClient {
             quote: market.quote,
             timestamp: Date.now(),
             last: rawTick.last,
+            ask: rawTick.last,
+            bid: rawTick.last,
             open: rawTick.open,
             high: rawTick.high,
             low: rawTick.low,
