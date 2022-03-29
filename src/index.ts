@@ -26,6 +26,7 @@ import { BitfinexClient } from "./exchanges/BitfinexClient";
 import { BitflyerClient } from "./exchanges/BitflyerClient";
 import { BithumbClient } from "./exchanges/BithumbClient";
 import { BitmexClient } from "./exchanges/BitmexClient";
+import { BitrueClient } from "./exchanges/BitrueClient";
 import { BitstampClient } from "./exchanges/BitstampClient";
 import { BittrexClient } from "./exchanges/BittrexClient";
 import { CexClient } from "./exchanges/CexClient";
@@ -86,6 +87,7 @@ export {
     BitflyerClient,
     BithumbClient,
     BitmexClient,
+    BitrueClient,
     BitstampClient,
     BittrexClient,
     CexClient,

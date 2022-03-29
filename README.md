@@ -62,6 +62,7 @@ binance.subscribeLevel2Snapshots(market);
 | bitFlyer               | 1   | BitflyerClient            | &#10003; | &#10003; | -        | -              | &#10003;\*\*  | -              | -             |
 | Bithumb                | 1   | BithumbClient             | &#10003; | &#10003; | -        | -              | &#10003;\*\*  | -              | -             |
 | BitMEX                 | 1   | BitmexClient              | &#10003; | &#10003; | &#10003; | -              | &#10003;\*    | -              | -             |
+| Bitrue                 | 1   | BitrueClient              | &#10003; | &#10003; | -        | -              | -             | -              | -             |
 | Bitstamp               | 2   | BitstampClient            | -        | &#10003; | -        | &#10003;       | &#10003;\*\*  | -              | -             |
 | Bittrex                | 3   | BittrexClient             | &#10003; | &#10003; | &#10003; | -              | &#10003;\*    | -              | -             |
 | Cex.io                 | 1   | CexClient                 | &#10003; | &#10003; | &#10003; | &#10003;       |               | -              | -             |

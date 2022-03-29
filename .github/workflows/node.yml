@@ -57,6 +57,7 @@ jobs:
           - Bitflyer
           - Bithumb
           - Bitmex
+          - Bitrue
           - Bitstamp
           - Bittrex
           - Cex
