@@ -124,6 +124,7 @@ exports.default = {
     Bitflyer: BitflyerClient_1.BitflyerClient,
     Bithumb: BithumbClient_1.BithumbClient,
     BitMEX: BitmexClient_1.BitmexClient,
+    Bitrue: BitrueClient_1.BitrueClient,
     Bitstamp: BitstampClient_1.BitstampClient,
     Bittrex: BittrexClient_1.BittrexClient,
     Cex: CexClient_1.CexClient,

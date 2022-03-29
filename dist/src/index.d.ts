@@ -63,6 +63,7 @@ declare const _default: {
     Bitflyer: typeof BitflyerClient;
     Bithumb: typeof BithumbClient;
     BitMEX: typeof BitmexClient;
+    Bitrue: typeof BitrueClient;
     Bitstamp: typeof BitstampClient;
     Bittrex: typeof BittrexClient;
     Cex: typeof CexClient;

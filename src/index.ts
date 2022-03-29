@@ -132,6 +132,7 @@ export default {
     Bitflyer: BitflyerClient,
     Bithumb: BithumbClient,
     BitMEX: BitmexClient,
+    Bitrue: BitrueClient,
     Bitstamp: BitstampClient,
     Bittrex: BittrexClient,
     Cex: CexClient,
