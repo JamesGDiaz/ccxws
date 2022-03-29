@@ -97,7 +97,7 @@ export class OkexClient extends BasicClient {
      */
     protected _marketArg(method: string, market: Market) {
         const type = (market.type || "spot").toLowerCase();
-        return `${type.toLowerCase()}/${method}:${market.id}`;
+        return { channel: "tickers", instId: `${type.toLowerCase()}/${method}:${market.id}` };
     }
 
     /**

@@ -214,9 +214,9 @@ export class BitrueClient extends BasicClient {
             quoteVolume: data.amount.toString(),
             change: change.toFixed(8),
             changePercent: changePercent.toFixed(2),
-            ask: undefined,
+            ask: data.close.toString(),
             askVolume: undefined,
-            bid: undefined,
+            bid: data.close.toString(),
             bidVolume: undefined,
         });
     }

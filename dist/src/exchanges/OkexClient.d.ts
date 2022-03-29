@@ -46,7 +46,10 @@ export declare class OkexClient extends BasicClient {
      * Constructs a market argument in a backwards compatible manner where
      * the default is a spot market.
      */
-    protected _marketArg(method: string, market: Market): string;
+    protected _marketArg(method: string, market: Market): {
+        channel: string;
+        instId: string;
+    };
     /**
      * Gets the exchanges interpretation of the candle period
      */

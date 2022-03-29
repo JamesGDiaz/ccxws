@@ -106,7 +106,7 @@ class OkexClient extends BasicClient_1.BasicClient {
      */
     _marketArg(method, market) {
         const type = (market.type || "spot").toLowerCase();
-        return `${type.toLowerCase()}/${method}:${market.id}`;
+        return { channel: "tickers", instId: `${type.toLowerCase()}/${method}:${market.id}` };
     }
     /**
      * Gets the exchanges interpretation of the candle period
