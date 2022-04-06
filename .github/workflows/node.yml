@@ -77,7 +77,7 @@ jobs:
           - HuobiSwaps
           - Kucoin
           - Liquid
-          - Okex
+          - Okx
           - Poloniex
           - Upbit
           - Zb

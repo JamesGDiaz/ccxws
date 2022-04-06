@@ -290,7 +290,7 @@ The general pattern is that a general `_sendMessage` method is used to send all 
   }
 ```
 
-Examples: [okex](/src/exchanges/okex-client.js), [bibox](/src/exchanges/bibox-client.js), [hitbtc](/src/exchanges/hitbtc-client.js)
+Examples: [okx](/src/exchanges/okx-client.js), [bibox](/src/exchanges/bibox-client.js), [hitbtc](/src/exchanges/hitbtc-client.js)
 
 #### Batched Requests
 
@@ -385,7 +385,7 @@ Some exchanges require you to send a ping message periodically. The complexity h
   }
 ```
 
-Refer to: [okex](/src/exchanges/okex-client.js), [coinex](/src/exchanges/coinex-client.js)
+Refer to: [okx](/src/exchanges/okx-client.js), [coinex](/src/exchanges/coinex-client.js)
 
 #### Sending Pongs
 
