@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import moment from "moment";
 import { BasicClient } from "../BasicClient";
 import { Candle } from "../Candle";
 import { CandlePeriod } from "../CandlePeriod";
@@ -477,7 +476,7 @@ export class OkxClient extends BasicClient {
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            timestamp: moment.utc(ts).valueOf(),
+            timestamp: ts,
             last,
             open: open24h,
             high: high24h,
@@ -504,7 +503,6 @@ export class OkxClient extends BasicClient {
     */
     protected _constructTrade(datum, market) {
         const { px, side, sz, timestamp, tradeId } = datum;
-        const ts = moment.utc(timestamp).valueOf();
 
         return new Trade({
             exchange: this.name,
@@ -512,7 +510,7 @@ export class OkxClient extends BasicClient {
             quote: market.quote,
             tradeId: tradeId,
             side,
-            unix: ts,
+            unix: timestamp,
             price: px,
             amount: sz,
         });
@@ -535,7 +533,7 @@ export class OkxClient extends BasicClient {
    */
     protected _constructCandle(datum) {
         const [ts, o, h, l, c, vol] = datum.candle;
-        return new Candle(moment.utc(ts).valueOf(), o, h, l, c, vol);
+        return new Candle(ts, o, h, l, c, vol);
     }
 
     /**
@@ -560,13 +558,12 @@ export class OkxClient extends BasicClient {
     protected _constructLevel2Snapshot(datum, market) {
         const asks = datum.asks.map(p => new Level2Point(p[0], p[1], p[2]));
         const bids = datum.bids.map(p => new Level2Point(p[0], p[1], p[2]));
-        const ts = moment.utc(datum.timestamp).valueOf();
         const checksum = datum.checksum;
         return new Level2Snapshot({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            timestampMs: ts,
+            timestampMs: datum.timestamp,
             asks,
             bids,
             checksum,
@@ -586,13 +583,12 @@ export class OkxClient extends BasicClient {
     _constructLevel2Update(datum, market) {
         const asks = datum.asks.map(p => new Level2Point(p[0], p[1], p[3]));
         const bids = datum.bids.map(p => new Level2Point(p[0], p[1], p[3]));
-        const ts = moment.utc(datum.timestamp).valueOf();
         const checksum = datum.checksum;
         return new Level2Update({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            timestampMs: ts,
+            timestampMs: datum.timestamp,
             asks,
             bids,
             checksum,
