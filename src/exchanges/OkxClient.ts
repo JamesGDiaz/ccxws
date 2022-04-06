@@ -305,7 +305,6 @@ export class OkxClient extends BasicClient {
    */
     protected _processTicker(msg) {
         for (const datum of msg.data) {
-            console.log(datum)
             // ensure market
             const remoteId = datum.instId;
             const market = this._tickerSubs.get(remoteId);
@@ -313,7 +312,6 @@ export class OkxClient extends BasicClient {
 
             // construct and emit ticker
             const ticker = this._constructTicker(datum, market);
-            console.log(ticker)
             this.emit("ticker", ticker, market);
         }
     }
