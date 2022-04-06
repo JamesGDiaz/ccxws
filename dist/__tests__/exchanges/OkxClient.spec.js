@@ -1,7 +1,8 @@
-import { testClient } from "../TestRunner";
-import { OkexClient } from "../../src/exchanges/OkexClient";
-import { get } from "../../src/Https";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const TestRunner_1 = require("../TestRunner");
+const OkxClient_1 = require("../../src/exchanges/OkxClient");
+const Https_1 = require("../../src/Https");
 const assertions = {
     hasTickers: true,
     hasTrades: true,
@@ -10,7 +11,6 @@ const assertions = {
     hasLevel2Updates: true,
     hasLevel3Snapshots: false,
     hasLevel3Updates: false,
-
     ticker: {
         hasTimestamp: true,
         hasLast: true,
@@ -26,20 +26,16 @@ const assertions = {
         hasAskVolume: true,
         hasBidVolume: true,
     },
-
     trade: {
         hasTradeId: true,
     },
-
     candle: {},
-
     l2snapshot: {
         hasTimestampMs: true,
         hasSequenceId: false,
         hasCount: true,
         hasChecksum: true,
     },
-
     l2update: {
         hasSnapshot: true,
         hasTimestampMs: true,
@@ -48,11 +44,10 @@ const assertions = {
         hasChecksum: true,
     },
 };
-
-testClient({
-    clientFactory: () => new OkexClient(),
-    exchangeName: "OKEx",
-    clientName: "OKExClient - Spot",
+(0, TestRunner_1.testClient)({
+    clientFactory: () => new OkxClient_1.OkxClient(),
+    exchangeName: "OKX",
+    clientName: "OKXClient - Spot",
     markets: [
         {
             id: "BTC-USDT",
@@ -65,66 +60,62 @@ testClient({
             quote: "BTC",
         },
     ],
-
     testConnectEvents: true,
     testDisconnectEvents: true,
     testReconnectionEvents: true,
     testCloseEvents: true,
-
     ...assertions,
 });
-
-testClient({
-    clientFactory: () => new OkexClient(),
-    exchangeName: "OKEx",
-    clientName: "OKExClient - Futures",
+(0, TestRunner_1.testClient)({
+    clientFactory: () => new OkxClient_1.OkxClient(),
+    exchangeName: "OKX",
+    clientName: "OKXClient - Futures",
     fetchMarkets: async () => {
-        const results: any = await get("https://www.okex.com/api/futures/v3/instruments");
+        const results = await (0, Https_1.get)("https://www.okx.com/api/futures/v3/instruments");
         return results
             .filter(p => p.base_currency === "BTC")
             .map(p => ({
-                id: p.instrument_id,
-                base: p.base_currency,
-                quote: p.quote_currency,
-                type: "futures",
-            }));
+            id: p.instrument_id,
+            base: p.base_currency,
+            quote: p.quote_currency,
+            type: "futures",
+        }));
     },
     ...assertions,
 });
-
-testClient({
-    clientFactory: () => new OkexClient(),
-    exchangeName: "OKEx",
-    clientName: "OKExClient - Swap",
+(0, TestRunner_1.testClient)({
+    clientFactory: () => new OkxClient_1.OkxClient(),
+    exchangeName: "OKX",
+    clientName: "OKXClient - Swap",
     fetchMarkets: async () => {
-        const results: any = await get("https://www.okex.com/api/swap/v3/instruments");
+        const results = await (0, Https_1.get)("https://www.okx.com/api/swap/v3/instruments");
         return results
             .filter(p => ["BTC", "ETH", "LTC"].includes(p.base_currency))
             .map(p => ({
-                id: p.instrument_id,
-                base: p.base_currency,
-                quote: p.quote_currency,
-                type: "swap",
-            }));
+            id: p.instrument_id,
+            base: p.base_currency,
+            quote: p.quote_currency,
+            type: "swap",
+        }));
     },
     ...assertions,
 });
-
-testClient({
-    clientFactory: () => new OkexClient(),
-    exchangeName: "OKEx",
-    clientName: "OKExClient - Options",
+(0, TestRunner_1.testClient)({
+    clientFactory: () => new OkxClient_1.OkxClient(),
+    exchangeName: "OKX",
+    clientName: "OKXClient - Options",
     fetchMarkets: async () => {
-        const results: any = await get("https://www.okex.com/api/option/v3/instruments/BTC-USD");
+        const results = await (0, Https_1.get)("https://www.okx.com/api/option/v3/instruments/BTC-USD");
         return results
             .map(p => ({
-                id: p.instrument_id,
-                base: p.base_currency,
-                quote: p.quote_currency,
-                type: "option",
-            }))
+            id: p.instrument_id,
+            base: p.base_currency,
+            quote: p.quote_currency,
+            type: "option",
+        }))
             .filter(p => p.id.endsWith("-C"))
             .slice(0, 20);
     },
     ...assertions,
 });
+//# sourceMappingURL=OkxClient.spec.js.map

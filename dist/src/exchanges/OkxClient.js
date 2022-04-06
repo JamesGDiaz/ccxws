@@ -1,33 +1,28 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OkxClient = void 0;
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import moment from "moment";
-import { BasicClient } from "../BasicClient";
-import { Candle } from "../Candle";
-import { CandlePeriod } from "../CandlePeriod";
-import { ClientOptions } from "../ClientOptions";
-import { CancelableFn } from "../flowcontrol/Fn";
-import { throttle } from "../flowcontrol/Throttle";
-import { Level2Point } from "../Level2Point";
-import { Level2Snapshot } from "../Level2Snapshots";
-import { Level2Update } from "../Level2Update";
-import { Market } from "../Market";
-import { NotImplementedFn } from "../NotImplementedFn";
-import { Ticker } from "../Ticker";
-import { Trade } from "../Trade";
-import * as zlib from "../ZlibUtils";
-
-const pongBuffer = Buffer.from("pong");
-
-export type OkexClientOptions = ClientOptions & {
-    sendThrottleMs?: number;
-};
-
+const moment_1 = __importDefault(require("moment"));
+const BasicClient_1 = require("../BasicClient");
+const Candle_1 = require("../Candle");
+const CandlePeriod_1 = require("../CandlePeriod");
+const Throttle_1 = require("../flowcontrol/Throttle");
+const Level2Point_1 = require("../Level2Point");
+const Level2Snapshots_1 = require("../Level2Snapshots");
+const Level2Update_1 = require("../Level2Update");
+const NotImplementedFn_1 = require("../NotImplementedFn");
+const Ticker_1 = require("../Ticker");
+const Trade_1 = require("../Trade");
 /**
- * Implements OKEx V3 WebSocket API as defined in
- * https://www.okex.com/docs/en/#spot_ws-general
+ * Implements OKX V5 WebSocket API as defined in
+ * https://www.okx.com/docs-v5/en/#websocket-api
  *
  * Limits:
  *    1 connection / second
@@ -43,265 +38,197 @@ export type OkexClientOptions = ClientOptions & {
  * matches the server. If the order book does not match you should
  * issue a reconnect.
  *
- * Refer to: https://www.okex.com/docs/en/#spot_ws-checksum
+ * Refer to: https://www.okx.com/docs-v5/en/#websocket-api-checksum
  */
-export class OkexClient extends BasicClient {
-    public candlePeriod: CandlePeriod;
-
-    protected _sendMessage: CancelableFn;
-    protected _pingInterval: NodeJS.Timeout;
-
-    constructor({
-        wssPath = "wss://real.okex.com:8443/ws/v3",
-        watcherMs,
-        sendThrottleMs = 20,
-    }: OkexClientOptions = {}) {
-        super(wssPath, "OKEx", undefined, watcherMs);
-        this.candlePeriod = CandlePeriod._1m;
+class OkxClient extends BasicClient_1.BasicClient {
+    constructor({ wssPath = "wss://ws.okx.com:8443/ws/v5/public", watcherMs, sendThrottleMs = 20, } = {}) {
+        super(wssPath, "OKX", undefined, watcherMs);
+        this._sendSubLevel3Snapshots = NotImplementedFn_1.NotImplementedFn;
+        this._sendUnsubLevel3Snapshots = NotImplementedFn_1.NotImplementedFn;
+        this._sendSubLevel3Updates = NotImplementedFn_1.NotImplementedFn;
+        this._sendUnsubLevel3Updates = NotImplementedFn_1.NotImplementedFn;
+        this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
         this.hasTickers = true;
         this.hasTrades = true;
         this.hasCandles = true;
         this.hasLevel2Snapshots = true;
         this.hasLevel2Updates = true;
-        this._sendMessage = throttle(this.__sendMessage.bind(this), sendThrottleMs);
+        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), sendThrottleMs);
     }
-
-    protected _beforeClose() {
+    _beforeClose() {
         this._sendMessage.cancel();
     }
-
-    protected _beforeConnect() {
+    _beforeConnect() {
         this._wss.on("connected", this._startPing.bind(this));
         this._wss.on("disconnected", this._stopPing.bind(this));
         this._wss.on("closed", this._stopPing.bind(this));
     }
-
-    protected _startPing() {
+    _startPing() {
         clearInterval(this._pingInterval);
         this._pingInterval = setInterval(this._sendPing.bind(this), 15000);
     }
-
-    protected _stopPing() {
+    _stopPing() {
         clearInterval(this._pingInterval);
     }
-
-    protected _sendPing() {
+    _sendPing() {
         if (this._wss) {
             this._wss.send("ping");
         }
     }
-
     /**
      * Constructs a market argument in a backwards compatible manner where
      * the default is a spot market.
      */
-    protected _marketArg(method: string, market: Market) {
-        const type = (market.type || "spot").toLowerCase();
-        return { channel: "tickers", instId: `${type.toLowerCase()}/${method}:${market.id}` };
+    _marketArg(method, market) {
+        return { channel: "tickers", instId: `${market.id}` };
     }
-
     /**
      * Gets the exchanges interpretation of the candle period
      */
-    protected _candlePeriod(period: CandlePeriod) {
+    _candlePeriod(period) {
         switch (period) {
-            case CandlePeriod._1m:
-                return "60s";
-            case CandlePeriod._3m:
-                return "180s";
-            case CandlePeriod._5m:
-                return "300s";
-            case CandlePeriod._15m:
-                return "900s";
-            case CandlePeriod._30m:
-                return "1800s";
-            case CandlePeriod._1h:
-                return "3600s";
-            case CandlePeriod._2h:
-                return "7200s";
-            case CandlePeriod._4h:
-                return "14400s";
-            case CandlePeriod._6h:
-                return "21600s";
-            case CandlePeriod._12h:
-                return "43200s";
-            case CandlePeriod._1d:
-                return "86400s";
-            case CandlePeriod._1w:
-                return "604800s";
+            case CandlePeriod_1.CandlePeriod._1m:
+                return "1m";
+            case CandlePeriod_1.CandlePeriod._3m:
+                return "3m";
+            case CandlePeriod_1.CandlePeriod._5m:
+                return "5m";
+            case CandlePeriod_1.CandlePeriod._15m:
+                return "15m";
+            case CandlePeriod_1.CandlePeriod._30m:
+                return "30m";
+            case CandlePeriod_1.CandlePeriod._1h:
+                return "1H";
+            case CandlePeriod_1.CandlePeriod._2h:
+                return "2H";
+            case CandlePeriod_1.CandlePeriod._4h:
+                return "4H";
+            case CandlePeriod_1.CandlePeriod._6h:
+                return "6H";
+            case CandlePeriod_1.CandlePeriod._12h:
+                return "12H";
+            case CandlePeriod_1.CandlePeriod._1d:
+                return "1D";
+            case CandlePeriod_1.CandlePeriod._1w:
+                return "1W";
         }
     }
-
-    protected __sendMessage(msg) {
+    __sendMessage(msg) {
         this._wss.send(msg);
     }
-
-    protected _sendSubTicker(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "subscribe",
-                args: [this._marketArg("ticker", market)],
-            }),
-        );
+    _sendSubTicker(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "subscribe",
+            args: [this._marketArg("ticker", market)],
+        }));
     }
-
-    protected _sendUnsubTicker(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "unsubscribe",
-                args: [this._marketArg("ticker", market)],
-            }),
-        );
+    _sendUnsubTicker(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "unsubscribe",
+            args: [this._marketArg("ticker", market)],
+        }));
     }
-
-    protected _sendSubTrades(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "subscribe",
-                args: [this._marketArg("trade", market)],
-            }),
-        );
+    _sendSubTrades(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "subscribe",
+            args: [this._marketArg("trades", market)],
+        }));
     }
-
-    protected _sendUnsubTrades(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "unsubscribe",
-                args: [this._marketArg("trade", market)],
-            }),
-        );
+    _sendUnsubTrades(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "unsubscribe",
+            args: [this._marketArg("trades", market)],
+        }));
     }
-
-    protected _sendSubCandles(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "subscribe",
-                args: [this._marketArg("candle" + this._candlePeriod(this.candlePeriod), market)],
-            }),
-        );
+    _sendSubCandles(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "subscribe",
+            args: [this._marketArg("candle" + this._candlePeriod(this.candlePeriod), market)],
+        }));
     }
-
-    protected _sendUnsubCandles(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "unsubscribe",
-                args: [this._marketArg("candle" + this._candlePeriod(this.candlePeriod), market)],
-            }),
-        );
+    _sendUnsubCandles(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "unsubscribe",
+            args: [this._marketArg("candle" + this._candlePeriod(this.candlePeriod), market)],
+        }));
     }
-
-    protected _sendSubLevel2Snapshots(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "subscribe",
-                args: [this._marketArg("depth5", market)],
-            }),
-        );
+    _sendSubLevel2Snapshots(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "subscribe",
+            args: [this._marketArg("depth5", market)],
+        }));
     }
-
-    protected _sendUnsubLevel2Snapshots(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "unsubscribe",
-                args: [this._marketArg("depth5", market)],
-            }),
-        );
+    _sendUnsubLevel2Snapshots(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "unsubscribe",
+            args: [this._marketArg("depth5", market)],
+        }));
     }
-
-    protected _sendSubLevel2Updates(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "subscribe",
-                args: [this._marketArg("depth_l2_tbt", market)],
-            }),
-        );
+    _sendSubLevel2Updates(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "subscribe",
+            args: [this._marketArg("depth_l2_tbt", market)],
+        }));
     }
-
-    protected _sendUnsubLevel2Updates(remote_id, market) {
-        this._sendMessage(
-            JSON.stringify({
-                op: "unsubscribe",
-                args: [this._marketArg("depth_l2_tbt", market)],
-            }),
-        );
+    _sendUnsubLevel2Updates(remote_id, market) {
+        this._sendMessage(JSON.stringify({
+            op: "unsubscribe",
+            args: [this._marketArg("depth_l2_tbt", market)],
+        }));
     }
-
-    protected _sendSubLevel3Snapshots = NotImplementedFn;
-    protected _sendUnsubLevel3Snapshots = NotImplementedFn;
-    protected _sendSubLevel3Updates = NotImplementedFn;
-    protected _sendUnsubLevel3Updates = NotImplementedFn;
-
-    protected _onMessage(compressed) {
-        zlib.inflateRaw(compressed, (err, raw) => {
-            if (err) {
-                this.emit("error", err);
-                return;
-            }
-
-            // ignore pongs
-            if (raw.equals(pongBuffer)) {
-                return;
-            }
-
-            // process JSON message
-            try {
-                const msg = JSON.parse(raw.toString());
-                this._processsMessage(msg);
-            } catch (ex) {
-                this.emit("error", ex);
-            }
-        });
+    _onMessage(raw) {
+        if (raw == "pong") {
+            return;
+        }
+        try {
+            const msg = JSON.parse(raw.toString());
+            this._processMessage(msg);
+        }
+        catch (ex) {
+            this.emit("error", ex);
+        }
     }
-
-    protected _processsMessage(msg: any) {
+    _processMessage(msg) {
         // clear semaphore on subscription event reply
         if (msg.event === "subscribe") {
             return;
         }
-
         // ignore unsubscribe
         if (msg.event === "unsubscribe") {
             return;
         }
-
         // prevent failed messages from
         if (!msg.data) {
             // eslint-disable-next-line no-console
             console.warn("warn: failure response", JSON.stringify(msg));
             return;
         }
-
         // tickers
-        if (msg.table.match(/ticker/)) {
+        if (msg.arg.channel.match(/tickers/)) {
             this._processTicker(msg);
             return;
         }
-
         // trades
-        if (msg.table.match(/trade/)) {
+        if (msg.arg.channel.match(/trades/)) {
             this._processTrades(msg);
             return;
         }
-
         // candles
-        if (msg.table.match(/candle/)) {
+        if (msg.arg.channel.match(/candle/)) {
             this._processCandles(msg);
             return;
         }
-
         // l2 snapshots
-        if (msg.table.match(/depth5/)) {
+        if (msg.arg.channel.match(/depth5/)) {
             this._processLevel2Snapshot(msg);
             return;
         }
-
         // l2 updates
-        if (msg.table.match(/depth/)) {
+        if (msg.arg.channel.match(/depth/)) {
             this._processLevel2Update(msg);
             return;
         }
     }
-
     /**
    * Process ticker messages in the format
     { table: 'spot/ticker',
@@ -317,19 +244,20 @@ export class OkexClient extends BasicClient {
           quote_volume_24h: '8243.729793336415',
           timestamp: '2019-07-15T17:10:55.671Z' } ] }
    */
-    protected _processTicker(msg) {
+    _processTicker(msg) {
         for (const datum of msg.data) {
+            console.log(datum);
             // ensure market
-            const remoteId = datum.instrument_id;
+            const remoteId = datum.instId;
             const market = this._tickerSubs.get(remoteId);
-            if (!market) continue;
-
+            if (!market)
+                continue;
             // construct and emit ticker
             const ticker = this._constructTicker(datum, market);
+            console.log(ticker);
             this.emit("ticker", ticker, market);
         }
     }
-
     /**
    * Processes trade messages in the format
     { table: 'spot/trade',
@@ -341,19 +269,18 @@ export class OkexClient extends BasicClient {
           timestamp: '2019-07-15T17:10:56.047Z',
           trade_id: '776432498' } ] }
    */
-    protected _processTrades(msg) {
+    _processTrades(msg) {
         for (const datum of msg.data) {
             // ensure market
             const remoteId = datum.instrument_id;
             const market = this._tradeSubs.get(remoteId);
-            if (!market) continue;
-
+            if (!market)
+                continue;
             // construct and emit trade
             const trade = this._constructTrade(datum, market);
             this.emit("trade", trade, market);
         }
     }
-
     /**
    * Processes a candle message
     {
@@ -373,19 +300,18 @@ export class OkexClient extends BasicClient {
       ]
     }
    */
-    protected _processCandles(msg) {
+    _processCandles(msg) {
         for (const datum of msg.data) {
             // ensure market
             const remoteId = datum.instrument_id;
             const market = this._candleSubs.get(remoteId);
-            if (!market) continue;
-
+            if (!market)
+                continue;
             // construct and emit candle
             const candle = this._constructCandle(datum);
             this.emit("candle", candle, market);
         }
     }
-
     /**
    * Processes a level 2 snapshot message in the format:
       { table: 'spot/depth5',
@@ -395,19 +321,18 @@ export class OkexClient extends BasicClient {
             instrument_id: 'ETH-BTC',
             timestamp: '2019-07-15T16:54:42.301Z' } ] }
    */
-    protected _processLevel2Snapshot(msg) {
+    _processLevel2Snapshot(msg) {
         for (const datum of msg.data) {
             // ensure market
             const remote_id = datum.instrument_id;
             const market = this._level2SnapshotSubs.get(remote_id);
-            if (!market) return;
-
+            if (!market)
+                return;
             // construct snapshot
             const snapshot = this._constructLevel2Snapshot(datum, market);
             this.emit("l2snapshot", snapshot, market);
         }
     }
-
     /**
    * Processes a level 2 update message in one of two formats.
    * The first message received is the "partial" orderbook and contains
@@ -434,28 +359,29 @@ export class OkexClient extends BasicClient {
             timestamp: '2019-07-15T17:18:32.289Z',
             checksum: 680530848 } ] }
    */
-    protected _processLevel2Update(msg) {
+    _processLevel2Update(msg) {
         const action = msg.action;
         for (const datum of msg.data) {
             // ensure market
             const remote_id = datum.instrument_id;
             const market = this._level2UpdateSubs.get(remote_id);
-            if (!market) continue;
-
+            if (!market)
+                continue;
             // handle updates
             if (action === "partial") {
                 const snapshot = this._constructLevel2Snapshot(datum, market);
                 this.emit("l2snapshot", snapshot, market);
-            } else if (action === "update") {
+            }
+            else if (action === "update") {
                 const update = this._constructLevel2Update(datum, market);
                 this.emit("l2update", update, market);
-            } else {
+            }
+            else {
                 // eslint-disable-next-line no-console
                 console.error("Unknown action type", msg);
             }
         }
     }
-
     /**
    * Constructs a ticker from the datum in the format:
       { instrument_id: 'ETH-BTC',
@@ -469,43 +395,30 @@ export class OkexClient extends BasicClient {
         quote_volume_24h: '8226.4437921288',
         timestamp: '2019-07-15T16:10:40.193Z' }
    */
-    protected _constructTicker(data, market) {
-        const {
-            last,
-            best_bid,
-            best_bid_size,
-            best_ask,
-            best_ask_size,
-            open_24h,
-            high_24h,
-            low_24h,
-            base_volume_24h,
-            volume_24h, // found in futures
-            timestamp,
-        } = data;
-
-        const change = parseFloat(last) - parseFloat(open_24h);
-        const changePercent = change / parseFloat(open_24h);
-        const ts = moment.utc(timestamp).valueOf();
-        return new Ticker({
+    _constructTicker(data, market) {
+        const { last, lastSz, bidPx, bidSz, askPx, askSz, open24h, high24h, low24h, volCcy24h, vol24h, // found in futures
+        ts, } = data;
+        const change = parseFloat(last) - parseFloat(open24h);
+        const changePercent = change / parseFloat(open24h);
+        return new Ticker_1.Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            timestamp: ts,
+            timestamp: moment_1.default.utc(ts).valueOf(),
             last,
-            open: open_24h,
-            high: high_24h,
-            low: low_24h,
-            volume: base_volume_24h || volume_24h,
+            open: open24h,
+            high: high24h,
+            low: low24h,
+            quoteVolume: volCcy24h || "0",
+            volume: vol24h || "0",
             change: change.toFixed(8),
             changePercent: changePercent.toFixed(2),
-            bid: best_bid || "0",
-            bidVolume: best_bid_size || "0",
-            ask: best_ask || "0",
-            askVolume: best_ask_size || "0",
+            bid: bidPx || "0",
+            bidVolume: bidSz || "0",
+            ask: askPx || "0",
+            askVolume: askSz || "0",
         });
     }
-
     /**
    * Constructs a trade from the message datum in format:
     { instrument_id: 'ETH-BTC',
@@ -515,22 +428,20 @@ export class OkexClient extends BasicClient {
       timestamp: '2019-07-15T16:38:02.169Z',
       trade_id: '776370532' }
     */
-    protected _constructTrade(datum, market) {
-        const { price, side, size, timestamp, trade_id, qty } = datum;
-        const ts = moment.utc(timestamp).valueOf();
-
-        return new Trade({
+    _constructTrade(datum, market) {
+        const { px, side, sz, timestamp, tradeId } = datum;
+        const ts = moment_1.default.utc(timestamp).valueOf();
+        return new Trade_1.Trade({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
-            tradeId: trade_id,
+            tradeId: tradeId,
             side,
             unix: ts,
-            price,
-            amount: size || qty,
+            price: px,
+            amount: sz,
         });
     }
-
     /**
    * Constructs a candle for the market
       {
@@ -546,12 +457,10 @@ export class OkexClient extends BasicClient {
       }
    * @param {*} datum
    */
-    protected _constructCandle(datum) {
-        const [datetime, open, high, low, close, volume] = datum.candle;
-        const ts = moment.utc(datetime).valueOf();
-        return new Candle(ts, open, high, low, close, volume);
+    _constructCandle(datum) {
+        const [ts, o, h, l, c, vol] = datum.candle;
+        return new Candle_1.Candle(moment_1.default.utc(ts).valueOf(), o, h, l, c, vol);
     }
-
     /**
    * Constructs a snapshot message from the datum in a
    * snapshot message data property. Datum in the format:
@@ -571,12 +480,12 @@ export class OkexClient extends BasicClient {
         checksum: 723501244 }
 
    */
-    protected _constructLevel2Snapshot(datum, market) {
-        const asks = datum.asks.map(p => new Level2Point(p[0], p[1], p[2]));
-        const bids = datum.bids.map(p => new Level2Point(p[0], p[1], p[2]));
-        const ts = moment.utc(datum.timestamp).valueOf();
+    _constructLevel2Snapshot(datum, market) {
+        const asks = datum.asks.map(p => new Level2Point_1.Level2Point(p[0], p[1], p[2]));
+        const bids = datum.bids.map(p => new Level2Point_1.Level2Point(p[0], p[1], p[2]));
+        const ts = moment_1.default.utc(datum.timestamp).valueOf();
         const checksum = datum.checksum;
-        return new Level2Snapshot({
+        return new Level2Snapshots_1.Level2Snapshot({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -586,7 +495,6 @@ export class OkexClient extends BasicClient {
             checksum,
         });
     }
-
     /**
    * Constructs an update message from the datum in the update
    * stream. Datum is in the format:
@@ -598,11 +506,11 @@ export class OkexClient extends BasicClient {
    */
     // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
     _constructLevel2Update(datum, market) {
-        const asks = datum.asks.map(p => new Level2Point(p[0], p[1], p[3]));
-        const bids = datum.bids.map(p => new Level2Point(p[0], p[1], p[3]));
-        const ts = moment.utc(datum.timestamp).valueOf();
+        const asks = datum.asks.map(p => new Level2Point_1.Level2Point(p[0], p[1], p[3]));
+        const bids = datum.bids.map(p => new Level2Point_1.Level2Point(p[0], p[1], p[3]));
+        const ts = moment_1.default.utc(datum.timestamp).valueOf();
         const checksum = datum.checksum;
-        return new Level2Update({
+        return new Level2Update_1.Level2Update({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -613,3 +521,5 @@ export class OkexClient extends BasicClient {
         });
     }
 }
+exports.OkxClient = OkxClient;
+//# sourceMappingURL=OkxClient.js.map

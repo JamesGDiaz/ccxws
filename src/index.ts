@@ -49,7 +49,7 @@ import { KrakenClient } from "./exchanges/KrakenClient";
 import { KucoinClient } from "./exchanges/KucoinClient";
 import { LedgerXClient } from "./exchanges/LedgerXClient";
 import { LiquidClient } from "./exchanges/LiquidClient";
-import { OkexClient } from "./exchanges/OkexClient";
+import { OkxClient } from "./exchanges/OkxClient";
 import { PoloniexClient } from "./exchanges/PoloniexClient";
 import { UpbitClient } from "./exchanges/UpbitClient";
 import { ZbClient } from "./exchanges/ZbClient";
@@ -110,17 +110,12 @@ export {
     KrakenClient,
     LedgerXClient,
     LiquidClient,
-    OkexClient,
+    OkxClient,
     PoloniexClient,
     UpbitClient,
     ZbClient,
 };
 
-/**
- * @deprecated Use named imports instead of default import. Client
- * names have also changed and are now suffixed with `Client`. Deprecation
- * warning added in v0.46.0 and will be removed in a future version.
- */
 export default {
     Bibox: BiboxClient,
     Binance: BinanceClient,
@@ -155,7 +150,7 @@ export default {
     Kraken: KrakenClient,
     LedgerX: LedgerXClient,
     Liquid: LiquidClient,
-    OKEx: OkexClient,
+    OKx: OkxClient,
     Poloniex: PoloniexClient,
     Upbit: UpbitClient,
     Zb: ZbClient,

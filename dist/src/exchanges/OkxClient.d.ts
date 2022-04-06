@@ -13,7 +13,7 @@ export declare type OkxClientOptions = ClientOptions & {
     sendThrottleMs?: number;
 };
 /**
- * Implements OKx V5 WebSocket API as defined in
+ * Implements OKX V5 WebSocket API as defined in
  * https://www.okx.com/docs-v5/en/#websocket-api
  *
  * Limits:
@@ -53,7 +53,7 @@ export declare class OkxClient extends BasicClient {
     /**
      * Gets the exchanges interpretation of the candle period
      */
-    protected _candlePeriod(period: CandlePeriod): "60s" | "180s" | "300s" | "900s" | "1800s" | "3600s" | "7200s" | "14400s" | "21600s" | "43200s" | "86400s" | "604800s";
+    protected _candlePeriod(period: CandlePeriod): "1m" | "3m" | "5m" | "15m" | "30m" | "1D" | "1H" | "2H" | "4H" | "6H" | "12H" | "1W";
     protected __sendMessage(msg: any): void;
     protected _sendSubTicker(remote_id: any, market: any): void;
     protected _sendUnsubTicker(remote_id: any, market: any): void;
@@ -69,8 +69,8 @@ export declare class OkxClient extends BasicClient {
     protected _sendUnsubLevel3Snapshots: (...args: any[]) => any;
     protected _sendSubLevel3Updates: (...args: any[]) => any;
     protected _sendUnsubLevel3Updates: (...args: any[]) => any;
-    protected _onMessage(compressed: any): void;
-    protected _processsMessage(msg: any): void;
+    protected _onMessage(raw: string): void;
+    protected _processMessage(msg: any): void;
     /**
    * Process ticker messages in the format
     { table: 'spot/ticker',

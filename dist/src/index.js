@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OkexClient = exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
+exports.OkxClient = exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
 exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = void 0;
 const BasicClient_1 = require("./BasicClient");
 Object.defineProperty(exports, "BasicClient", { enumerable: true, get: function () { return BasicClient_1.BasicClient; } });
@@ -100,19 +100,14 @@ const LedgerXClient_1 = require("./exchanges/LedgerXClient");
 Object.defineProperty(exports, "LedgerXClient", { enumerable: true, get: function () { return LedgerXClient_1.LedgerXClient; } });
 const LiquidClient_1 = require("./exchanges/LiquidClient");
 Object.defineProperty(exports, "LiquidClient", { enumerable: true, get: function () { return LiquidClient_1.LiquidClient; } });
-const OkexClient_1 = require("./exchanges/OkexClient");
-Object.defineProperty(exports, "OkexClient", { enumerable: true, get: function () { return OkexClient_1.OkexClient; } });
+const OkxClient_1 = require("./exchanges/OkxClient");
+Object.defineProperty(exports, "OkxClient", { enumerable: true, get: function () { return OkxClient_1.OkxClient; } });
 const PoloniexClient_1 = require("./exchanges/PoloniexClient");
 Object.defineProperty(exports, "PoloniexClient", { enumerable: true, get: function () { return PoloniexClient_1.PoloniexClient; } });
 const UpbitClient_1 = require("./exchanges/UpbitClient");
 Object.defineProperty(exports, "UpbitClient", { enumerable: true, get: function () { return UpbitClient_1.UpbitClient; } });
 const ZbClient_1 = require("./exchanges/ZbClient");
 Object.defineProperty(exports, "ZbClient", { enumerable: true, get: function () { return ZbClient_1.ZbClient; } });
-/**
- * @deprecated Use named imports instead of default import. Client
- * names have also changed and are now suffixed with `Client`. Deprecation
- * warning added in v0.46.0 and will be removed in a future version.
- */
 exports.default = {
     Bibox: BiboxClient_1.BiboxClient,
     Binance: BinanceClient_1.BinanceClient,
@@ -147,7 +142,7 @@ exports.default = {
     Kraken: KrakenClient_1.KrakenClient,
     LedgerX: LedgerXClient_1.LedgerXClient,
     Liquid: LiquidClient_1.LiquidClient,
-    OKEx: OkexClient_1.OkexClient,
+    OKx: OkxClient_1.OkxClient,
     Poloniex: PoloniexClient_1.PoloniexClient,
     Upbit: UpbitClient_1.UpbitClient,
     Zb: ZbClient_1.ZbClient,
