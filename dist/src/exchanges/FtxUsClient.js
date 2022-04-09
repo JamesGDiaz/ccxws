@@ -4,7 +4,7 @@ exports.FtxUsClient = void 0;
 const FtxBase_1 = require("./FtxBase");
 class FtxUsClient extends FtxBase_1.FtxBaseClient {
     constructor({ wssPath = "wss://ftx.us/ws", watcherMs } = {}) {
-        super({ name: "FTX_US", wssPath, watcherMs });
+        super({ name: "FTXUS", wssPath, watcherMs });
     }
 }
 exports.FtxUsClient = FtxUsClient;
