@@ -5,7 +5,7 @@ import * as https from "../../src/Https";
 testClient({
     clientFactory: () => new FtxUsClient(),
     clientName: "FtxUsClient",
-    exchangeName: "FTX US",
+    exchangeName: "FTX_US",
 
     async fetchMarkets() {
         const res: any = await https.get("https://ftx.us/api/markets");
