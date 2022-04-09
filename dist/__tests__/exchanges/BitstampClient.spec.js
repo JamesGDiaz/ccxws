@@ -38,6 +38,7 @@ const BitstampClient_1 = require("../../src/exchanges/BitstampClient");
         hasBid: true,
         hasAskVolume: false,
         hasBidVolume: false,
+        hasSequenceId: true,
     },
     trade: {
         hasTradeId: true,

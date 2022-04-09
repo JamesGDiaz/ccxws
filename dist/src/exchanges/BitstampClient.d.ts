@@ -20,14 +20,14 @@ export declare class BitstampClient extends BasicClient {
     protected _sendSubLevel3Updates: (...args: any[]) => any;
     protected _sendUnsubLevel3Updates: (...args: any[]) => any;
     constructor({ wssPath, watcherMs }?: ClientOptions);
-    protected _sendSubTicker(remote_id: any): void;
-    protected _sendUnsubTicker(remote_id: any): void;
-    protected _sendSubTrades(remote_id: any): void;
-    protected _sendUnsubTrades(remote_id: any): void;
-    protected _sendSubLevel2Snapshots(remote_id: any): void;
-    protected _sendUnsubLevel2Snapshots(remote_id: any): void;
-    protected _sendSubLevel2Updates(remote_id: any): void;
-    protected _sendUnsubLevel2Updates(remote_id: any): void;
+    protected _sendSubTicker(remote_id: string): void;
+    protected _sendUnsubTicker(remote_id: string): void;
+    protected _sendSubTrades(remote_id: string): void;
+    protected _sendUnsubTrades(remote_id: string): void;
+    protected _sendSubLevel2Snapshots(remote_id: string): void;
+    protected _sendUnsubLevel2Snapshots(remote_id: string): void;
+    protected _sendSubLevel2Updates(remote_id: string): void;
+    protected _sendUnsubLevel2Updates(remote_id: string): void;
     protected _onMessage(raw: any): void;
     /**
    Process trade events

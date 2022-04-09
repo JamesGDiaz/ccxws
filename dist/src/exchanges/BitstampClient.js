@@ -133,6 +133,10 @@ class BitstampClient extends BasicClient_1.BasicClient {
     /////////////////////////////////////////////
     _onMessage(raw) {
         const msg = JSON.parse(raw);
+        if (msg.event === "bts:subscription_succeeded") {
+            return;
+        }
+        // Handles both trades and ticker events
         if (msg.event === "trade" && msg.channel.startsWith("live_trades")) {
             this._onTrade(msg);
             return;
@@ -175,35 +179,38 @@ class BitstampClient extends BasicClient_1.BasicClient {
    */
     _onTrade(msg) {
         const remote_id = msg.channel.substr(msg.channel.lastIndexOf("_") + 1);
-        const market = this._tradeSubs.get(remote_id);
-        if (!market)
-            return;
         const data = msg.data;
         const timestamp = Math.round(parseInt(data.microtimestamp) / 1000); // convert to milli
-        const ticker = new Ticker_1.Ticker({
-            exchange: "Bitstamp",
-            base: market.base,
-            quote: market.quote,
-            sequenceId: data.id.toFixed(),
-            timestamp,
-            last: data.price_str,
-            ask: data.price_str,
-            bid: data.price_str,
-        });
-        const trade = new Trade_1.Trade({
-            exchange: "Bitstamp",
-            base: market.base,
-            quote: market.quote,
-            tradeId: data.id.toFixed(),
-            unix: timestamp,
-            side: data.type === 1 ? "sell" : "buy",
-            price: data.price_str,
-            amount: data.amount_str,
-            buyOrderId: data.buy_order_id,
-            sellOrderId: data.sell_order_id,
-        });
-        this.emit("ticker", ticker, market);
-        this.emit("trade", trade, market);
+        const tickerMarket = this._tickerSubs.get(remote_id);
+        if (tickerMarket) {
+            const ticker = new Ticker_1.Ticker({
+                exchange: "Bitstamp",
+                base: tickerMarket.base,
+                quote: tickerMarket.quote,
+                sequenceId: data.id,
+                timestamp,
+                last: data.price_str,
+                ask: data.price_str,
+                bid: data.price_str,
+            });
+            this.emit("ticker", ticker, tickerMarket);
+        }
+        const tradeMarket = this._tradeSubs.get(remote_id);
+        if (tradeMarket) {
+            const trade = new Trade_1.Trade({
+                exchange: "Bitstamp",
+                base: tradeMarket.base,
+                quote: tradeMarket.quote,
+                tradeId: data.id.toFixed(),
+                unix: timestamp,
+                side: data.type === 1 ? "sell" : "buy",
+                price: data.price_str,
+                amount: data.amount_str,
+                buyOrderId: data.buy_order_id,
+                sellOrderId: data.sell_order_id,
+            });
+            this.emit("trade", trade, tradeMarket);
+        }
     }
     /**
     Process level2 snapshot message

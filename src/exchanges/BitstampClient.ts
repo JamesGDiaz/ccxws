@@ -48,7 +48,7 @@ export class BitstampClient extends BasicClient {
         this.REST_REQUEST_DELAY_MS = 250;
     }
 
-    protected _sendSubTicker(remote_id) {
+    protected _sendSubTicker(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:subscribe",
@@ -59,7 +59,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendUnsubTicker(remote_id) {
+    protected _sendUnsubTicker(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:unsubscribe",
@@ -70,7 +70,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendSubTrades(remote_id) {
+    protected _sendSubTrades(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:subscribe",
@@ -81,7 +81,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendUnsubTrades(remote_id) {
+    protected _sendUnsubTrades(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:unsubscribe",
@@ -92,7 +92,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendSubLevel2Snapshots(remote_id) {
+    protected _sendSubLevel2Snapshots(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:subscribe",
@@ -103,7 +103,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendUnsubLevel2Snapshots(remote_id) {
+    protected _sendUnsubLevel2Snapshots(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:unsubscribe",
@@ -114,7 +114,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendSubLevel2Updates(remote_id) {
+    protected _sendSubLevel2Updates(remote_id: string) {
         if (this.requestSnapshot)
             this._requestLevel2Snapshot(this._level2UpdateSubs.get(remote_id));
         this._wss.send(
@@ -127,7 +127,7 @@ export class BitstampClient extends BasicClient {
         );
     }
 
-    protected _sendUnsubLevel2Updates(remote_id) {
+    protected _sendUnsubLevel2Updates(remote_id: string) {
         this._wss.send(
             JSON.stringify({
                 event: "bts:unsubscribe",
@@ -143,6 +143,11 @@ export class BitstampClient extends BasicClient {
     protected _onMessage(raw: any) {
         const msg = JSON.parse(raw);
 
+        if (msg.event === "bts:subscription_succeeded") {
+            return;
+        }
+
+        // Handles both trades and ticker events
         if (msg.event === "trade" && msg.channel.startsWith("live_trades")) {
             this._onTrade(msg);
             return;
@@ -190,38 +195,40 @@ export class BitstampClient extends BasicClient {
     protected _onTrade(msg) {
         const remote_id = msg.channel.substr(msg.channel.lastIndexOf("_") + 1);
 
-        const market = this._tradeSubs.get(remote_id);
-        if (!market) return;
-
         const data = msg.data;
         const timestamp = Math.round(parseInt(data.microtimestamp) / 1000); // convert to milli
 
-        const ticker = new Ticker({
-            exchange: "Bitstamp",
-            base: market.base,
-            quote: market.quote,
-            sequenceId: data.id.toFixed(),
-            timestamp,
-            last: data.price_str,
-            ask: data.price_str,
-            bid: data.price_str,
-        });
+        const tickerMarket = this._tickerSubs.get(remote_id);
+        if (tickerMarket) {
+            const ticker = new Ticker({
+                exchange: "Bitstamp",
+                base: tickerMarket.base,
+                quote: tickerMarket.quote,
+                sequenceId: data.id,
+                timestamp,
+                last: data.price_str,
+                ask: data.price_str,
+                bid: data.price_str,
+            });
+            this.emit("ticker", ticker, tickerMarket);
+        }
 
-        const trade = new Trade({
-            exchange: "Bitstamp",
-            base: market.base,
-            quote: market.quote,
-            tradeId: data.id.toFixed(),
-            unix: timestamp,
-            side: data.type === 1 ? "sell" : "buy",
-            price: data.price_str,
-            amount: data.amount_str,
-            buyOrderId: data.buy_order_id,
-            sellOrderId: data.sell_order_id,
-        });
-
-        this.emit("ticker", ticker, market);
-        this.emit("trade", trade, market);
+        const tradeMarket = this._tradeSubs.get(remote_id);
+        if (tradeMarket) {
+            const trade = new Trade({
+                exchange: "Bitstamp",
+                base: tradeMarket.base,
+                quote: tradeMarket.quote,
+                tradeId: data.id.toFixed(),
+                unix: timestamp,
+                side: data.type === 1 ? "sell" : "buy",
+                price: data.price_str,
+                amount: data.amount_str,
+                buyOrderId: data.buy_order_id,
+                sellOrderId: data.sell_order_id,
+            });
+            this.emit("trade", trade, tradeMarket);
+        }
     }
 
     /**

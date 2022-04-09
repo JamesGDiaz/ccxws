@@ -40,6 +40,7 @@ testClient({
         hasBid: true,
         hasAskVolume: false,
         hasBidVolume: false,
+        hasSequenceId: true,
     },
 
     trade: {
