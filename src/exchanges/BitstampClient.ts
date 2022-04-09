@@ -14,6 +14,7 @@ import { wait } from "../Util";
 import * as https from "../Https";
 import { NotImplementedFn } from "../NotImplementedFn";
 import { Trade } from "../Trade";
+import { Ticker } from "../Ticker";
 import { Level2Update } from "../Level2Update";
 
 /**
@@ -29,10 +30,8 @@ export class BitstampClient extends BasicClient {
 
     protected _restSem: semaphore.Semaphore;
 
-    protected _sendSubTicker = NotImplementedFn;
     protected _sendSubCandles = NotImplementedFn;
     protected _sendUnsubCandles = NotImplementedFn;
-    protected _sendUnsubTicker = NotImplementedFn;
     protected _sendSubLevel3Snapshots = NotImplementedFn;
     protected _sendUnsubLevel3Snapshots = NotImplementedFn;
     protected _sendSubLevel3Updates = NotImplementedFn;
@@ -41,11 +40,34 @@ export class BitstampClient extends BasicClient {
     constructor({ wssPath = "wss://ws.bitstamp.net", watcherMs }: ClientOptions = {}) {
         super(wssPath, "Bitstamp", undefined, watcherMs);
         this.requestSnapshot = true;
+        this.hasTickers = true;
         this.hasTrades = true;
         this.hasLevel2Snapshots = true;
         this.hasLevel2Updates = true;
         this._restSem = semaphore(1);
         this.REST_REQUEST_DELAY_MS = 250;
+    }
+
+    protected _sendSubTicker(remote_id) {
+        this._wss.send(
+            JSON.stringify({
+                event: "bts:subscribe",
+                data: {
+                    channel: `live_trades_${remote_id}`,
+                },
+            }),
+        );
+    }
+
+    protected _sendUnsubTicker(remote_id) {
+        this._wss.send(
+            JSON.stringify({
+                event: "bts:unsubscribe",
+                data: {
+                    channel: `live_trades_${remote_id}`,
+                },
+            }),
+        );
     }
 
     protected _sendSubTrades(remote_id) {
@@ -172,6 +194,21 @@ export class BitstampClient extends BasicClient {
         if (!market) return;
 
         const data = msg.data;
+        const ticker = new Ticker({
+            exchange: "Bitstamp",
+            base: market.base,
+            quote: market.quote,
+            sequenceId: data.id.toFixed(),
+            timestamp: Math.round(parseInt(data.microtimestamp) / 1000), // convert to milli
+            last: data.price_str,
+            ask: data.price_str,
+            bid: data.price_str,
+            //side: data.type === 1 ? "sell" : "buy",
+            //amount: data.amount_str,
+            //buyOrderId: data.buy_order_id,
+            //sellOrderId: data.sell_order_id,
+        });
+
         const trade = new Trade({
             exchange: "Bitstamp",
             base: market.base,
@@ -185,6 +222,7 @@ export class BitstampClient extends BasicClient {
             sellOrderId: data.sell_order_id,
         });
 
+        this.emit("ticker", trade, market);
         this.emit("trade", trade, market);
     }
 
