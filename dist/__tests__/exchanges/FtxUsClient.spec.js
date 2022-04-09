@@ -29,7 +29,7 @@ const https = __importStar(require("../../src/Https"));
 (0, TestRunner_1.testClient)({
     clientFactory: () => new FtxUsClient_1.FtxUsClient(),
     clientName: "FtxUsClient",
-    exchangeName: "FTX US",
+    exchangeName: "FTXUS",
     async fetchMarkets() {
         const res = await https.get("https://ftx.us/api/markets");
         return res.result.map(p => ({
