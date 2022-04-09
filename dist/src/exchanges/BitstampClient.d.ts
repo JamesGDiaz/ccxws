@@ -13,15 +13,15 @@ export declare class BitstampClient extends BasicClient {
     requestSnapshot: boolean;
     REST_REQUEST_DELAY_MS: number;
     protected _restSem: semaphore.Semaphore;
-    protected _sendSubTicker: (...args: any[]) => any;
     protected _sendSubCandles: (...args: any[]) => any;
     protected _sendUnsubCandles: (...args: any[]) => any;
-    protected _sendUnsubTicker: (...args: any[]) => any;
     protected _sendSubLevel3Snapshots: (...args: any[]) => any;
     protected _sendUnsubLevel3Snapshots: (...args: any[]) => any;
     protected _sendSubLevel3Updates: (...args: any[]) => any;
     protected _sendUnsubLevel3Updates: (...args: any[]) => any;
     constructor({ wssPath, watcherMs }?: ClientOptions);
+    protected _sendSubTicker(remote_id: any): void;
+    protected _sendUnsubTicker(remote_id: any): void;
     protected _sendSubTrades(remote_id: any): void;
     protected _sendUnsubTrades(remote_id: any): void;
     protected _sendSubLevel2Snapshots(remote_id: any): void;

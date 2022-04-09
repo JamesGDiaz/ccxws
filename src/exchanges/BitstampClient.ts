@@ -194,19 +194,17 @@ export class BitstampClient extends BasicClient {
         if (!market) return;
 
         const data = msg.data;
+        const timestamp = Math.round(parseInt(data.microtimestamp) / 1000); // convert to milli
+
         const ticker = new Ticker({
             exchange: "Bitstamp",
             base: market.base,
             quote: market.quote,
             sequenceId: data.id.toFixed(),
-            timestamp: Math.round(parseInt(data.microtimestamp) / 1000), // convert to milli
+            timestamp,
             last: data.price_str,
             ask: data.price_str,
             bid: data.price_str,
-            //side: data.type === 1 ? "sell" : "buy",
-            //amount: data.amount_str,
-            //buyOrderId: data.buy_order_id,
-            //sellOrderId: data.sell_order_id,
         });
 
         const trade = new Trade({
@@ -214,7 +212,7 @@ export class BitstampClient extends BasicClient {
             base: market.base,
             quote: market.quote,
             tradeId: data.id.toFixed(),
-            unix: Math.round(parseInt(data.microtimestamp) / 1000), // convert to milli
+            unix: timestamp,
             side: data.type === 1 ? "sell" : "buy",
             price: data.price_str,
             amount: data.amount_str,
@@ -222,7 +220,7 @@ export class BitstampClient extends BasicClient {
             sellOrderId: data.sell_order_id,
         });
 
-        this.emit("ticker", trade, market);
+        this.emit("ticker", ticker, market);
         this.emit("trade", trade, market);
     }
 
