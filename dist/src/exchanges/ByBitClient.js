@@ -17,7 +17,7 @@ const Trade_1 = require("../Trade");
  */
 class ByBitClient extends BasicClient_1.BasicClient {
     constructor({ wssPath = "wss://stream.bybit.com/spot/quote/ws/v1", watcherMs, retryTimeoutMs } = {}) {
-        super(wssPath, "ByBit", undefined, watcherMs, retryTimeoutMs);
+        super(wssPath, "Bybit", undefined, watcherMs, retryTimeoutMs);
         this._sendSubLevel2Updates = NotImplementedFn_1.NotImplementedFn;
         this._sendUnsubLevel2Updates = NotImplementedFn_1.NotImplementedFn;
         this._sendSubCandles = NotImplementedFn_1.NotImplementedFn;

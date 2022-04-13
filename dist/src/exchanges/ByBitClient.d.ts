@@ -9,7 +9,6 @@ import { Trade } from "../Trade";
  *
  */
 export declare class ByBitClient extends BasicClient {
-    id: number;
     _pingInterval: NodeJS.Timeout;
     constructor({ wssPath, watcherMs, retryTimeoutMs }?: ClientOptions);
     protected _beforeConnect(): void;

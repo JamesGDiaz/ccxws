@@ -17,7 +17,6 @@ import { Ticker } from "./Ticker";
 import { Trade } from "./Trade";
 
 import { BiboxClient } from "./exchanges/BiboxClient";
-import { ByBitClient } from "./exchanges/ByBitClient";
 import { BinanceClient } from "./exchanges/BinanceClient";
 import { BinanceFuturesCoinmClient } from "./exchanges/BinanceFuturesCoinmClient";
 import { BinanceFuturesUsdtmClient } from "./exchanges/BinanceFuturesUsdtmClient";
@@ -30,6 +29,7 @@ import { BitmexClient } from "./exchanges/BitmexClient";
 import { BitrueClient } from "./exchanges/BitrueClient";
 import { BitstampClient } from "./exchanges/BitstampClient";
 import { BittrexClient } from "./exchanges/BittrexClient";
+import { ByBitClient } from "./exchanges/ByBitClient";
 import { CexClient } from "./exchanges/CexClient";
 import { CoinbaseProClient } from "./exchanges/CoinbaseProClient";
 import { CoinexClient } from "./exchanges/CoinexClient";
@@ -79,7 +79,6 @@ export {
     //
     // Clients
     BiboxClient,
-    ByBitClient,
     BinanceClient,
     BinanceFuturesCoinmClient,
     BinanceFuturesUsdtmClient,
@@ -92,6 +91,7 @@ export {
     BitrueClient,
     BitstampClient,
     BittrexClient,
+    ByBitClient,
     CexClient,
     CoinbaseProClient,
     CoinexClient,
@@ -120,7 +120,6 @@ export {
 
 export default {
     Bibox: BiboxClient,
-    ByBit: ByBitClient,
     Binance: BinanceClient,
     BinanceFuturesCoinM: BinanceFuturesCoinmClient,
     BinanceFuturesUsdtM: BinanceFuturesUsdtmClient,
@@ -133,6 +132,7 @@ export default {
     Bitrue: BitrueClient,
     Bitstamp: BitstampClient,
     Bittrex: BittrexClient,
+    ByBit: ByBitClient,
     Cex: CexClient,
     CoinbasePro: CoinbaseProClient,
     Coinex: CoinexClient,

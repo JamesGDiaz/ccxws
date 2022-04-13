@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.ByBitClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
+exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
 exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = void 0;
 const BasicClient_1 = require("./BasicClient");
 Object.defineProperty(exports, "BasicClient", { enumerable: true, get: function () { return BasicClient_1.BasicClient; } });
@@ -36,8 +36,6 @@ const Trade_1 = require("./Trade");
 Object.defineProperty(exports, "Trade", { enumerable: true, get: function () { return Trade_1.Trade; } });
 const BiboxClient_1 = require("./exchanges/BiboxClient");
 Object.defineProperty(exports, "BiboxClient", { enumerable: true, get: function () { return BiboxClient_1.BiboxClient; } });
-const ByBitClient_1 = require("./exchanges/ByBitClient");
-Object.defineProperty(exports, "ByBitClient", { enumerable: true, get: function () { return ByBitClient_1.ByBitClient; } });
 const BinanceClient_1 = require("./exchanges/BinanceClient");
 Object.defineProperty(exports, "BinanceClient", { enumerable: true, get: function () { return BinanceClient_1.BinanceClient; } });
 const BinanceFuturesCoinmClient_1 = require("./exchanges/BinanceFuturesCoinmClient");
@@ -62,6 +60,8 @@ const BitstampClient_1 = require("./exchanges/BitstampClient");
 Object.defineProperty(exports, "BitstampClient", { enumerable: true, get: function () { return BitstampClient_1.BitstampClient; } });
 const BittrexClient_1 = require("./exchanges/BittrexClient");
 Object.defineProperty(exports, "BittrexClient", { enumerable: true, get: function () { return BittrexClient_1.BittrexClient; } });
+const ByBitClient_1 = require("./exchanges/ByBitClient");
+Object.defineProperty(exports, "ByBitClient", { enumerable: true, get: function () { return ByBitClient_1.ByBitClient; } });
 const CexClient_1 = require("./exchanges/CexClient");
 Object.defineProperty(exports, "CexClient", { enumerable: true, get: function () { return CexClient_1.CexClient; } });
 const CoinbaseProClient_1 = require("./exchanges/CoinbaseProClient");
@@ -112,7 +112,6 @@ const ZbClient_1 = require("./exchanges/ZbClient");
 Object.defineProperty(exports, "ZbClient", { enumerable: true, get: function () { return ZbClient_1.ZbClient; } });
 exports.default = {
     Bibox: BiboxClient_1.BiboxClient,
-    ByBit: ByBitClient_1.ByBitClient,
     Binance: BinanceClient_1.BinanceClient,
     BinanceFuturesCoinM: BinanceFuturesCoinmClient_1.BinanceFuturesCoinmClient,
     BinanceFuturesUsdtM: BinanceFuturesUsdtmClient_1.BinanceFuturesUsdtmClient,
@@ -125,6 +124,7 @@ exports.default = {
     Bitrue: BitrueClient_1.BitrueClient,
     Bitstamp: BitstampClient_1.BitstampClient,
     Bittrex: BittrexClient_1.BittrexClient,
+    ByBit: ByBitClient_1.ByBitClient,
     Cex: CexClient_1.CexClient,
     CoinbasePro: CoinbaseProClient_1.CoinbaseProClient,
     Coinex: CoinexClient_1.CoinexClient,

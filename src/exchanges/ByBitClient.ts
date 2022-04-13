@@ -16,11 +16,10 @@ import { Trade } from "../Trade";
  *
  */
 export class ByBitClient extends BasicClient {
-    public id: number;
     public _pingInterval: NodeJS.Timeout;
 
     constructor({ wssPath = "wss://stream.bybit.com/spot/quote/ws/v1", watcherMs, retryTimeoutMs }: ClientOptions = {}) {
-        super(wssPath, "ByBit", undefined, watcherMs, retryTimeoutMs);
+        super(wssPath, "Bybit", undefined, watcherMs, retryTimeoutMs);
         this.hasTickers = true;
         this.hasTrades = true;
         this._onMessage = this._onMessage.bind(this);
