@@ -79,7 +79,7 @@ export class CexClient extends BasicMultiClient {
         super();
         this._clients = new Map();
 
-        this.name = "CEX_MULTI";
+        this.name = "CEX";
         this.options = options;
         this.hasTickers = true;
         this.hasTrades = true;
