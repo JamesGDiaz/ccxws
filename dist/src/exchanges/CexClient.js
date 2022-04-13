@@ -87,7 +87,7 @@ class CexClient extends BasicMultiClient_1.BasicMultiClient {
     constructor(options) {
         super();
         this._clients = new Map();
-        this.name = "CEX_MULTI";
+        this.name = "CEX";
         this.options = options;
         this.hasTickers = true;
         this.hasTrades = true;
