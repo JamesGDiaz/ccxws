@@ -54,6 +54,7 @@ binance.subscribeLevel2Snapshots(market);
 | Exchange               | API | Class                     | Ticker   | Trades   | Candles  | OB-L2 Snapshot | OB-L2 Updates | OB-L3 Snapshot | OB-L3 Updates |
 | ---------------------- | --- | ------------------------- | -------- | -------- | -------- | -------------- | ------------- | -------------- | ------------- |
 | Bibox                  | 1   | BiboxClient               | &#10003; | &#10003; | &#10003; | &#10003;       |               | -              | -             |
+| ByBit                  | 1   | ByBitClient               | &#10003; | &#10003; | -        | -              |               | -              | -             |
 | Binance                | 1   | BinanceClient             | &#10003; | &#10003; | &#10003; | &#10003;       | &#10003;\*\*  | -              | -             |
 | Binance Futures Coin-M | 1   | BinanceFuturesCoinmClient | &#10003; | &#10003; | &#10003; | &#10003;       | &#10003;\*\*  | -              | -             |
 | Binance Futures USDT-M | 1   | BinanceFuturesUsdtmClient | &#10003; | &#10003; | &#10003; | &#10003;       | &#10003;\*\*  | -              | -             |

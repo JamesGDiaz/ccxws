@@ -17,6 +17,7 @@ import { Ticker } from "./Ticker";
 import { Trade } from "./Trade";
 
 import { BiboxClient } from "./exchanges/BiboxClient";
+import { ByBitClient } from "./exchanges/ByBitClient";
 import { BinanceClient } from "./exchanges/BinanceClient";
 import { BinanceFuturesCoinmClient } from "./exchanges/BinanceFuturesCoinmClient";
 import { BinanceFuturesUsdtmClient } from "./exchanges/BinanceFuturesUsdtmClient";
@@ -78,6 +79,7 @@ export {
     //
     // Clients
     BiboxClient,
+    ByBitClient,
     BinanceClient,
     BinanceFuturesCoinmClient,
     BinanceFuturesUsdtmClient,
@@ -118,6 +120,7 @@ export {
 
 export default {
     Bibox: BiboxClient,
+    ByBit: ByBitClient,
     Binance: BinanceClient,
     BinanceFuturesCoinM: BinanceFuturesCoinmClient,
     BinanceFuturesUsdtM: BinanceFuturesUsdtmClient,
