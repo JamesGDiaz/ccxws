@@ -58,6 +58,7 @@ jobs:
           - Bitforex
           - Bitflyer
           - Bithumb
+          - Bitmart
           - Bitmex
           - Bitrue
           - Bitstamp

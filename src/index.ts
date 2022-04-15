@@ -26,6 +26,7 @@ import { BitfinexClient } from "./exchanges/BitfinexClient";
 import { BitforexClient } from "./exchanges/BitforexClient";
 import { BitflyerClient } from "./exchanges/BitflyerClient";
 import { BithumbClient } from "./exchanges/BithumbClient";
+import { BitmartClient } from "./exchanges/BitmartClient";
 import { BitmexClient } from "./exchanges/BitmexClient";
 import { BitrueClient } from "./exchanges/BitrueClient";
 import { BitstampClient } from "./exchanges/BitstampClient";
@@ -90,6 +91,7 @@ export {
     BitforexClient,
     BitflyerClient,
     BithumbClient,
+    BitmartClient,
     BitmexClient,
     BitrueClient,
     BitstampClient,
@@ -133,6 +135,7 @@ export default {
     Bitforex: BitforexClient,
     Bitflyer: BitflyerClient,
     Bithumb: BithumbClient,
+    Bitmart: BitmartClient,
     BitMEX: BitmexClient,
     Bitrue: BitrueClient,
     Bitstamp: BitstampClient,
