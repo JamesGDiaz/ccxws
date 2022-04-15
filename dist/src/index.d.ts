@@ -48,11 +48,12 @@ import { KrakenClient } from "./exchanges/KrakenClient";
 import { KucoinClient } from "./exchanges/KucoinClient";
 import { LedgerXClient } from "./exchanges/LedgerXClient";
 import { LiquidClient } from "./exchanges/LiquidClient";
+import { MexcClient } from "./exchanges/MexcClient";
 import { OkxClient } from "./exchanges/OkxClient";
 import { PoloniexClient } from "./exchanges/PoloniexClient";
 import { UpbitClient } from "./exchanges/UpbitClient";
 import { ZbClient } from "./exchanges/ZbClient";
-export { BasicClient, BasicMultiClient, SmartWss, Watcher, Auction, BlockTrade, Candle, CandlePeriod, Level2Point, Level2Snapshot, Level2Update, Level3Point, Level3Snapshot, Level3Update, Ticker, Trade, BiboxClient, BinanceClient, BinanceFuturesCoinmClient, BinanceFuturesUsdtmClient, BinanceJeClient, BinanceUsClient, BitfinexClient, BitflyerClient, BithumbClient, BitmexClient, BitrueClient, BitstampClient, BittrexClient, ByBitClient, CexClient, CoinbaseProClient, CoinexClient, DeribitClient, DigifinexClient, ErisXClient, FtxClient, FtxUsClient, GateioClient, GeminiClient, HitBtcClient, HuobiClient, HuobiFuturesClient, HuobiSwapsClient, HuobiJapanClient, HuobiKoreaClient, KucoinClient, KrakenClient, LedgerXClient, LiquidClient, OkxClient, PoloniexClient, UpbitClient, ZbClient, };
+export { BasicClient, BasicMultiClient, SmartWss, Watcher, Auction, BlockTrade, Candle, CandlePeriod, Level2Point, Level2Snapshot, Level2Update, Level3Point, Level3Snapshot, Level3Update, Ticker, Trade, BiboxClient, BinanceClient, BinanceFuturesCoinmClient, BinanceFuturesUsdtmClient, BinanceJeClient, BinanceUsClient, BitfinexClient, BitflyerClient, BithumbClient, BitmexClient, BitrueClient, BitstampClient, BittrexClient, ByBitClient, CexClient, CoinbaseProClient, CoinexClient, DeribitClient, DigifinexClient, ErisXClient, FtxClient, FtxUsClient, GateioClient, GeminiClient, HitBtcClient, HuobiClient, HuobiFuturesClient, HuobiSwapsClient, HuobiJapanClient, HuobiKoreaClient, KucoinClient, KrakenClient, LedgerXClient, LiquidClient, MexcClient, OkxClient, PoloniexClient, UpbitClient, ZbClient, };
 declare const _default: {
     Bibox: typeof BiboxClient;
     Binance: typeof BinanceClient;
@@ -88,6 +89,7 @@ declare const _default: {
     Kraken: typeof KrakenClient;
     LedgerX: typeof LedgerXClient;
     Liquid: typeof LiquidClient;
+    Mexc: typeof MexcClient;
     OKx: typeof OkxClient;
     Poloniex: typeof PoloniexClient;
     Upbit: typeof UpbitClient;

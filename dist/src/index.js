@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
-exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = void 0;
+exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = void 0;
 const BasicClient_1 = require("./BasicClient");
 Object.defineProperty(exports, "BasicClient", { enumerable: true, get: function () { return BasicClient_1.BasicClient; } });
 const BasicMultiClient_1 = require("./BasicMultiClient");
@@ -102,6 +102,8 @@ const LedgerXClient_1 = require("./exchanges/LedgerXClient");
 Object.defineProperty(exports, "LedgerXClient", { enumerable: true, get: function () { return LedgerXClient_1.LedgerXClient; } });
 const LiquidClient_1 = require("./exchanges/LiquidClient");
 Object.defineProperty(exports, "LiquidClient", { enumerable: true, get: function () { return LiquidClient_1.LiquidClient; } });
+const MexcClient_1 = require("./exchanges/MexcClient");
+Object.defineProperty(exports, "MexcClient", { enumerable: true, get: function () { return MexcClient_1.MexcClient; } });
 const OkxClient_1 = require("./exchanges/OkxClient");
 Object.defineProperty(exports, "OkxClient", { enumerable: true, get: function () { return OkxClient_1.OkxClient; } });
 const PoloniexClient_1 = require("./exchanges/PoloniexClient");
@@ -145,6 +147,7 @@ exports.default = {
     Kraken: KrakenClient_1.KrakenClient,
     LedgerX: LedgerXClient_1.LedgerXClient,
     Liquid: LiquidClient_1.LiquidClient,
+    Mexc: MexcClient_1.MexcClient,
     OKx: OkxClient_1.OkxClient,
     Poloniex: PoloniexClient_1.PoloniexClient,
     Upbit: UpbitClient_1.UpbitClient,
