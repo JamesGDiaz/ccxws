@@ -89,10 +89,6 @@ class BitforexClient extends BasicClient_1.BasicClient {
             this.emit("error", err, raw);
             return;
         }
-        // handle subscription success
-        if (msg.event_rep === "subed" && msg.status === "ok") {
-            return;
-        }
         // handle errors
         if (msg.error) {
             this.emit("error", msg.error);

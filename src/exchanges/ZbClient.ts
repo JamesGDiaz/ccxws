@@ -121,7 +121,7 @@ export class ZbClient extends BasicClient {
         if (type === "trades") {
             for (const datum of msg.data) {
                 const market = this._tradeSubs.get(remoteId);
-                if (!market) return;
+                if (!market) continue;
 
                 const trade = this._constructTradesFromMessage(datum, market);
                 this.emit("trade", trade, market);

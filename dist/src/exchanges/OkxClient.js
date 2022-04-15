@@ -321,7 +321,7 @@ class OkxClient extends BasicClient_1.BasicClient {
             const remote_id = datum.instrument_id;
             const market = this._level2SnapshotSubs.get(remote_id);
             if (!market)
-                return;
+                continue;
             // construct snapshot
             const snapshot = this._constructLevel2Snapshot(datum, market);
             this.emit("l2snapshot", snapshot, market);
