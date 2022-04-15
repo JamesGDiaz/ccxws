@@ -60,6 +60,7 @@ binance.subscribeLevel2Snapshots(market);
 | Binance Futures USDT-M | 1   | BinanceFuturesUsdtmClient | &#10003; | &#10003; | &#10003; | &#10003;       | &#10003;\*\*  | -              | -             |
 | Binance US             | 1   | BinanceUsClient           | &#10003; | &#10003; | &#10003; | &#10003;       | &#10003;\*\*  | -              | -             |
 | Bitfinex               | 2   | BitfinexClient            | &#10003; | &#10003; | -        | -              | &#10003;\*    | -              | &#10003;\*    |
+| Bitforex               | 1   | BitforexClient            | &#10003; | &#10003; | -        | -              | -             | -              | -             |
 | bitFlyer               | 1   | BitflyerClient            | &#10003; | &#10003; | -        | -              | &#10003;\*\*  | -              | -             |
 | Bithumb                | 1   | BithumbClient             | &#10003; | &#10003; | -        | -              | &#10003;\*\*  | -              | -             |
 | BitMEX                 | 1   | BitmexClient              | &#10003; | &#10003; | &#10003; | -              | &#10003;\*    | -              | -             |

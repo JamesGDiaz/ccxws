@@ -55,6 +55,7 @@ jobs:
           - BinanceFuturesUsdtm
           - BinanceUs
           - Bitfinex
+          - Bitforex
           - Bitflyer
           - Bithumb
           - Bitmex

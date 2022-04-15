@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
-exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = void 0;
+exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BithumbClient = exports.BitflyerClient = exports.BitforexClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
+exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = exports.LiquidClient = void 0;
 const BasicClient_1 = require("./BasicClient");
 Object.defineProperty(exports, "BasicClient", { enumerable: true, get: function () { return BasicClient_1.BasicClient; } });
 const BasicMultiClient_1 = require("./BasicMultiClient");
@@ -48,6 +48,8 @@ const BinanceUsClient_1 = require("./exchanges/BinanceUsClient");
 Object.defineProperty(exports, "BinanceUsClient", { enumerable: true, get: function () { return BinanceUsClient_1.BinanceUsClient; } });
 const BitfinexClient_1 = require("./exchanges/BitfinexClient");
 Object.defineProperty(exports, "BitfinexClient", { enumerable: true, get: function () { return BitfinexClient_1.BitfinexClient; } });
+const BitforexClient_1 = require("./exchanges/BitforexClient");
+Object.defineProperty(exports, "BitforexClient", { enumerable: true, get: function () { return BitforexClient_1.BitforexClient; } });
 const BitflyerClient_1 = require("./exchanges/BitflyerClient");
 Object.defineProperty(exports, "BitflyerClient", { enumerable: true, get: function () { return BitflyerClient_1.BitflyerClient; } });
 const BithumbClient_1 = require("./exchanges/BithumbClient");
@@ -120,6 +122,7 @@ exports.default = {
     BinanceJe: BinanceJeClient_1.BinanceJeClient,
     BinanceUs: BinanceUsClient_1.BinanceUsClient,
     Bitfinex: BitfinexClient_1.BitfinexClient,
+    Bitforex: BitforexClient_1.BitforexClient,
     Bitflyer: BitflyerClient_1.BitflyerClient,
     Bithumb: BithumbClient_1.BithumbClient,
     BitMEX: BitmexClient_1.BitmexClient,

@@ -23,6 +23,7 @@ import { BinanceFuturesUsdtmClient } from "./exchanges/BinanceFuturesUsdtmClient
 import { BinanceJeClient } from "./exchanges/BinanceJeClient";
 import { BinanceUsClient } from "./exchanges/BinanceUsClient";
 import { BitfinexClient } from "./exchanges/BitfinexClient";
+import { BitforexClient } from "./exchanges/BitforexClient";
 import { BitflyerClient } from "./exchanges/BitflyerClient";
 import { BithumbClient } from "./exchanges/BithumbClient";
 import { BitmexClient } from "./exchanges/BitmexClient";
@@ -86,6 +87,7 @@ export {
     BinanceJeClient,
     BinanceUsClient,
     BitfinexClient,
+    BitforexClient,
     BitflyerClient,
     BithumbClient,
     BitmexClient,
@@ -128,6 +130,7 @@ export default {
     BinanceJe: BinanceJeClient,
     BinanceUs: BinanceUsClient,
     Bitfinex: BitfinexClient,
+    Bitforex: BitforexClient,
     Bitflyer: BitflyerClient,
     Bithumb: BithumbClient,
     BitMEX: BitmexClient,
