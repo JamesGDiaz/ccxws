@@ -65,7 +65,7 @@ class MexcClient extends BasicClient_1.BasicClient {
     }
     _onMessage(raw) {
         // handle ping
-        if (raw === "ping") {
+        if (raw === "pong") {
             return;
         }
         // handle parse error

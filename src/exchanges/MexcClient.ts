@@ -84,7 +84,7 @@ export class MexcClient extends BasicClient {
 
     protected _onMessage(raw) {
         // handle ping
-        if (raw === "ping") {
+        if (raw === "pong") {
             return;
         }
 
