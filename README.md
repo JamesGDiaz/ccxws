@@ -71,7 +71,7 @@ binance.subscribeLevel2Snapshots(market);
 | Cex.io                 | 1   | CexClient                 | &#10003; | &#10003; | &#10003; | &#10003;       |               | -              | -             |
 | Coinbase Pro           | 1   | CoinbaseProClient         | &#10003; | &#10003; | -        | -              | &#10003;\*    | -              | &#10003;      |
 | Coinex                 | 1   | CoinexClient              | &#10003; | &#10003; | &#10003; | -              | &#10003;\*    | -              | -             |
-| Crypto.com             | 1   | CryptoComClient           | &#10003; | &#10003; | -        | -              | -             | -              | -             |
+| Crypto.com             | 2   | CryptoComClient           | &#10003; | &#10003; | -        | -              | -             | -              | -             |
 | Deribit                | 2   | DeribitClient             | &#10003; | &#10003; | &#10003; | -              | &#10003;\*    | -              | -             |
 | Digifinex              | 1   | DigifinexClient           | &#10003; | &#10003; | -        | -              | &#10003;\*    | -              | -             |
 | ErisX                  | 3.4 | ErisXClient               | -        | &#10003; | -        | -              | -             | -              | &#10003;\*    |
