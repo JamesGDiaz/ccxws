@@ -14,6 +14,7 @@ import { Level3Snapshot } from "./Level3Snapshot";
 import { Level3Update } from "./Level3Update";
 import { Ticker } from "./Ticker";
 import { Trade } from "./Trade";
+import { AaxClient } from "./exchanges/AaxClient";
 import { BiboxClient } from "./exchanges/BiboxClient";
 import { BinanceClient } from "./exchanges/BinanceClient";
 import { BinanceFuturesCoinmClient } from "./exchanges/BinanceFuturesCoinmClient";
@@ -56,8 +57,9 @@ import { OkxClient } from "./exchanges/OkxClient";
 import { PoloniexClient } from "./exchanges/PoloniexClient";
 import { UpbitClient } from "./exchanges/UpbitClient";
 import { ZbClient } from "./exchanges/ZbClient";
-export { BasicClient, BasicMultiClient, SmartWss, Watcher, Auction, BlockTrade, Candle, CandlePeriod, Level2Point, Level2Snapshot, Level2Update, Level3Point, Level3Snapshot, Level3Update, Ticker, Trade, BiboxClient, BinanceClient, BinanceFuturesCoinmClient, BinanceFuturesUsdtmClient, BinanceJeClient, BinanceUsClient, BitfinexClient, BitforexClient, BitflyerClient, BithumbClient, BitmartClient, BitmexClient, BitrueClient, BitstampClient, BittrexClient, ByBitClient, CexClient, CoinbaseProClient, CoinexClient, CryptoComClient, DeribitClient, DigifinexClient, ErisXClient, FtxClient, FtxUsClient, GateioClient, GeminiClient, HitBtcClient, HuobiClient, HuobiFuturesClient, HuobiSwapsClient, HuobiJapanClient, HuobiKoreaClient, KucoinClient, KrakenClient, LedgerXClient, LiquidClient, MexcClient, OkxClient, PoloniexClient, UpbitClient, ZbClient, };
+export { BasicClient, BasicMultiClient, SmartWss, Watcher, Auction, BlockTrade, Candle, CandlePeriod, Level2Point, Level2Snapshot, Level2Update, Level3Point, Level3Snapshot, Level3Update, Ticker, Trade, AaxClient, BiboxClient, BinanceClient, BinanceFuturesCoinmClient, BinanceFuturesUsdtmClient, BinanceJeClient, BinanceUsClient, BitfinexClient, BitforexClient, BitflyerClient, BithumbClient, BitmartClient, BitmexClient, BitrueClient, BitstampClient, BittrexClient, ByBitClient, CexClient, CoinbaseProClient, CoinexClient, CryptoComClient, DeribitClient, DigifinexClient, ErisXClient, FtxClient, FtxUsClient, GateioClient, GeminiClient, HitBtcClient, HuobiClient, HuobiFuturesClient, HuobiSwapsClient, HuobiJapanClient, HuobiKoreaClient, KucoinClient, KrakenClient, LedgerXClient, LiquidClient, MexcClient, OkxClient, PoloniexClient, UpbitClient, ZbClient, };
 declare const _default: {
+    Aax: typeof AaxClient;
     Bibox: typeof BiboxClient;
     Binance: typeof BinanceClient;
     BinanceFuturesCoinM: typeof BinanceFuturesCoinmClient;

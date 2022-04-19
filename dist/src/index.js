@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CryptoComClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BitmartClient = exports.BithumbClient = exports.BitflyerClient = exports.BitforexClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
-exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = void 0;
+exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CryptoComClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BitmartClient = exports.BithumbClient = exports.BitflyerClient = exports.BitforexClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.AaxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
+exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = exports.KucoinClient = void 0;
 const BasicClient_1 = require("./BasicClient");
 Object.defineProperty(exports, "BasicClient", { enumerable: true, get: function () { return BasicClient_1.BasicClient; } });
 const BasicMultiClient_1 = require("./BasicMultiClient");
@@ -34,6 +34,8 @@ const Ticker_1 = require("./Ticker");
 Object.defineProperty(exports, "Ticker", { enumerable: true, get: function () { return Ticker_1.Ticker; } });
 const Trade_1 = require("./Trade");
 Object.defineProperty(exports, "Trade", { enumerable: true, get: function () { return Trade_1.Trade; } });
+const AaxClient_1 = require("./exchanges/AaxClient");
+Object.defineProperty(exports, "AaxClient", { enumerable: true, get: function () { return AaxClient_1.AaxClient; } });
 const BiboxClient_1 = require("./exchanges/BiboxClient");
 Object.defineProperty(exports, "BiboxClient", { enumerable: true, get: function () { return BiboxClient_1.BiboxClient; } });
 const BinanceClient_1 = require("./exchanges/BinanceClient");
@@ -119,6 +121,7 @@ Object.defineProperty(exports, "UpbitClient", { enumerable: true, get: function 
 const ZbClient_1 = require("./exchanges/ZbClient");
 Object.defineProperty(exports, "ZbClient", { enumerable: true, get: function () { return ZbClient_1.ZbClient; } });
 exports.default = {
+    Aax: AaxClient_1.AaxClient,
     Bibox: BiboxClient_1.BiboxClient,
     Binance: BinanceClient_1.BinanceClient,
     BinanceFuturesCoinM: BinanceFuturesCoinmClient_1.BinanceFuturesCoinmClient,

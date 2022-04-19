@@ -53,6 +53,7 @@ binance.subscribeLevel2Snapshots(market);
 
 | Exchange               | API | Class                     | Ticker   | Trades   | Candles  | OB-L2 Snapshot | OB-L2 Updates | OB-L3 Snapshot | OB-L3 Updates |
 | ---------------------- | --- | ------------------------- | -------- | -------- | -------- | -------------- | ------------- | -------------- | ------------- |
+| AAX                    | 2   | Aax  Client               | &#10003; | -        | -        | -              |               | -              | -             |
 | Bibox                  | 1   | BiboxClient               | &#10003; | &#10003; | &#10003; | &#10003;       |               | -              | -             |
 | ByBit                  | 1   | ByBitClient               | &#10003; | &#10003; | -        | -              |               | -              | -             |
 | Binance                | 1   | BinanceClient             | &#10003; | &#10003; | &#10003; | &#10003;       | &#10003;\*\*  | -              | -             |

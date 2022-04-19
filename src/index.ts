@@ -16,6 +16,7 @@ import { Level3Update } from "./Level3Update";
 import { Ticker } from "./Ticker";
 import { Trade } from "./Trade";
 
+import { AaxClient } from "./exchanges/AaxClient";
 import { BiboxClient } from "./exchanges/BiboxClient";
 import { BinanceClient } from "./exchanges/BinanceClient";
 import { BinanceFuturesCoinmClient } from "./exchanges/BinanceFuturesCoinmClient";
@@ -82,6 +83,7 @@ export {
     Trade,
     //
     // Clients
+    AaxClient,
     BiboxClient,
     BinanceClient,
     BinanceFuturesCoinmClient,
@@ -127,6 +129,7 @@ export {
 };
 
 export default {
+    Aax: AaxClient,
     Bibox: BiboxClient,
     Binance: BinanceClient,
     BinanceFuturesCoinM: BinanceFuturesCoinmClient,
