@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KrakenClient = exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BitmartClient = exports.BithumbClient = exports.BitflyerClient = exports.BitforexClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
-exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = exports.LiquidClient = exports.LedgerXClient = void 0;
+exports.KucoinClient = exports.HuobiKoreaClient = exports.HuobiJapanClient = exports.HuobiSwapsClient = exports.HuobiFuturesClient = exports.HuobiClient = exports.HitBtcClient = exports.GeminiClient = exports.GateioClient = exports.FtxUsClient = exports.FtxClient = exports.ErisXClient = exports.DigifinexClient = exports.DeribitClient = exports.CryptoComClient = exports.CoinexClient = exports.CoinbaseProClient = exports.CexClient = exports.ByBitClient = exports.BittrexClient = exports.BitstampClient = exports.BitrueClient = exports.BitmexClient = exports.BitmartClient = exports.BithumbClient = exports.BitflyerClient = exports.BitforexClient = exports.BitfinexClient = exports.BinanceUsClient = exports.BinanceJeClient = exports.BinanceFuturesUsdtmClient = exports.BinanceFuturesCoinmClient = exports.BinanceClient = exports.BiboxClient = exports.Trade = exports.Ticker = exports.Level3Update = exports.Level3Snapshot = exports.Level3Point = exports.Level2Update = exports.Level2Snapshot = exports.Level2Point = exports.CandlePeriod = exports.Candle = exports.BlockTrade = exports.Auction = exports.Watcher = exports.SmartWss = exports.BasicMultiClient = exports.BasicClient = void 0;
+exports.ZbClient = exports.UpbitClient = exports.PoloniexClient = exports.OkxClient = exports.MexcClient = exports.LiquidClient = exports.LedgerXClient = exports.KrakenClient = void 0;
 const BasicClient_1 = require("./BasicClient");
 Object.defineProperty(exports, "BasicClient", { enumerable: true, get: function () { return BasicClient_1.BasicClient; } });
 const BasicMultiClient_1 = require("./BasicMultiClient");
@@ -72,6 +72,8 @@ const CoinbaseProClient_1 = require("./exchanges/CoinbaseProClient");
 Object.defineProperty(exports, "CoinbaseProClient", { enumerable: true, get: function () { return CoinbaseProClient_1.CoinbaseProClient; } });
 const CoinexClient_1 = require("./exchanges/CoinexClient");
 Object.defineProperty(exports, "CoinexClient", { enumerable: true, get: function () { return CoinexClient_1.CoinexClient; } });
+const CryptoComClient_1 = require("./exchanges/CryptoComClient");
+Object.defineProperty(exports, "CryptoComClient", { enumerable: true, get: function () { return CryptoComClient_1.CryptoComClient; } });
 const DeribitClient_1 = require("./exchanges/DeribitClient");
 Object.defineProperty(exports, "DeribitClient", { enumerable: true, get: function () { return DeribitClient_1.DeribitClient; } });
 const DigifinexClient_1 = require("./exchanges/DigifinexClient");
@@ -136,6 +138,7 @@ exports.default = {
     Cex: CexClient_1.CexClient,
     CoinbasePro: CoinbaseProClient_1.CoinbaseProClient,
     Coinex: CoinexClient_1.CoinexClient,
+    CryptoCom: CryptoComClient_1.CryptoComClient,
     Deribit: DeribitClient_1.DeribitClient,
     Digifinex: DigifinexClient_1.DigifinexClient,
     ErisX: ErisxClient_1.ErisXClient,

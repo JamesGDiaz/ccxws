@@ -66,6 +66,7 @@ jobs:
           - Cex
           - CoinbasePro
           - Coinex
+          - CryptoCom
           - Deribit
           - Digifinex
           - Ftx
