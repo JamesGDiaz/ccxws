@@ -105,7 +105,7 @@ export class FtxBaseClient extends BasicClient {
                 if (!market || !market.base || !market.quote) {
                     return;
                 }
-                this._tickerMessageHandler(data, symbol);
+                this._tickerMessageHandler(data, market);
                 break;
             }
             case "trades": {
@@ -113,7 +113,7 @@ export class FtxBaseClient extends BasicClient {
                 if (!market || !market.base || !market.quote) {
                     return;
                 }
-                this._tradesMessageHandler(data, symbol);
+                this._tradesMessageHandler(data, market);
                 break;
             }
 

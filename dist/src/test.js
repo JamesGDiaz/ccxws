@@ -7,11 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
 // hitbtc
 const market = {
-    id: "BTC_USDT",
-    base: "ETH",
-    quote: "USDT",
+    id: "BTC/USD",
+    base: "BTC",
+    quote: "USD",
 };
-const client = new index_1.default.CryptoCom();
+const client = new index_1.default.FtxUs();
 //////////////////////////////////
 let counter = 0;
 client.subscribeTrades(market);

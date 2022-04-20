@@ -87,7 +87,7 @@ class FtxBaseClient extends BasicClient_1.BasicClient {
                 if (!market || !market.base || !market.quote) {
                     return;
                 }
-                this._tickerMessageHandler(data, symbol);
+                this._tickerMessageHandler(data, market);
                 break;
             }
             case "trades": {
@@ -95,7 +95,7 @@ class FtxBaseClient extends BasicClient_1.BasicClient {
                 if (!market || !market.base || !market.quote) {
                     return;
                 }
-                this._tradesMessageHandler(data, symbol);
+                this._tradesMessageHandler(data, market);
                 break;
             }
             case "orderbook": {
