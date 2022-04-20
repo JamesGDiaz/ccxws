@@ -19,9 +19,11 @@ const Level2Update_1 = require("../Level2Update");
 const NotImplementedFn_1 = require("../NotImplementedFn");
 const Ticker_1 = require("../Ticker");
 const Trade_1 = require("../Trade");
+const fast_deep_equal_1 = __importDefault(require("fast-deep-equal"));
 class HitBtcClient extends BasicClient_1.BasicClient {
     constructor({ wssPath = "wss://api.hitbtc.com/api/2/ws", throttleMs = 25, watcherMs, } = {}) {
         super(wssPath, "HitBTC", undefined, watcherMs);
+        this._tickerCache = new Map();
         this._sendSubLevel2Snapshots = NotImplementedFn_1.NotImplementedFn;
         this._sendUnsubLevel2Snapshots = NotImplementedFn_1.NotImplementedFn;
         this._sendSubLevel3Snapshots = NotImplementedFn_1.NotImplementedFn;
@@ -132,8 +134,7 @@ class HitBtcClient extends BasicClient_1.BasicClient {
             const market = this._tickerSubs.get(remote_id);
             if (!market)
                 return;
-            const ticker = this._constructTicker(msg.params, market);
-            this.emit("ticker", ticker, market);
+            this._constructTicker(msg.params, market);
         }
         if (msg.method === "updateTrades") {
             const market = this._tradeSubs.get(remote_id);
@@ -173,10 +174,18 @@ class HitBtcClient extends BasicClient_1.BasicClient {
     }
     _constructTicker(param, market) {
         const { ask, bid, last, open, low, high, volume, volumeQuote, timestamp } = param;
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { ask, bid, last });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { ask, bid, last };
+        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+            return;
+        this._tickerCache.set(market.id, thisTicker);
         const change = (parseFloat(last) - parseFloat(open)).toFixed(8);
         const changePercent = (((parseFloat(last) - parseFloat(open)) / parseFloat(open)) *
             100).toFixed(8);
-        return new Ticker_1.Ticker({
+        const ticker = new Ticker_1.Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -192,6 +201,7 @@ class HitBtcClient extends BasicClient_1.BasicClient {
             change,
             changePercent,
         });
+        this.emit("ticker", ticker, market);
     }
     _constructTradesFromMessage(datum, market) {
         const { id, price, quantity, side, timestamp } = datum;

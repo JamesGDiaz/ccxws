@@ -15,12 +15,15 @@ import { Level2Update } from "../Level2Update";
 import { NotImplementedFn } from "../NotImplementedFn";
 import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
+import isEqual from "fast-deep-equal";
 
 export class HitBtcClient extends BasicClient {
     public candlePeriod: CandlePeriod;
 
     protected _id: number;
     protected _send: CancelableFn;
+
+    private _tickerCache = new Map();
 
     constructor({
         wssPath = "wss://api.hitbtc.com/api/2/ws",
@@ -171,8 +174,7 @@ export class HitBtcClient extends BasicClient {
             const market = this._tickerSubs.get(remote_id);
             if (!market) return;
 
-            const ticker = this._constructTicker(msg.params, market);
-            this.emit("ticker", ticker, market);
+            this._constructTicker(msg.params, market);
         }
 
         if (msg.method === "updateTrades") {
@@ -217,12 +219,22 @@ export class HitBtcClient extends BasicClient {
 
     protected _constructTicker(param, market) {
         const { ask, bid, last, open, low, high, volume, volumeQuote, timestamp } = param;
+
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { ask, bid, last });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { ask, bid, last };
+        if (isEqual(lastTicker, thisTicker)) return;
+        this._tickerCache.set(market.id, thisTicker);
+
         const change = (parseFloat(last) - parseFloat(open)).toFixed(8);
         const changePercent = (
             ((parseFloat(last) - parseFloat(open)) / parseFloat(open)) *
             100
         ).toFixed(8);
-        return new Ticker({
+
+        const ticker = new Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -238,6 +250,7 @@ export class HitBtcClient extends BasicClient {
             change,
             changePercent,
         });
+        this.emit("ticker", ticker, market);
     }
 
     protected _constructTradesFromMessage(datum, market) {
