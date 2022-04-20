@@ -92,7 +92,7 @@ export class OkxClient extends BasicClient {
      * the default is a spot market.
      */
     protected _marketArg(method: string, market: Market) {
-        return { channel: "tickers", instId: `${market.id}` };
+        return { channel: method === "ticker" ? "tickers" : method, instId: `${market.id}` };
     }
 
     /**
@@ -329,7 +329,7 @@ export class OkxClient extends BasicClient {
     protected _processTrades(msg) {
         for (const datum of msg.data) {
             // ensure market
-            const remoteId = datum.instrument_id;
+            const remoteId = datum.instId;
             const market = this._tradeSubs.get(remoteId);
             if (!market) continue;
 
@@ -361,7 +361,7 @@ export class OkxClient extends BasicClient {
     protected _processCandles(msg) {
         for (const datum of msg.data) {
             // ensure market
-            const remoteId = datum.instrument_id;
+            const remoteId = datum.instId;
             const market = this._candleSubs.get(remoteId);
             if (!market) continue;
 
@@ -383,7 +383,7 @@ export class OkxClient extends BasicClient {
     protected _processLevel2Snapshot(msg) {
         for (const datum of msg.data) {
             // ensure market
-            const remote_id = datum.instrument_id;
+            const remote_id = datum.instId;
             const market = this._level2SnapshotSubs.get(remote_id);
             if (!market) continue;
 
@@ -502,15 +502,15 @@ export class OkxClient extends BasicClient {
       trade_id: '776370532' }
     */
     protected _constructTrade(datum, market) {
-        const { px, side, sz, timestamp, tradeId } = datum;
-
+        const { px, side, sz, ts, tradeId } = datum;
+        console.log(px, side, sz, ts,tradeId)
         return new Trade({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
             tradeId: tradeId,
             side,
-            unix: timestamp,
+            unix: Number(ts),
             price: px,
             amount: sz,
         });

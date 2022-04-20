@@ -76,7 +76,7 @@ class OkxClient extends BasicClient_1.BasicClient {
      * the default is a spot market.
      */
     _marketArg(method, market) {
-        return { channel: "tickers", instId: `${market.id}` };
+        return { channel: method === "ticker" ? "tickers" : method, instId: `${market.id}` };
     }
     /**
      * Gets the exchanges interpretation of the candle period
@@ -266,7 +266,7 @@ class OkxClient extends BasicClient_1.BasicClient {
     _processTrades(msg) {
         for (const datum of msg.data) {
             // ensure market
-            const remoteId = datum.instrument_id;
+            const remoteId = datum.instId;
             const market = this._tradeSubs.get(remoteId);
             if (!market)
                 continue;
@@ -297,7 +297,7 @@ class OkxClient extends BasicClient_1.BasicClient {
     _processCandles(msg) {
         for (const datum of msg.data) {
             // ensure market
-            const remoteId = datum.instrument_id;
+            const remoteId = datum.instId;
             const market = this._candleSubs.get(remoteId);
             if (!market)
                 continue;
@@ -318,7 +318,7 @@ class OkxClient extends BasicClient_1.BasicClient {
     _processLevel2Snapshot(msg) {
         for (const datum of msg.data) {
             // ensure market
-            const remote_id = datum.instrument_id;
+            const remote_id = datum.instId;
             const market = this._level2SnapshotSubs.get(remote_id);
             if (!market)
                 continue;
@@ -423,14 +423,15 @@ class OkxClient extends BasicClient_1.BasicClient {
       trade_id: '776370532' }
     */
     _constructTrade(datum, market) {
-        const { px, side, sz, timestamp, tradeId } = datum;
+        const { px, side, sz, ts, tradeId } = datum;
+        console.log(px, side, sz, ts, tradeId);
         return new Trade_1.Trade({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
             tradeId: tradeId,
             side,
-            unix: timestamp,
+            unix: Number(ts),
             price: px,
             amount: sz,
         });

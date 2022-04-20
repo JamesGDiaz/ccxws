@@ -7,15 +7,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
 // hitbtc
 const market = {
-    id: "ETHBTC",
+    id: "BTC_USDT",
     base: "ETH",
-    quote: "BTC",
+    quote: "USDT",
 };
-const client = new index_1.default.HitBTC();
+const client = new index_1.default.CryptoCom();
 //////////////////////////////////
 let counter = 0;
-client.subscribeTicker(market);
-client.on("ticker", ({ last, ask, bid }) => console.log({ last, ask, bid }, counter++));
+client.subscribeTrades(market);
+client.on("trade", (trade) => console.log(counter++, trade));
 // client.subscribeTrades(market);
 // client.on("trade", t => console.log(t));
 // client.subscribeLevel2Snapshots(market);
