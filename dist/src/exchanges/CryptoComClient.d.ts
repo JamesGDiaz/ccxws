@@ -1,7 +1,6 @@
 /// <reference types="node" />
 import { BasicClient } from "../BasicClient";
 import { ClientOptions } from "../ClientOptions";
-import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
 import { CancelableFn } from "../flowcontrol/Fn";
 export declare type CryptoComClientOptions = ClientOptions & {
@@ -17,6 +16,7 @@ export declare class CryptoComClient extends BasicClient {
     _pingInterval: NodeJS.Timeout;
     readonly sendThrottleMs: number;
     readonly restThrottleMs: number;
+    private _tickerCache;
     protected _sendMessage: CancelableFn;
     constructor({ wssPath, watcherMs, retryTimeoutMs, sendThrottleMs, }?: CryptoComClientOptions);
     protected _beforeClose(): void;
@@ -51,7 +51,7 @@ export declare class CryptoComClient extends BasicClient {
         "c": 137.44
     }
 */
-    protected _constructTicker(data: any, market: any): Ticker;
+    protected _constructTicker(data: any, market: any): void;
     /**
     {
         "dataTime": 1650387889146,

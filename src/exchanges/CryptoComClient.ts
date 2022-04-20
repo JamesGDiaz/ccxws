@@ -10,6 +10,7 @@ import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
 import { throttle } from "../flowcontrol/Throttle";
 import { CancelableFn } from "../flowcontrol/Fn";
+import isEqual from "fast-deep-equal";
 
 
 export type CryptoComClientOptions = ClientOptions & {
@@ -26,6 +27,8 @@ export class CryptoComClient extends BasicClient {
     public _pingInterval: NodeJS.Timeout;
     public readonly sendThrottleMs: number;
     public readonly restThrottleMs: number;
+
+    private _tickerCache = new Map()
 
     protected _sendMessage: CancelableFn;
 
@@ -150,8 +153,7 @@ export class CryptoComClient extends BasicClient {
             if (!market) return;
 
             for (const datum of msg.result.data.reverse()) {
-                const ticker = this._constructTicker({ ...datum }, market);
-                this.emit("ticker", ticker, market);
+                this._constructTicker({ ...datum }, market);
             }
             return;
         }
@@ -188,8 +190,16 @@ export class CryptoComClient extends BasicClient {
     protected _constructTicker(data, market) {
         const { b: bestBid, k: bestAsk, a: last, t: timestamp, v: volume, h: high, l: low, c: change } = data;
 
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { bestBid, bestAsk, last });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { bestBid, bestAsk, last };
+        if (isEqual(lastTicker, thisTicker)) return;
+        this._tickerCache.set(market.id, thisTicker);
+
         const changePercent = (Number(change) / (Number(last) + Number(change))) * 100;
-        return new Ticker({
+        const ticker = new Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -208,6 +218,8 @@ export class CryptoComClient extends BasicClient {
             bidVolume: undefined,
             sequenceId: undefined
         });
+
+        this.emit("ticker", ticker, market);
     }
 
 

@@ -6,7 +6,7 @@ export declare class FtxBaseClient extends BasicClient {
         wssPath: any;
         watcherMs: any;
     });
-    _tickerCache: Map<any, any>;
+    private _tickerCache;
     protected _sendSubTicker(market: any): void;
     protected _sendUnsubTicker(market: any): void;
     protected _sendSubTrades(market: any): void;

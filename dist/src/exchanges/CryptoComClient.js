@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CryptoComClient = void 0;
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -11,6 +14,7 @@ const NotImplementedFn_1 = require("../NotImplementedFn");
 const Ticker_1 = require("../Ticker");
 const Trade_1 = require("../Trade");
 const Throttle_1 = require("../flowcontrol/Throttle");
+const fast_deep_equal_1 = __importDefault(require("fast-deep-equal"));
 /**
  * Implements the exchange according to API specifications:
  * https://bybit-exchange.github.io/docs/spot/#t-websocket
@@ -19,6 +23,7 @@ const Throttle_1 = require("../flowcontrol/Throttle");
 class CryptoComClient extends BasicClient_1.BasicClient {
     constructor({ wssPath = "wss://stream.crypto.com/v2/market", watcherMs, retryTimeoutMs, sendThrottleMs = 100, } = {}) {
         super(wssPath, "CryptoCom", undefined, watcherMs, retryTimeoutMs);
+        this._tickerCache = new Map();
         this._sendSubLevel2Updates = NotImplementedFn_1.NotImplementedFn;
         this._sendUnsubLevel2Updates = NotImplementedFn_1.NotImplementedFn;
         this._sendSubCandles = NotImplementedFn_1.NotImplementedFn;
@@ -115,8 +120,7 @@ class CryptoComClient extends BasicClient_1.BasicClient {
             if (!market)
                 return;
             for (const datum of msg.result.data.reverse()) {
-                const ticker = this._constructTicker({ ...datum }, market);
-                this.emit("ticker", ticker, market);
+                this._constructTicker({ ...datum }, market);
             }
             return;
         }
@@ -149,8 +153,16 @@ class CryptoComClient extends BasicClient_1.BasicClient {
 */
     _constructTicker(data, market) {
         const { b: bestBid, k: bestAsk, a: last, t: timestamp, v: volume, h: high, l: low, c: change } = data;
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { bestBid, bestAsk, last });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { bestBid, bestAsk, last };
+        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+            return;
+        this._tickerCache.set(market.id, thisTicker);
         const changePercent = (Number(change) / (Number(last) + Number(change))) * 100;
-        return new Ticker_1.Ticker({
+        const ticker = new Ticker_1.Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -169,6 +181,7 @@ class CryptoComClient extends BasicClient_1.BasicClient {
             bidVolume: undefined,
             sequenceId: undefined
         });
+        this.emit("ticker", ticker, market);
     }
     /**
     {

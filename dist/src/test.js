@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
-// FTX
+// crypto.com
 const market = {
-    id: "BTC/USD",
-    base: "BTC",
-    quote: "USD",
+    id: "BTC_USDT",
+    base: "ETH",
+    quote: "USDT",
 };
-const client = new index_1.default.Ftx();
+const client = new index_1.default.CryptoCom();
 //////////////////////////////////
 let counter = 0;
 client.subscribeTicker(market);
