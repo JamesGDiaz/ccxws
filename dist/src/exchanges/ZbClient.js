@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ZbClient = void 0;
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -12,9 +15,11 @@ const Level2Snapshots_1 = require("../Level2Snapshots");
 const NotImplementedFn_1 = require("../NotImplementedFn");
 const Ticker_1 = require("../Ticker");
 const Trade_1 = require("../Trade");
+const fast_deep_equal_1 = __importDefault(require("fast-deep-equal"));
 class ZbClient extends BasicClient_1.BasicClient {
     constructor({ wssPath = "wss://api.zb.com/websocket", watcherMs } = {}) {
         super(wssPath, "ZB", undefined, watcherMs);
+        this._tickerCache = new Map();
         this._sendSubCandles = NotImplementedFn_1.NotImplementedFn;
         this._sendUnsubCandles = NotImplementedFn_1.NotImplementedFn;
         this._sendSubLevel2Updates = NotImplementedFn_1.NotImplementedFn;
@@ -89,8 +94,7 @@ class ZbClient extends BasicClient_1.BasicClient {
             const market = this._tickerSubs.get(remoteId);
             if (!market)
                 return;
-            const ticker = this._constructTicker(msg, market);
-            this.emit("ticker", ticker, market);
+            this._constructTicker(msg, market);
             return;
         }
         // trades
@@ -115,24 +119,33 @@ class ZbClient extends BasicClient_1.BasicClient {
         }
     }
     _constructTicker(data, market) {
+        const { last, high, low, vol, buy, sell } = data.ticker;
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { last, buy, sell });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { last, buy, sell };
+        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+            return;
+        this._tickerCache.set(market.id, thisTicker);
         const timestamp = parseInt(data.date);
-        const ticker = data.ticker;
-        return new Ticker_1.Ticker({
+        const ticker = new Ticker_1.Ticker({
             exchange: "ZB",
             base: market.base,
             quote: market.quote,
             timestamp,
-            last: ticker.last,
+            last: last,
             open: undefined,
-            high: ticker.high,
-            low: ticker.low,
-            volume: ticker.vol,
+            high: high,
+            low: low,
+            volume: vol,
             quoteVolume: undefined,
             change: undefined,
             changePercent: undefined,
-            bid: ticker.buy,
-            ask: ticker.sell,
+            bid: buy,
+            ask: sell,
         });
+        this.emit("ticker", ticker, market);
     }
     _constructTradesFromMessage(datum, market) {
         const { date, price, amount, tid, type } = datum;

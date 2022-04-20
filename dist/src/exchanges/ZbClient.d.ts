@@ -1,11 +1,11 @@
 import { BasicClient } from "../BasicClient";
 import { ClientOptions } from "../ClientOptions";
 import { Level2Snapshot } from "../Level2Snapshots";
-import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
 export declare class ZbClient extends BasicClient {
     remoteIdMap: Map<string, string>;
     constructor({ wssPath, watcherMs }?: ClientOptions);
+    private _tickerCache;
     protected _sendSubTicker(remote_id: string): void;
     protected _sendUnsubTicker(remote_id: string): void;
     protected _sendSubTrades(remote_id: string): void;
@@ -21,7 +21,7 @@ export declare class ZbClient extends BasicClient {
     protected _sendSubLevel3Updates: (...args: any[]) => any;
     protected _sendUnsubLevel3Updates: (...args: any[]) => any;
     protected _onMessage(raw: any): void;
-    protected _constructTicker(data: any, market: any): Ticker;
+    protected _constructTicker(data: any, market: any): void;
     protected _constructTradesFromMessage(datum: any, market: any): Trade;
     protected _constructLevel2Snapshot(msg: any, market: any): Level2Snapshot;
 }

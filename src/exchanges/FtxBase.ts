@@ -22,7 +22,7 @@ export class FtxBaseClient extends BasicClient {
         this.hasLevel2Updates = true;
     }
 
-    private _tickerCache = new Map()
+    private _tickerCache = new Map();
 
     protected _sendSubTicker(market) {
         this._wss.send(

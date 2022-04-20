@@ -10,6 +10,7 @@ import { Level2Snapshot } from "../Level2Snapshots";
 import { NotImplementedFn } from "../NotImplementedFn";
 import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
+import isEqual from "fast-deep-equal";
 
 export class ZbClient extends BasicClient {
     public remoteIdMap: Map<string, string>;
@@ -21,6 +22,8 @@ export class ZbClient extends BasicClient {
         this.hasLevel2Snapshots = true;
         this.remoteIdMap = new Map();
     }
+
+    private _tickerCache = new Map();
 
     protected _sendSubTicker(remote_id: string) {
         const wss_remote_id = remote_id.replace(/_/, "");
@@ -112,8 +115,7 @@ export class ZbClient extends BasicClient {
             const market = this._tickerSubs.get(remoteId);
             if (!market) return;
 
-            const ticker = this._constructTicker(msg, market);
-            this.emit("ticker", ticker, market);
+            this._constructTicker(msg, market);
             return;
         }
 
@@ -141,24 +143,35 @@ export class ZbClient extends BasicClient {
     }
 
     protected _constructTicker(data, market) {
+        const { last, high, low, vol, buy, sell } = data.ticker;
+
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { last, buy, sell });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { last, buy, sell };
+        if (isEqual(lastTicker, thisTicker)) return;
+        this._tickerCache.set(market.id, thisTicker);
+
         const timestamp = parseInt(data.date);
-        const ticker = data.ticker;
-        return new Ticker({
+
+        const ticker = new Ticker({
             exchange: "ZB",
             base: market.base,
             quote: market.quote,
             timestamp,
-            last: ticker.last,
+            last: last,
             open: undefined,
-            high: ticker.high,
-            low: ticker.low,
-            volume: ticker.vol,
+            high: high,
+            low: low,
+            volume: vol,
             quoteVolume: undefined,
             change: undefined,
             changePercent: undefined,
-            bid: ticker.buy,
-            ask: ticker.sell,
+            bid: buy,
+            ask: sell,
         });
+        this.emit("ticker", ticker, market);
     }
 
     protected _constructTradesFromMessage(datum, market) {
