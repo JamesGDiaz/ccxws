@@ -11,6 +11,8 @@ import { Level2Update } from "../Level2Update";
 import { NotImplementedFn } from "../NotImplementedFn";
 import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
+import isEqual from "fast-deep-equal";
+import { Market } from "../Market";
 
 export class FtxBaseClient extends BasicClient {
     constructor({ name, wssPath, watcherMs }) {
@@ -19,6 +21,8 @@ export class FtxBaseClient extends BasicClient {
         this.hasTrades = true;
         this.hasLevel2Updates = true;
     }
+
+    public _tickerCache = new Map()
 
     protected _sendSubTicker(market) {
         this._wss.send(
@@ -96,26 +100,47 @@ export class FtxBaseClient extends BasicClient {
         }
 
         switch (channel) {
-            case "ticker":
+            case "ticker": {
+                const market = this._tickerSubs.get(symbol);
+                if (!market || !market.base || !market.quote) {
+                    return;
+                }
                 this._tickerMessageHandler(data, symbol);
                 break;
-            case "trades":
+            }
+            case "trades": {
+                const market = this._tradeSubs.get(symbol);
+                if (!market || !market.base || !market.quote) {
+                    return;
+                }
                 this._tradesMessageHandler(data, symbol);
                 break;
-            case "orderbook":
-                this._orderbookMessageHandler(data, symbol, type);
+            }
+
+            case "orderbook": {
+                const market = this._level2UpdateSubs.get(symbol);
+                if (!market || !market.base || !market.quote || (!data.asks.length && !data.bids.length)) {
+                    return;
+                }
+                this._orderbookMessageHandler(data, market, type);
                 break;
+            }
+
         }
     }
 
-    protected _tickerMessageHandler(data, symbol) {
-        const market = this._tickerSubs.get(symbol);
-        if (!market || !market.base || !market.quote) {
-            return;
+    protected _tickerMessageHandler(data, market: Market) {
+        const { last, bid, ask, bidSize: bidVolume, askSize: askVolume } = data;
+
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { last, bid, ask });
         }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { last, bid, ask };
+        if (isEqual(lastTicker, thisTicker)) return;
+        this._tickerCache.set(market.id, thisTicker);
 
         const timestamp = this._timeToTimestampMs(data.time);
-        const { last, bid, ask, bidSize: bidVolume, askSize: askVolume } = data;
         const ticker = new Ticker({
             exchange: this.name,
             base: market.base,
@@ -133,12 +158,7 @@ export class FtxBaseClient extends BasicClient {
         this.emit("ticker", ticker, market);
     }
 
-    protected _tradesMessageHandler(data, symbol) {
-        const market = this._tradeSubs.get(symbol);
-        if (!market || !market.base || !market.quote) {
-            return;
-        }
-
+    protected _tradesMessageHandler(data, market: Market) {
         for (const entry of data) {
             const { id, price, size, side, time, liquidation } = entry;
             const unix = moment.utc(time).valueOf();
@@ -159,11 +179,8 @@ export class FtxBaseClient extends BasicClient {
         }
     }
 
-    protected _orderbookMessageHandler(data, symbol, type) {
-        const market = this._level2UpdateSubs.get(symbol);
-        if (!market || !market.base || !market.quote || (!data.asks.length && !data.bids.length)) {
-            return;
-        }
+    protected _orderbookMessageHandler(data, market, type) {
+
 
         switch (type) {
             case "partial":
