@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
 // crypto.com
 const market = {
-    id: "BTC_USDT",
-    base: "ETH",
+    id: "btcusdt",
+    base: "BTC",
     quote: "USDT",
 };
-const client = new index_1.default.CryptoCom();
+const client = new index_1.default.Huobi();
 //////////////////////////////////
 let counter = 0;
 client.subscribeTicker(market);

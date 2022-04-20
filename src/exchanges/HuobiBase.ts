@@ -13,9 +13,13 @@ import { NotImplementedFn } from "../NotImplementedFn";
 import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
 import * as zlib from "../ZlibUtils";
+import isEqual from "fast-deep-equal";
 
 export class HuobiBase extends BasicClient {
     public candlePeriod: CandlePeriod;
+
+    private _tickerCache = new Map()
+
 
     constructor({ name, wssPath, watcherMs }) {
         super(wssPath, name, undefined, watcherMs);
@@ -179,8 +183,8 @@ export class HuobiBase extends BasicClient {
                 const market = this._tickerSubs.get(remoteId);
                 if (!market) return;
 
-                const ticker = this._constructTicker(msgs.tick, market);
-                this.emit("ticker", ticker, market);
+                this._constructTicker(msgs.tick, market);
+
                 return;
             }
 
@@ -215,9 +219,19 @@ export class HuobiBase extends BasicClient {
 
     protected _constructTicker(data, market) {
         const { open, high, low, close, vol, amount, bid, bidSize, ask, askSize } = data;
+
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { close, bid, ask });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { close, bid, ask };
+        if (isEqual(lastTicker, thisTicker)) return;
+        this._tickerCache.set(market.id, thisTicker);
+
+
         const dayChange = close - open;
         const dayChangePercent = ((close - open) / open) * 100;
-        return new Ticker({
+        const ticker = new Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -235,6 +249,8 @@ export class HuobiBase extends BasicClient {
             ask: ask.toFixed(10),
             askVolume: askSize.toFixed(10)
         });
+
+        this.emit("ticker", ticker, market);
     }
 
     protected _constructTradesFromMessage(datum, market) {

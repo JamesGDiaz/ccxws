@@ -4,10 +4,10 @@ import { Candle } from "../Candle";
 import { CandlePeriod } from "../CandlePeriod";
 import { Level2Snapshot } from "../Level2Snapshots";
 import { Level2Update } from "../Level2Update";
-import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
 export declare class HuobiBase extends BasicClient {
     candlePeriod: CandlePeriod;
+    private _tickerCache;
     constructor({ name, wssPath, watcherMs }: {
         name: any;
         wssPath: any;
@@ -29,7 +29,7 @@ export declare class HuobiBase extends BasicClient {
     protected _sendSubLevel3Updates: (...args: any[]) => any;
     protected _sendUnsubLevel3Updates: (...args: any[]) => any;
     protected _onMessage(raw: Buffer): void;
-    protected _constructTicker(data: any, market: any): Ticker;
+    protected _constructTicker(data: any, market: any): void;
     protected _constructTradesFromMessage(datum: any, market: any): Trade;
     protected _constructCandle(msg: any): Candle;
     /**

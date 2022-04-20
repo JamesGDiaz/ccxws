@@ -26,6 +26,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HuobiBase = void 0;
 const BasicClient_1 = require("../BasicClient");
@@ -38,9 +41,11 @@ const NotImplementedFn_1 = require("../NotImplementedFn");
 const Ticker_1 = require("../Ticker");
 const Trade_1 = require("../Trade");
 const zlib = __importStar(require("../ZlibUtils"));
+const fast_deep_equal_1 = __importDefault(require("fast-deep-equal"));
 class HuobiBase extends BasicClient_1.BasicClient {
     constructor({ name, wssPath, watcherMs }) {
         super(wssPath, name, undefined, watcherMs);
+        this._tickerCache = new Map();
         this._sendSubLevel3Snapshots = NotImplementedFn_1.NotImplementedFn;
         this._sendUnsubLevel3Snapshots = NotImplementedFn_1.NotImplementedFn;
         this._sendSubLevel3Updates = NotImplementedFn_1.NotImplementedFn;
@@ -160,8 +165,7 @@ class HuobiBase extends BasicClient_1.BasicClient {
                 const market = this._tickerSubs.get(remoteId);
                 if (!market)
                     return;
-                const ticker = this._constructTicker(msgs.tick, market);
-                this.emit("ticker", ticker, market);
+                this._constructTicker(msgs.tick, market);
                 return;
             }
             // l2update
@@ -194,9 +198,17 @@ class HuobiBase extends BasicClient_1.BasicClient {
     }
     _constructTicker(data, market) {
         const { open, high, low, close, vol, amount, bid, bidSize, ask, askSize } = data;
+        if (!this._tickerCache.has(market.id)) {
+            this._tickerCache.set(market.id, { close, bid, ask });
+        }
+        const lastTicker = this._tickerCache.get(market.id);
+        const thisTicker = { close, bid, ask };
+        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+            return;
+        this._tickerCache.set(market.id, thisTicker);
         const dayChange = close - open;
         const dayChangePercent = ((close - open) / open) * 100;
-        return new Ticker_1.Ticker({
+        const ticker = new Ticker_1.Ticker({
             exchange: this.name,
             base: market.base,
             quote: market.quote,
@@ -214,6 +226,7 @@ class HuobiBase extends BasicClient_1.BasicClient {
             ask: ask.toFixed(10),
             askVolume: askSize.toFixed(10)
         });
+        this.emit("ticker", ticker, market);
     }
     _constructTradesFromMessage(datum, market) {
         const { amount, direction, ts, price, id } = datum;
