@@ -503,7 +503,6 @@ export class OkxClient extends BasicClient {
     */
     protected _constructTrade(datum, market) {
         const { px, side, sz, ts, tradeId } = datum;
-        console.log(px, side, sz, ts,tradeId)
         return new Trade({
             exchange: this.name,
             base: market.base,

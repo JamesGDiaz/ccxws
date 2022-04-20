@@ -424,7 +424,6 @@ class OkxClient extends BasicClient_1.BasicClient {
     */
     _constructTrade(datum, market) {
         const { px, side, sz, ts, tradeId } = datum;
-        console.log(px, side, sz, ts, tradeId);
         return new Trade_1.Trade({
             exchange: this.name,
             base: market.base,
