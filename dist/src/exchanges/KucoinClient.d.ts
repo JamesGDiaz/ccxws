@@ -12,7 +12,7 @@ export declare type KucoinClientOptions = ClientOptions & {
  * Kucoin client has a hard limit of 100 subscriptions per socket connection.
  * When more than 100 subscriptions are made on a single socket it will generate
  * an error that says "509: exceed max subscription count limitation of 100 per session".
- * To work around this will require creating multiple clients if you makem ore than 100
+ * To work around this will require creating multiple clients if you make more than 100
  * subscriptions.
  */
 export declare class KucoinClient extends BasicClient {

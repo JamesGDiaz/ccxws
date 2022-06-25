@@ -54,7 +54,7 @@ const NotImplementedFn_1 = require("../NotImplementedFn");
  * Kucoin client has a hard limit of 100 subscriptions per socket connection.
  * When more than 100 subscriptions are made on a single socket it will generate
  * an error that says "509: exceed max subscription count limitation of 100 per session".
- * To work around this will require creating multiple clients if you makem ore than 100
+ * To work around this will require creating multiple clients if you make more than 100
  * subscriptions.
  */
 class KucoinClient extends BasicClient_1.BasicClient {
@@ -112,10 +112,11 @@ class KucoinClient extends BasicClient_1.BasicClient {
     _connect() {
         if (!this._wss) {
             this._wss = { status: "connecting" };
-            if (this.wssPath)
-                super._connect();
-            else
-                this._connectAsync();
+            /*
+            if (this.wssPath) super._connect();
+            else this._connectAsync();
+            */
+            this._connectAsync();
         }
     }
     async _connectAsync() {
@@ -123,7 +124,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
         // Retry http request until successful
         while (!wssPath) {
             try {
-                const raw = await https.post("https://openapi-v2.kucoin.com/api/v1/bullet-public"); // prettier-ignore
+                const raw = await https.post("https://api.kucoin.com/api/v1/bullet-public"); // prettier-ignore
                 if (!raw.data || !raw.data.token)
                     throw new Error("Unexpected token response");
                 const { token, instanceServers } = raw.data;
