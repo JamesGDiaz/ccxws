@@ -34,7 +34,7 @@ export type KucoinClientOptions = ClientOptions & {
  * Kucoin client has a hard limit of 100 subscriptions per socket connection.
  * When more than 100 subscriptions are made on a single socket it will generate
  * an error that says "509: exceed max subscription count limitation of 100 per session".
- * To work around this will require creating multiple clients if you makem ore than 100
+ * To work around this will require creating multiple clients if you make more than 100
  * subscriptions.
  */
 export class KucoinClient extends BasicClient {
@@ -129,7 +129,7 @@ export class KucoinClient extends BasicClient {
         // Retry http request until successful
         while (!wssPath) {
             try {
-                const raw: any = await https.post("https://openapi-v2.kucoin.com/api/v1/bullet-public"); // prettier-ignore
+                const raw: any = await https.post("https://api.kucoin.com/api/v1/bullet-public"); // prettier-ignore
                 if (!raw.data || !raw.data.token) throw new Error("Unexpected token response");
                 const { token, instanceServers } = raw.data;
                 const { endpoint, pingInterval } = instanceServers[0];
