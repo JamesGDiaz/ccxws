@@ -11,8 +11,11 @@ export class SmartWss extends EventEmitter {
     private _connected: boolean;
     private _wss: any;
 
-    constructor(readonly wssPath: string, retryTimeoutMs = 500) {
+    public wssPath: string;
+
+    constructor(wssPath: string, retryTimeoutMs = 500) {
         super();
+        this.wssPath = wssPath;
         this._retryTimeoutMs = retryTimeoutMs;
         this._connected = false;
     }

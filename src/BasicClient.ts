@@ -38,7 +38,7 @@ export abstract class BasicClient extends EventEmitter implements IClient {
     protected _watcher: Watcher;
 
     constructor(
-        readonly wssPath: string,
+        public wssPath: string,
         readonly name: string,
         wssFactory?: WssFactoryFn,
         watcherMs?: number,
