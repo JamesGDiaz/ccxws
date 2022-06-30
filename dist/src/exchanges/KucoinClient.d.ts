@@ -37,7 +37,8 @@ export declare class KucoinClient extends BasicClient {
      * are idempotent and only a single socket connection is created. Then the _connectAsync
      * call is performed that does the REST token fetching and the connection.
      */
-    protected _connect(): void;
+    protected _connect(): Promise<void>;
+    protected _getWssPath(): Promise<string>;
     protected _connectAsync(): Promise<void>;
     protected __sendMessage(msg: any): void;
     protected _sendSubTicker(remote_id: string): void;

@@ -1,10 +1,10 @@
 /// <reference types="node" />
 import { EventEmitter } from "events";
 export declare class SmartWss extends EventEmitter {
-    readonly wssPath: string;
     private _retryTimeoutMs;
     private _connected;
     private _wss;
+    wssPath: string;
     constructor(wssPath: string, retryTimeoutMs?: number);
     /**
      * Gets if the socket is currently connected

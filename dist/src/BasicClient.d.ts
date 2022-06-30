@@ -16,7 +16,7 @@ export declare type SendFn = (remoteId: string, market: Market) => void;
  * it run the _onConnected method and will resubscribe.
  */
 export declare abstract class BasicClient extends EventEmitter implements IClient {
-    readonly wssPath: string;
+    wssPath: string;
     readonly name: string;
     hasTickers: boolean;
     hasTrades: boolean;

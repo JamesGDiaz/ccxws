@@ -109,17 +109,20 @@ class KucoinClient extends BasicClient_1.BasicClient {
      * are idempotent and only a single socket connection is created. Then the _connectAsync
      * call is performed that does the REST token fetching and the connection.
      */
-    _connect() {
+    async _connect() {
         if (!this._wss) {
             this._wss = { status: "connecting" };
-            /*
-            if (this.wssPath) super._connect();
-            else this._connectAsync();
-            */
-            this._connectAsync();
+            if (this.wssPath)
+                super._connect();
+            else
+                this._connectAsync();
+        }
+        else {
+            this._wss.wssPath = await this._getWssPath();
+            this.wssPath = this._wss.wssPath;
         }
     }
-    async _connectAsync() {
+    async _getWssPath() {
         let wssPath;
         // Retry http request until successful
         while (!wssPath) {
@@ -138,6 +141,10 @@ class KucoinClient extends BasicClient_1.BasicClient {
                 await (0, Util_1.wait)(this.connectInitTimeoutMs);
             }
         }
+        return wssPath;
+    }
+    async _connectAsync() {
+        let wssPath = await this._getWssPath();
         // Construct a socket and bind all events
         this._wss = this._wssFactory(wssPath);
         this._wss.on("error", this._onError.bind(this));
