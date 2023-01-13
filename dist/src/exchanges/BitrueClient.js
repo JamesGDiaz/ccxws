@@ -152,6 +152,8 @@ class BitrueClient extends BasicClient_1.BasicClient {
                 this._tradeSubs.get(remote_id.toLowerCase());
             if (!market)
                 return;
+            if (!Array.isArray(msg.tick))
+                return;
             // trades arrive newest first
             for (const datum of msg.tick.data.reverse()) {
                 const trade = this._constructTrade({ ...datum, ts: msg.ts }, market);
@@ -239,7 +241,7 @@ class BitrueClient extends BasicClient_1.BasicClient {
             side: side?.toLowerCase(),
             unix: ts,
             price: price?.toString(),
-            amount: amount?.toString(),
+            amount: (Number(amount) / Number(price))?.toString(),
         });
     }
 }
