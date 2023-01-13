@@ -152,7 +152,7 @@ class BitrueClient extends BasicClient_1.BasicClient {
                 this._tradeSubs.get(remote_id.toLowerCase());
             if (!market)
                 return;
-            if (!Array.isArray(msg.tick))
+            if (!Array.isArray(msg.tick.data))
                 return;
             // trades arrive newest first
             for (const datum of msg.tick.data.reverse()) {
