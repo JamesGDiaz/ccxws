@@ -8,6 +8,7 @@ import { ClientOptions } from "../ClientOptions";
 import { NotImplementedFn } from "../NotImplementedFn";
 import { Ticker } from "../Ticker";
 import { Trade } from "../Trade";
+import zlib from "zlib";
 
 /**
  * Implements the exchange according to API specifications:
@@ -28,6 +29,7 @@ export class BitmartClient extends BasicClient {
         this.hasTrades = true;
         this.id = 0;
         this._onMessage = this._onMessage.bind(this);
+        this._processMessage = this._processMessage.bind(this);
         this._sendPing = this._sendPing.bind(this);
     }
 
@@ -39,7 +41,7 @@ export class BitmartClient extends BasicClient {
 
     protected _startPing() {
         clearInterval(this._pingTimer);
-        this._pingTimer = setTimeout(this._sendPing, 5000);
+        this._pingTimer = setTimeout(this._sendPing, 10000);
     }
 
     protected _stopPing() {
@@ -54,7 +56,7 @@ export class BitmartClient extends BasicClient {
                 if (this._pingTimerTimestamp) {
                     this.reconnect();
                 }
-            }, 5000);
+            }, 10000);
         }
     }
 
@@ -119,11 +121,22 @@ export class BitmartClient extends BasicClient {
         let msg;
         try {
             msg = JSON.parse(raw.toString("utf8"));
+            this._processMessage(msg);
         } catch (err) {
+            // try inflating with zlib
+            try {
+                msg = JSON.parse(zlib.inflateRawSync(raw).toString());
+                this._processMessage(msg);
+                return;
+            } catch {
+                this.emit("error", err, raw);
+            }
             this.emit("error", err, raw);
             return;
         }
+    }
 
+    protected _processMessage(msg) {
         // handle subscription success
         if (msg.event_rep === "subed" && msg.status === "ok") {
             return;

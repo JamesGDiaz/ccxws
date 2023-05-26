@@ -31,6 +31,7 @@ export declare class BitmartClient extends BasicClient {
     protected _sendSubLevel3Updates: (...args: any[]) => any;
     protected _sendUnsubLevel3Updates: (...args: any[]) => any;
     protected _onMessage(raw: any): void;
+    protected _processMessage(msg: any): void;
     /**
     {
         "symbol":"BTC_USDT",
