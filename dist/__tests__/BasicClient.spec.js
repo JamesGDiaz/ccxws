@@ -65,34 +65,34 @@ describe("BasicClient", () => {
     describe("on first subscribe", () => {
         it("should open a connection", () => {
             instance.subscribeTrades({ id: "BTCUSD" });
-            (0, chai_1.expect)(instance._wss).to.not.be.undefined;
-            (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+            chai_1.expect(instance._wss).to.not.be.undefined;
+            chai_1.expect(instance._wss.connect.callCount).to.equal(1);
         });
         it("should send subscribe to the socket", () => {
             instance._wss.mockEmit("connected");
-            (0, chai_1.expect)(instance._sendSubTrades.callCount).to.equal(1);
-            (0, chai_1.expect)(instance._sendSubTrades.args[0][0]).to.equal("BTCUSD");
-            (0, chai_1.expect)(instance._sendSubTrades.args[0][1]).to.be.an("object");
+            chai_1.expect(instance._sendSubTrades.callCount).to.equal(1);
+            chai_1.expect(instance._sendSubTrades.args[0][0]).to.equal("BTCUSD");
+            chai_1.expect(instance._sendSubTrades.args[0][1]).to.be.an("object");
         });
         it("should start the watcher", () => {
-            (0, chai_1.expect)(instance._watcher.start.callCount).to.equal(1);
+            chai_1.expect(instance._watcher.start.callCount).to.equal(1);
         });
     });
     describe("on subsequent subscribes", () => {
         it("should not connect again", () => {
             instance.subscribeTrades({ id: "LTCBTC" });
-            (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+            chai_1.expect(instance._wss.connect.callCount).to.equal(1);
         });
         it("should send subscribe to the socket", () => {
-            (0, chai_1.expect)(instance._sendSubTrades.callCount).to.equal(2);
-            (0, chai_1.expect)(instance._sendSubTrades.args[1][0]).to.equal("LTCBTC");
-            (0, chai_1.expect)(instance._sendSubTrades.args[1][1]).to.be.an("object");
+            chai_1.expect(instance._sendSubTrades.callCount).to.equal(2);
+            chai_1.expect(instance._sendSubTrades.args[1][0]).to.equal("LTCBTC");
+            chai_1.expect(instance._sendSubTrades.args[1][1]).to.be.an("object");
         });
     });
     describe("on duplicate subscribe", () => {
         it("should not send subscribe to the socket", () => {
             instance.subscribeTrades({ id: "LTCBTC" });
-            (0, chai_1.expect)(instance._sendSubTrades.callCount).to.equal(2);
+            chai_1.expect(instance._sendSubTrades.callCount).to.equal(2);
         });
     });
     describe("on message", () => {
@@ -100,31 +100,31 @@ describe("BasicClient", () => {
             instance._wss.mockEmit("message", "test");
         });
         it("should call on message", () => {
-            (0, chai_1.expect)(instance._onMessage.args[0][0]).to.equal("test");
+            chai_1.expect(instance._onMessage.args[0][0]).to.equal("test");
         });
     });
     describe("on reconnect", () => {
         it("should resubscribe to markets", () => {
             instance._wss.mockEmit("connected");
-            (0, chai_1.expect)(instance._sendSubTrades.callCount).to.equal(4);
-            (0, chai_1.expect)(instance._sendSubTrades.args[2][0]).to.equal("BTCUSD");
-            (0, chai_1.expect)(instance._sendSubTrades.args[2][1]).to.be.an("object");
-            (0, chai_1.expect)(instance._sendSubTrades.args[3][0]).to.equal("LTCBTC");
-            (0, chai_1.expect)(instance._sendSubTrades.args[3][1]).to.be.an("object");
+            chai_1.expect(instance._sendSubTrades.callCount).to.equal(4);
+            chai_1.expect(instance._sendSubTrades.args[2][0]).to.equal("BTCUSD");
+            chai_1.expect(instance._sendSubTrades.args[2][1]).to.be.an("object");
+            chai_1.expect(instance._sendSubTrades.args[3][0]).to.equal("LTCBTC");
+            chai_1.expect(instance._sendSubTrades.args[3][1]).to.be.an("object");
         });
     });
     describe("on unsubscribe", () => {
         it("should send unsubscribe to socket", () => {
             instance.unsubscribeTrades({ id: "LTCBTC" });
-            (0, chai_1.expect)(instance._sendUnsubTrades.callCount).to.equal(1);
-            (0, chai_1.expect)(instance._sendUnsubTrades.args[0][0]).to.equal("LTCBTC");
-            (0, chai_1.expect)(instance._sendUnsubTrades.args[0][1]).to.be.an("object");
+            chai_1.expect(instance._sendUnsubTrades.callCount).to.equal(1);
+            chai_1.expect(instance._sendUnsubTrades.args[0][0]).to.equal("LTCBTC");
+            chai_1.expect(instance._sendUnsubTrades.args[0][1]).to.be.an("object");
         });
     });
     describe("on duplicate unsubscribe", () => {
         it("should not send unsubscribe to the socket", () => {
             instance.unsubscribeTrades({ id: "LTCBTC" });
-            (0, chai_1.expect)(instance._sendUnsubTrades.callCount).to.equal(1);
+            chai_1.expect(instance._sendUnsubTrades.callCount).to.equal(1);
         });
     });
     describe("when no messages received", () => {
@@ -141,20 +141,20 @@ describe("BasicClient", () => {
             instance._watcher._reconnect();
         });
         it("should close the connection", () => {
-            (0, chai_1.expect)(originalWss.close.callCount).to.equal(1);
+            chai_1.expect(originalWss.close.callCount).to.equal(1);
         });
         it("should emit a closing event", () => {
-            (0, chai_1.expect)(closingEvent.callCount).to.equal(1);
+            chai_1.expect(closingEvent.callCount).to.equal(1);
         });
         it("should emit a closed event", () => {
-            (0, chai_1.expect)(closedEvent.callCount).to.equal(1);
+            chai_1.expect(closedEvent.callCount).to.equal(1);
         });
         it("should reopen the connection", () => {
-            (0, chai_1.expect)(instance._wss).to.not.deep.equal(originalWss);
-            (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+            chai_1.expect(instance._wss).to.not.deep.equal(originalWss);
+            chai_1.expect(instance._wss.connect.callCount).to.equal(1);
         });
         it("should emit a reconnected event", () => {
-            (0, chai_1.expect)(reconnectingEvent.callCount).to.equal(1);
+            chai_1.expect(reconnectingEvent.callCount).to.equal(1);
         });
     });
     describe("when connected, on disconnect", () => {
@@ -164,7 +164,7 @@ describe("BasicClient", () => {
             instance._wss.mockEmit("disconnected");
         });
         it("close should stop the reconnection checker", () => {
-            (0, chai_1.expect)(instance._watcher.stop.callCount).to.equal(1);
+            chai_1.expect(instance._watcher.stop.callCount).to.equal(1);
         });
     });
     describe("when connected, .close", () => {
@@ -182,7 +182,7 @@ describe("BasicClient", () => {
             instance.close();
         });
         it("close should stop the reconnection checker", () => {
-            (0, chai_1.expect)(instance._watcher.stop.callCount).to.equal(2);
+            chai_1.expect(instance._watcher.stop.callCount).to.equal(2);
         });
     });
     describe("when already closed", () => {
@@ -205,36 +205,36 @@ describe("BasicClient", () => {
         describe("on first subscribe", () => {
             it("should open a connection", () => {
                 instance.subscribeLevel2Snapshots({ id: "BTCUSD" });
-                (0, chai_1.expect)(instance._wss).to.not.be.undefined;
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss).to.not.be.undefined;
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
                 instance._wss.mockEmit("connected");
-                (0, chai_1.expect)(instance._sendSubLevel2Snapshots.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendSubLevel2Snapshots.args[0][0]).to.equal("BTCUSD");
-                (0, chai_1.expect)(instance._sendSubLevel2Snapshots.args[0][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubLevel2Snapshots.callCount).to.equal(1);
+                chai_1.expect(instance._sendSubLevel2Snapshots.args[0][0]).to.equal("BTCUSD");
+                chai_1.expect(instance._sendSubLevel2Snapshots.args[0][1]).to.be.an("object");
             });
             it("should start the reconnectChecker", () => {
-                (0, chai_1.expect)(instance._watcher.start.callCount).to.equal(1);
+                chai_1.expect(instance._watcher.start.callCount).to.equal(1);
             });
         });
         describe("on subsequent subscribes", () => {
             it("should not connect again", () => {
                 instance.subscribeLevel2Snapshots({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
-                (0, chai_1.expect)(instance._sendSubLevel2Snapshots.callCount).to.equal(2);
-                (0, chai_1.expect)(instance._sendSubLevel2Snapshots.args[1][0]).to.equal("LTCBTC");
-                (0, chai_1.expect)(instance._sendSubLevel2Snapshots.args[1][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubLevel2Snapshots.callCount).to.equal(2);
+                chai_1.expect(instance._sendSubLevel2Snapshots.args[1][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendSubLevel2Snapshots.args[1][1]).to.be.an("object");
             });
         });
         describe("on unsubscribe", () => {
             it("should send unsubscribe to socket", () => {
                 instance.unsubscribeLevel2Snapshots({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._sendUnsubLevel2Snapshots.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendUnsubLevel2Snapshots.args[0][0]).to.equal("LTCBTC");
-                (0, chai_1.expect)(instance._sendUnsubLevel2Snapshots.args[0][1]).to.be.an("object");
+                chai_1.expect(instance._sendUnsubLevel2Snapshots.callCount).to.equal(1);
+                chai_1.expect(instance._sendUnsubLevel2Snapshots.args[0][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendUnsubLevel2Snapshots.args[0][1]).to.be.an("object");
             });
         });
     });
@@ -247,35 +247,35 @@ describe("BasicClient", () => {
         describe("on first subscribe", () => {
             it("should open a connection", () => {
                 instance.subscribeLevel2Updates({ id: "BTCUSD" });
-                (0, chai_1.expect)(instance._wss).to.not.be.undefined;
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss).to.not.be.undefined;
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
                 instance._wss.mockEmit("connected");
-                (0, chai_1.expect)(instance._sendSubLevel2Updates.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendSubLevel2Updates.args[0][0]).to.equal("BTCUSD");
-                (0, chai_1.expect)(instance._sendSubLevel2Updates.args[0][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubLevel2Updates.callCount).to.equal(1);
+                chai_1.expect(instance._sendSubLevel2Updates.args[0][0]).to.equal("BTCUSD");
+                chai_1.expect(instance._sendSubLevel2Updates.args[0][1]).to.be.an("object");
             });
             it("should start the reconnectChecker", () => {
-                (0, chai_1.expect)(instance._watcher.start.callCount).to.equal(1);
+                chai_1.expect(instance._watcher.start.callCount).to.equal(1);
             });
         });
         describe("on subsequent subscribes", () => {
             it("should not connect again", () => {
                 instance.subscribeLevel2Updates({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
-                (0, chai_1.expect)(instance._sendSubLevel2Updates.callCount).to.equal(2);
-                (0, chai_1.expect)(instance._sendSubLevel2Updates.args[1][0]).to.equal("LTCBTC");
-                (0, chai_1.expect)(instance._sendSubLevel2Updates.args[1][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubLevel2Updates.callCount).to.equal(2);
+                chai_1.expect(instance._sendSubLevel2Updates.args[1][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendSubLevel2Updates.args[1][1]).to.be.an("object");
             });
         });
         describe("on unsubscribe", () => {
             it("should send unsubscribe to socket", () => {
                 instance.unsubscribeLevel2Updates({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._sendUnsubLevel2Updates.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendUnsubLevel2Updates.args[0][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendUnsubLevel2Updates.callCount).to.equal(1);
+                chai_1.expect(instance._sendUnsubLevel2Updates.args[0][0]).to.equal("LTCBTC");
             });
         });
     });
@@ -288,35 +288,35 @@ describe("BasicClient", () => {
         describe("on first subscribe", () => {
             it("should open a connection", () => {
                 instance.subscribeLevel3Updates({ id: "BTCUSD" });
-                (0, chai_1.expect)(instance._wss).to.not.be.undefined;
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss).to.not.be.undefined;
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
                 instance._wss.mockEmit("connected");
-                (0, chai_1.expect)(instance._sendSubLevel3Updates.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendSubLevel3Updates.args[0][0]).to.equal("BTCUSD");
-                (0, chai_1.expect)(instance._sendSubLevel3Updates.args[0][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubLevel3Updates.callCount).to.equal(1);
+                chai_1.expect(instance._sendSubLevel3Updates.args[0][0]).to.equal("BTCUSD");
+                chai_1.expect(instance._sendSubLevel3Updates.args[0][1]).to.be.an("object");
             });
             it("should start the reconnectChecker", () => {
-                (0, chai_1.expect)(instance._watcher.start.callCount).to.equal(1);
+                chai_1.expect(instance._watcher.start.callCount).to.equal(1);
             });
         });
         describe("on subsequent subscribes", () => {
             it("should not connect again", () => {
                 instance.subscribeLevel3Updates({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
-                (0, chai_1.expect)(instance._sendSubLevel3Updates.callCount).to.equal(2);
-                (0, chai_1.expect)(instance._sendSubLevel3Updates.args[1][0]).to.equal("LTCBTC");
-                (0, chai_1.expect)(instance._sendSubLevel3Updates.args[1][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubLevel3Updates.callCount).to.equal(2);
+                chai_1.expect(instance._sendSubLevel3Updates.args[1][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendSubLevel3Updates.args[1][1]).to.be.an("object");
             });
         });
         describe("on unsubscribe", () => {
             it("should send unsubscribe to socket", () => {
                 instance.unsubscribeLevel3Updates({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._sendUnsubLevel3Updates.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendUnsubLevel3Updates.args[0][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendUnsubLevel3Updates.callCount).to.equal(1);
+                chai_1.expect(instance._sendUnsubLevel3Updates.args[0][0]).to.equal("LTCBTC");
             });
         });
     });
@@ -329,28 +329,28 @@ describe("BasicClient", () => {
         describe("on first subscribe", () => {
             it("should open a connection", () => {
                 instance.subscribeTicker({ id: "BTCUSD" });
-                (0, chai_1.expect)(instance._wss).to.not.be.undefined;
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss).to.not.be.undefined;
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
                 instance._wss.mockEmit("connected");
-                (0, chai_1.expect)(instance._sendSubTicker.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendSubTicker.args[0][0]).to.equal("BTCUSD");
-                (0, chai_1.expect)(instance._sendSubTicker.args[0][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubTicker.callCount).to.equal(1);
+                chai_1.expect(instance._sendSubTicker.args[0][0]).to.equal("BTCUSD");
+                chai_1.expect(instance._sendSubTicker.args[0][1]).to.be.an("object");
             });
             it("should start the reconnectChecker", () => {
-                (0, chai_1.expect)(instance._watcher.start.callCount).to.equal(1);
+                chai_1.expect(instance._watcher.start.callCount).to.equal(1);
             });
         });
         describe("on subsequent subscribes", () => {
             it("should not connect again", () => {
                 instance.subscribeTicker({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
-                (0, chai_1.expect)(instance._sendSubTicker.callCount).to.equal(2);
-                (0, chai_1.expect)(instance._sendSubTicker.args[1][0]).to.equal("LTCBTC");
-                (0, chai_1.expect)(instance._sendSubTicker.args[1][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubTicker.callCount).to.equal(2);
+                chai_1.expect(instance._sendSubTicker.args[1][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendSubTicker.args[1][1]).to.be.an("object");
             });
         });
         // describe("on unsubscribe", () => {
@@ -370,35 +370,35 @@ describe("BasicClient", () => {
         describe("on first subscribe", () => {
             it("should open a connection", () => {
                 instance.subscribeCandles({ id: "BTCUSD" });
-                (0, chai_1.expect)(instance._wss).to.not.be.undefined;
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss).to.not.be.undefined;
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
                 instance._wss.mockEmit("connected");
-                (0, chai_1.expect)(instance._sendSubCandles.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendSubCandles.args[0][0]).to.equal("BTCUSD");
-                (0, chai_1.expect)(instance._sendSubCandles.args[0][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubCandles.callCount).to.equal(1);
+                chai_1.expect(instance._sendSubCandles.args[0][0]).to.equal("BTCUSD");
+                chai_1.expect(instance._sendSubCandles.args[0][1]).to.be.an("object");
             });
             it("should start the reconnectChecker", () => {
-                (0, chai_1.expect)(instance._watcher.start.callCount).to.equal(1);
+                chai_1.expect(instance._watcher.start.callCount).to.equal(1);
             });
         });
         describe("on subsequent subscribes", () => {
             it("should not connect again", () => {
                 instance.subscribeCandles({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._wss.connect.callCount).to.equal(1);
+                chai_1.expect(instance._wss.connect.callCount).to.equal(1);
             });
             it("should send subscribe to the socket", () => {
-                (0, chai_1.expect)(instance._sendSubCandles.callCount).to.equal(2);
-                (0, chai_1.expect)(instance._sendSubCandles.args[1][0]).to.equal("LTCBTC");
-                (0, chai_1.expect)(instance._sendSubCandles.args[1][1]).to.be.an("object");
+                chai_1.expect(instance._sendSubCandles.callCount).to.equal(2);
+                chai_1.expect(instance._sendSubCandles.args[1][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendSubCandles.args[1][1]).to.be.an("object");
             });
         });
         describe("on unsubscribe", () => {
             it("should send unsubscribe to socket", () => {
                 instance.unsubscribeCandles({ id: "LTCBTC" });
-                (0, chai_1.expect)(instance._sendUnsubCandles.callCount).to.equal(1);
-                (0, chai_1.expect)(instance._sendUnsubCandles.args[0][0]).to.equal("LTCBTC");
+                chai_1.expect(instance._sendUnsubCandles.callCount).to.equal(1);
+                chai_1.expect(instance._sendUnsubCandles.args[0][0]).to.equal("LTCBTC");
             });
         });
     });
@@ -417,39 +417,39 @@ describe("BasicClient", () => {
         });
         it("should not send ticker sub", () => {
             instance.subscribeTicker(market);
-            (0, chai_1.expect)(instance._sendSubTicker.callCount).to.equal(0);
+            chai_1.expect(instance._sendSubTicker.callCount).to.equal(0);
         });
         it("should not send trade sub", () => {
             instance.subscribeTrades(market);
-            (0, chai_1.expect)(instance._sendSubTrades.callCount).to.equal(0);
+            chai_1.expect(instance._sendSubTrades.callCount).to.equal(0);
         });
         it("should not send trade unsub", () => {
             instance.unsubscribeTrades(market);
-            (0, chai_1.expect)(instance._sendUnsubTrades.callCount).to.equal(0);
+            chai_1.expect(instance._sendUnsubTrades.callCount).to.equal(0);
         });
         it("should not send level2 snapshot sub", () => {
             instance.subscribeLevel2Snapshots(market);
-            (0, chai_1.expect)(instance._sendSubLevel2Snapshots.callCount).to.equal(0);
+            chai_1.expect(instance._sendSubLevel2Snapshots.callCount).to.equal(0);
         });
         it("should not send level2 snapshot unsub", () => {
             instance.unsubscribeLevel2Snapshots(market);
-            (0, chai_1.expect)(instance._sendUnsubLevel2Snapshots.callCount).to.equal(0);
+            chai_1.expect(instance._sendUnsubLevel2Snapshots.callCount).to.equal(0);
         });
         it("should not send level2 update sub", () => {
             instance.subscribeLevel2Updates(market);
-            (0, chai_1.expect)(instance._sendSubLevel2Updates.callCount).to.equal(0);
+            chai_1.expect(instance._sendSubLevel2Updates.callCount).to.equal(0);
         });
         it("should not send level2 update unsub", () => {
             instance.unsubscribeLevel2Updates(market);
-            (0, chai_1.expect)(instance._sendUnsubLevel2Updates.callCount).to.equal(0);
+            chai_1.expect(instance._sendUnsubLevel2Updates.callCount).to.equal(0);
         });
         it("should not send level3 update sub", () => {
             instance.subscribeLevel3Updates(market);
-            (0, chai_1.expect)(instance._sendSubLevel3Updates.callCount).to.equal(0);
+            chai_1.expect(instance._sendSubLevel3Updates.callCount).to.equal(0);
         });
         it("should not send level3 update unsub", () => {
             instance.unsubscribeLevel3Updates(market);
-            (0, chai_1.expect)(instance._sendUnsubLevel3Updates.callCount).to.equal(0);
+            chai_1.expect(instance._sendUnsubLevel3Updates.callCount).to.equal(0);
         });
     });
 });

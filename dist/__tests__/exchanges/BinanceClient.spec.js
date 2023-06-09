@@ -4,12 +4,12 @@ const TestRunner_1 = require("../TestRunner");
 const BinanceClient_1 = require("../../src/exchanges/BinanceClient");
 const Https_1 = require("../../src/Https");
 async function fetchAllMarkets() {
-    const results = await (0, Https_1.get)("https://api.binance.com/api/v1/exchangeInfo");
+    const results = await Https_1.get("https://api.binance.com/api/v1/exchangeInfo");
     return results.symbols
         .filter(p => p.status === "TRADING")
         .map(p => ({ id: p.symbol, base: p.baseAsset, quote: p.quoteAsset }));
 }
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new BinanceClient_1.BinanceClient(),
     clientName: "BinanceClient",
     exchangeName: "Binance",

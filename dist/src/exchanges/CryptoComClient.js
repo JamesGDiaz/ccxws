@@ -38,7 +38,7 @@ class CryptoComClient extends BasicClient_1.BasicClient {
         this.hasTrades = true;
         this._onMessage = this._onMessage.bind(this);
         this._sendPing = this._sendPing.bind(this);
-        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), sendThrottleMs);
+        this._sendMessage = Throttle_1.throttle(this.__sendMessage.bind(this), sendThrottleMs);
     }
     _beforeClose() {
         this._sendMessage.cancel();
@@ -158,7 +158,7 @@ class CryptoComClient extends BasicClient_1.BasicClient {
         }
         const lastTicker = this._tickerCache.get(market.id);
         const thisTicker = { bestBid, bestAsk, last };
-        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+        if (fast_deep_equal_1.default(lastTicker, thisTicker))
             return;
         this._tickerCache.set(market.id, thisTicker);
         const changePercent = (Number(change) / (Number(last) + Number(change))) * 100;

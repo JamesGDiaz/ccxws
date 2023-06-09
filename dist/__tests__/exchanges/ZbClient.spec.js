@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const ZbClient_1 = require("../../src/exchanges/ZbClient");
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new ZbClient_1.ZbClient(),
     clientName: "ZbClient",
     exchangeName: "ZB",

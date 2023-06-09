@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const TestRunner_1 = require("../TestRunner");
 const BitmexClient_1 = require("../../src/exchanges/BitmexClient");
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new BitmexClient_1.BitmexClient(),
     clientName: "BitMEXClient",
     exchangeName: "BitMEX",
@@ -44,7 +44,7 @@ const BitmexClient_1 = require("../../src/exchanges/BitmexClient");
         hasTradeId: true,
         tests: (spec, result) => {
             it("trade.tradeId should be 32 hex characters", () => {
-                (0, chai_1.expect)(result.trade.tradeId).to.match(/^[a-f0-9]{32,32}$/);
+                chai_1.expect(result.trade.tradeId).to.match(/^[a-f0-9]{32,32}$/);
             });
         },
     },
@@ -72,11 +72,11 @@ const BitmexClient_1 = require("../../src/exchanges/BitmexClient");
         tests: (spec, result) => {
             it("update.bid/ask should have meta.id", () => {
                 const point = result.update.bids[0] || result.update.asks[0];
-                (0, chai_1.expect)(point.meta.id).to.be.greaterThan(0);
+                chai_1.expect(point.meta.id).to.be.greaterThan(0);
             });
             it("update.bid/ask should have meta.type", () => {
                 const point = result.update.bids[0] || result.update.asks[0];
-                (0, chai_1.expect)(point.meta.type).to.be.match(/update|delete|insert/);
+                chai_1.expect(point.meta.type).to.be.match(/update|delete|insert/);
             });
         },
     },

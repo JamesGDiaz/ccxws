@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const PoloniexClient_1 = require("../../src/exchanges/PoloniexClient");
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new PoloniexClient_1.PoloniexClient(),
     clientName: "PoloniexClient",
     exchangeName: "Poloniex",

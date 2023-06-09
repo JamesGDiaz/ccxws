@@ -1,11 +1,7 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -31,7 +27,7 @@ describe("unzip", () => {
         const cb = (err, val) => {
             vals.push(val);
             if (vals.length === 5) {
-                (0, chai_1.expect)(vals).to.deep.equal([
+                chai_1.expect(vals).to.deep.equal([
                     Buffer.from("1"),
                     Buffer.from("2"),
                     Buffer.from("3"),
@@ -63,9 +59,9 @@ describe("unzip", () => {
         const cb = (err, val) => {
             vals.push(err || val);
             if (vals.length === 3) {
-                (0, chai_1.expect)(vals[0]).to.deep.equal(Buffer.from("1"));
-                (0, chai_1.expect)(vals[1]).to.be.instanceOf(Error);
-                (0, chai_1.expect)(vals[2]).to.deep.equal(Buffer.from("2"));
+                chai_1.expect(vals[0]).to.deep.equal(Buffer.from("1"));
+                chai_1.expect(vals[1]).to.be.instanceOf(Error);
+                chai_1.expect(vals[2]).to.deep.equal(Buffer.from("2"));
                 done();
             }
         };
@@ -80,7 +76,7 @@ describe("inflateRaw", () => {
         const cb = (err, val) => {
             vals.push(val);
             if (vals.length === 5) {
-                (0, chai_1.expect)(vals).to.deep.equal([
+                chai_1.expect(vals).to.deep.equal([
                     Buffer.from("1"),
                     Buffer.from("2"),
                     Buffer.from("3"),

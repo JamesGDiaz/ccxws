@@ -49,7 +49,7 @@ class OkxClient extends BasicClient_1.BasicClient {
         this.hasCandles = true;
         this.hasLevel2Snapshots = true;
         this.hasLevel2Updates = true;
-        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), sendThrottleMs);
+        this._sendMessage = Throttle_1.throttle(this.__sendMessage.bind(this), sendThrottleMs);
     }
     _beforeClose() {
         this._sendMessage.cancel();

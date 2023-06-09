@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const BitflyerClient_1 = require("../../src/exchanges/BitflyerClient");
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new BitflyerClient_1.BitflyerClient(),
     clientName: "BitflyerClient",
     exchangeName: "bitFlyer",

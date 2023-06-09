@@ -1,11 +1,7 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -74,9 +70,9 @@ class KucoinClient extends BasicClient_1.BasicClient {
         this._pingIntervalTime = 50000;
         this.restThrottleMs = restThrottleMs;
         this.connectInitTimeoutMs = 5000;
-        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), sendThrottleMs);
-        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
-        this._requestLevel3Snapshot = (0, Throttle_1.throttle)(this.__requestLevel3Snapshot.bind(this), restThrottleMs);
+        this._sendMessage = Throttle_1.throttle(this.__sendMessage.bind(this), sendThrottleMs);
+        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
+        this._requestLevel3Snapshot = Throttle_1.throttle(this.__requestLevel3Snapshot.bind(this), restThrottleMs);
     }
     _beforeClose() {
         this._sendMessage.cancel();
@@ -138,7 +134,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
             }
             catch (ex) {
                 this._onError(ex);
-                await (0, Util_1.wait)(this.connectInitTimeoutMs);
+                await Util_1.wait(this.connectInitTimeoutMs);
             }
         }
         return wssPath;
@@ -497,7 +493,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
         }
         catch (ex) {
             this.emit("error", ex);
-            await (0, Util_1.wait)(this.restThrottleMs);
+            await Util_1.wait(this.restThrottleMs);
             this.__requestLevel2Snapshot(market);
         }
     }
@@ -733,7 +729,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
         }
         catch (ex) {
             this.emit("error", ex);
-            await (0, Util_1.wait)(this.restThrottleMs);
+            await Util_1.wait(this.restThrottleMs);
             this.__requestLevel3Snapshot(market);
         }
     }

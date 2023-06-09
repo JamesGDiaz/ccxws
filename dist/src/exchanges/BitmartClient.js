@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BitmartClient = void 0;
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -10,6 +13,7 @@ const BasicClient_1 = require("../BasicClient");
 const NotImplementedFn_1 = require("../NotImplementedFn");
 const Ticker_1 = require("../Ticker");
 const Trade_1 = require("../Trade");
+const zlib_1 = __importDefault(require("zlib"));
 /**
  * Implements the exchange according to API specifications:
  *
@@ -31,6 +35,7 @@ class BitmartClient extends BasicClient_1.BasicClient {
         this.hasTrades = true;
         this.id = 0;
         this._onMessage = this._onMessage.bind(this);
+        this._processMessage = this._processMessage.bind(this);
         this._sendPing = this._sendPing.bind(this);
     }
     _beforeConnect() {
@@ -40,7 +45,7 @@ class BitmartClient extends BasicClient_1.BasicClient {
     }
     _startPing() {
         clearInterval(this._pingTimer);
-        this._pingTimer = setTimeout(this._sendPing, 5000);
+        this._pingTimer = setTimeout(this._sendPing, 10000);
     }
     _stopPing() {
         clearInterval(this._pingTimer);
@@ -53,7 +58,7 @@ class BitmartClient extends BasicClient_1.BasicClient {
                 if (this._pingTimerTimestamp) {
                     this.reconnect();
                 }
-            }, 5000);
+            }, 10000);
         }
     }
     _sendSubTicker(remote_id) {
@@ -92,11 +97,23 @@ class BitmartClient extends BasicClient_1.BasicClient {
         let msg;
         try {
             msg = JSON.parse(raw.toString("utf8"));
+            this._processMessage(msg);
         }
         catch (err) {
+            // try inflating with zlib
+            try {
+                msg = JSON.parse(zlib_1.default.inflateRawSync(raw).toString());
+                this._processMessage(msg);
+                return;
+            }
+            catch {
+                this.emit("error", err, raw);
+            }
             this.emit("error", err, raw);
             return;
         }
+    }
+    _processMessage(msg) {
         // handle subscription success
         if (msg.event_rep === "subed" && msg.status === "ok") {
             return;

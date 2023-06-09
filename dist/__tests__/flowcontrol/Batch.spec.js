@@ -15,7 +15,7 @@ describe("batch", () => {
             const batchSize = 2;
             const delayMs = 50;
             fn = sinon_1.default.stub();
-            sut = (0, Batch_1.batch)(fn, batchSize, delayMs);
+            sut = Batch_1.batch(fn, batchSize, delayMs);
         });
         it("groups calls within timeout period", async () => {
             sut(1);
@@ -24,9 +24,9 @@ describe("batch", () => {
             await wait(10);
             sut(3);
             await wait(100);
-            (0, chai_1.expect)(fn.callCount).to.equal(2);
-            (0, chai_1.expect)(fn.args[0][0]).to.deep.equal([[1], [2]]);
-            (0, chai_1.expect)(fn.args[1][0]).to.deep.equal([[3]]);
+            chai_1.expect(fn.callCount).to.equal(2);
+            chai_1.expect(fn.args[0][0]).to.deep.equal([[1], [2]]);
+            chai_1.expect(fn.args[1][0]).to.deep.equal([[3]]);
         });
         it("groups calls within debounce periods", async () => {
             sut(1);
@@ -35,16 +35,16 @@ describe("batch", () => {
             await wait(100);
             sut(3);
             await wait(100);
-            (0, chai_1.expect)(fn.callCount).to.equal(3);
-            (0, chai_1.expect)(fn.args[0][0]).to.deep.equal([[1]]);
-            (0, chai_1.expect)(fn.args[1][0]).to.deep.equal([[2]]);
-            (0, chai_1.expect)(fn.args[2][0]).to.deep.equal([[3]]);
+            chai_1.expect(fn.callCount).to.equal(3);
+            chai_1.expect(fn.args[0][0]).to.deep.equal([[1]]);
+            chai_1.expect(fn.args[1][0]).to.deep.equal([[2]]);
+            chai_1.expect(fn.args[2][0]).to.deep.equal([[3]]);
         });
         it("can reset pending executions", async () => {
             sut(1);
             sut.cancel();
             await wait(100);
-            (0, chai_1.expect)(fn.callCount).to.equal(0);
+            chai_1.expect(fn.callCount).to.equal(0);
         });
     });
     describe("large batch size", () => {
@@ -54,7 +54,7 @@ describe("batch", () => {
             const batchSize = 100;
             const delayMs = 50;
             fn = sinon_1.default.stub();
-            sut = (0, Batch_1.batch)(fn, batchSize, delayMs);
+            sut = Batch_1.batch(fn, batchSize, delayMs);
         });
         it("groups calls within timeout period", async () => {
             sut(1);
@@ -63,8 +63,8 @@ describe("batch", () => {
             await wait(10);
             sut(3);
             await wait(100);
-            (0, chai_1.expect)(fn.callCount).to.equal(1);
-            (0, chai_1.expect)(fn.args[0][0]).to.deep.equal([[1], [2], [3]]);
+            chai_1.expect(fn.callCount).to.equal(1);
+            chai_1.expect(fn.args[0][0]).to.deep.equal([[1], [2], [3]]);
         });
         it("groups calls within debounce periods", async () => {
             sut(1);
@@ -73,16 +73,16 @@ describe("batch", () => {
             await wait(100);
             sut(3);
             await wait(100);
-            (0, chai_1.expect)(fn.callCount).to.equal(3);
-            (0, chai_1.expect)(fn.args[0][0]).to.deep.equal([[1]]);
-            (0, chai_1.expect)(fn.args[1][0]).to.deep.equal([[2]]);
-            (0, chai_1.expect)(fn.args[2][0]).to.deep.equal([[3]]);
+            chai_1.expect(fn.callCount).to.equal(3);
+            chai_1.expect(fn.args[0][0]).to.deep.equal([[1]]);
+            chai_1.expect(fn.args[1][0]).to.deep.equal([[2]]);
+            chai_1.expect(fn.args[2][0]).to.deep.equal([[3]]);
         });
         it("can reset pending executions", async () => {
             sut(1);
             sut.cancel();
             await wait(100);
-            (0, chai_1.expect)(fn.callCount).to.equal(0);
+            chai_1.expect(fn.callCount).to.equal(0);
         });
     });
 });

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const LiquidClient_1 = require("../../src/exchanges/LiquidClient");
 const TestRunner_1 = require("../TestRunner");
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new LiquidClient_1.LiquidClient(),
     clientName: "LiquidClient",
     exchangeName: "Liquid",

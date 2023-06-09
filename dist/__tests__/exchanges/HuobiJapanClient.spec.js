@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TestRunner_1 = require("../TestRunner");
 const HuobiJapanClient_1 = require("../../src/exchanges/HuobiJapanClient");
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new HuobiJapanClient_1.HuobiJapanClient(),
     clientName: "HuobiJapanClient",
     exchangeName: "Huobi Japan",

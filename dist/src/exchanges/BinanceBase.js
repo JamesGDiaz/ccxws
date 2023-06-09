@@ -7,11 +7,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -79,10 +75,10 @@ class BinanceBase extends BasicClient_1.BasicClient {
         this._messageId = 0;
         this._tickersActive = false;
         this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
-        this._batchSub = (0, Batch_1.batch)(this.__batchSub.bind(this), socketBatchSize);
-        this._batchUnsub = (0, Batch_1.batch)(this.__batchUnsub.bind(this), socketBatchSize);
-        this._sendMessage = (0, Throttle_1.throttle)(this.__sendMessage.bind(this), socketThrottleMs);
-        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
+        this._batchSub = Batch_1.batch(this.__batchSub.bind(this), socketBatchSize);
+        this._batchUnsub = Batch_1.batch(this.__batchUnsub.bind(this), socketBatchSize);
+        this._sendMessage = Throttle_1.throttle(this.__sendMessage.bind(this), socketThrottleMs);
+        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), restThrottleMs);
     }
     //////////////////////////////////////////////
     _onClosing() {

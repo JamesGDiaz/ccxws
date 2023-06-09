@@ -115,7 +115,7 @@ class FtxBaseClient extends BasicClient_1.BasicClient {
         }
         const lastTicker = this._tickerCache.get(market.id);
         const thisTicker = { last, bid, ask };
-        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+        if (fast_deep_equal_1.default(lastTicker, thisTicker))
             return;
         this._tickerCache.set(market.id, thisTicker);
         const timestamp = this._timeToTimestampMs(data.time);

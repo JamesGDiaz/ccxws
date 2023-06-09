@@ -36,7 +36,7 @@ class HitBtcClient extends BasicClient_1.BasicClient {
         this.hasCandles = true;
         this.hasLevel2Updates = true;
         this.candlePeriod = CandlePeriod_1.CandlePeriod._1m;
-        this._send = (0, Throttle_1.throttle)(this.__send.bind(this), throttleMs);
+        this._send = Throttle_1.throttle(this.__send.bind(this), throttleMs);
     }
     _beforeClose() {
         this._send.cancel();
@@ -179,7 +179,7 @@ class HitBtcClient extends BasicClient_1.BasicClient {
         }
         const lastTicker = this._tickerCache.get(market.id);
         const thisTicker = { ask, bid, last };
-        if ((0, fast_deep_equal_1.default)(lastTicker, thisTicker))
+        if (fast_deep_equal_1.default(lastTicker, thisTicker))
             return;
         this._tickerCache.set(market.id, thisTicker);
         const change = (parseFloat(last) - parseFloat(open)).toFixed(8);
@@ -205,7 +205,7 @@ class HitBtcClient extends BasicClient_1.BasicClient {
     }
     _constructTradesFromMessage(datum, market) {
         const { id, price, quantity, side, timestamp } = datum;
-        const unix = (0, moment_1.default)(timestamp).valueOf();
+        const unix = moment_1.default(timestamp).valueOf();
         return new Trade_1.Trade({
             exchange: this.name,
             base: market.base,
@@ -218,7 +218,7 @@ class HitBtcClient extends BasicClient_1.BasicClient {
         });
     }
     _constructCandle(datum) {
-        const unix = (0, moment_1.default)(datum.timestamp).valueOf();
+        const unix = moment_1.default(datum.timestamp).valueOf();
         return new Candle_1.Candle(unix, datum.open, datum.max, datum.min, datum.close, datum.volume);
     }
     _constructLevel2Snapshot(data, market) {

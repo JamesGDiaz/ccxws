@@ -1,11 +1,7 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -58,7 +54,7 @@ class BitflyerClient extends BasicClient_1.BasicClient {
         this.hasTrades = true;
         this.hasLevel2Updates = true;
         this.requestSnapshot = true;
-        this._restSem = (0, semaphore_1.default)(1);
+        this._restSem = semaphore_1.default(1);
         this.REST_REQUEST_DELAY_MS = 250;
     }
     _sendSubTicker(remote_id) {
@@ -166,7 +162,7 @@ class BitflyerClient extends BasicClient_1.BasicClient {
     _createTrades(datum, market) {
         let { size, side, exec_date, price, id, buy_child_order_acceptance_id, sell_child_order_acceptance_id, } = datum;
         side = side.toLowerCase();
-        const unix = (0, moment_1.default)(exec_date).valueOf();
+        const unix = moment_1.default(exec_date).valueOf();
         return new Trade_1.Trade({
             exchange: "bitFlyer",
             base: market.base,
@@ -213,7 +209,7 @@ class BitflyerClient extends BasicClient_1.BasicClient {
                 this._requestLevel2Snapshot(market);
             }
             finally {
-                await (0, Util_1.wait)(this.REST_REQUEST_DELAY_MS);
+                await Util_1.wait(this.REST_REQUEST_DELAY_MS);
                 this._restSem.leave();
             }
         });

@@ -4,12 +4,12 @@ const TestRunner_1 = require("../TestRunner");
 const BinanceFuturesCoinmClient_1 = require("../../src/exchanges/BinanceFuturesCoinmClient");
 const Https_1 = require("../../src/Https");
 async function fetchAllMarkets() {
-    const results = (await (0, Https_1.get)("https://dapi.binance.com/dapi/v1/exchangeInfo"));
+    const results = (await Https_1.get("https://dapi.binance.com/dapi/v1/exchangeInfo"));
     return results.symbols
         .filter(p => p.contractStatus === "TRADING")
         .map(p => ({ id: p.symbol, base: p.baseAsset, quote: p.quoteAsset }));
 }
-(0, TestRunner_1.testClient)({
+TestRunner_1.testClient({
     clientFactory: () => new BinanceFuturesCoinmClient_1.BinanceFuturesCoinmClient(),
     clientName: "BinanceFuturesCoinmClient",
     exchangeName: "Binance Futures COIN-M",

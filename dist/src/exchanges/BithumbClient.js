@@ -1,11 +1,7 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -62,10 +58,10 @@ class BithumbClient extends BasicClient_1.BasicClient {
         this.hasLevel2Updates = true;
         this.remoteIdMap = new Map();
         this.restThrottleMs = 50;
-        this._requestLevel2Snapshot = (0, Throttle_1.throttle)(this.__requestLevel2Snapshot.bind(this), this.restThrottleMs); // prettier-ignore
-        this._sendSubTicker = (0, Debounce_1.debounce)(this.__sendSubTicker.bind(this));
-        this._sendSubTrades = (0, Debounce_1.debounce)(this.__sendSubTrades.bind(this));
-        this._sendSubLevel2Updates = (0, Debounce_1.debounce)(this.__sendSubLevel2Updates.bind(this));
+        this._requestLevel2Snapshot = Throttle_1.throttle(this.__requestLevel2Snapshot.bind(this), this.restThrottleMs); // prettier-ignore
+        this._sendSubTicker = Debounce_1.debounce(this.__sendSubTicker.bind(this));
+        this._sendSubTrades = Debounce_1.debounce(this.__sendSubTrades.bind(this));
+        this._sendSubLevel2Updates = Debounce_1.debounce(this.__sendSubLevel2Updates.bind(this));
     }
     __sendSubTicker() {
         const symbols = Array.from(this._tickerSubs.keys());
