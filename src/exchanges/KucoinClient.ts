@@ -122,10 +122,11 @@ export class KucoinClient extends BasicClient {
                 this._wss.wssPath = await this._getWssPath();
                 super._connect();
             } else {
-                await this._connectAsync();
+                this._connectAsync();
             }
         } else {
-            await this._connectAsync();
+            this._wss.wssPath = await this._getWssPath();
+            this.wssPath = this._wss.wssPath;
         }
     }
 

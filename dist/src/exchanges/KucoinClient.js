@@ -113,11 +113,12 @@ class KucoinClient extends BasicClient_1.BasicClient {
                 super._connect();
             }
             else {
-                await this._connectAsync();
+                this._connectAsync();
             }
         }
         else {
-            await this._connectAsync();
+            this._wss.wssPath = await this._getWssPath();
+            this.wssPath = this._wss.wssPath;
         }
     }
     async _getWssPath() {
