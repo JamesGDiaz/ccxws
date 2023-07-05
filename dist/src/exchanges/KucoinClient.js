@@ -133,6 +133,7 @@ class KucoinClient extends BasicClient_1.BasicClient {
                 this._connectId = crypto_1.default.randomBytes(24).toString("hex");
                 this._pingIntervalTime = pingInterval;
                 wssPath = `${endpoint}?token=${token}&connectId=${this._connectId}`;
+                console.log(`Kucoin connection token: ${token} connectId: ${this._connectId}`);
             }
             catch (ex) {
                 this._onError(ex);
