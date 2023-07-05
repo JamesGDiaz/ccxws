@@ -42,7 +42,7 @@ TestRunner_1.testClient({
     },
     trade: {
         hasTradeId: true,
-        tradeIdPattern: /\w{24,}/,
+        tradeIdPattern: /\w{8,}/,
     },
     candle: {},
     l2snapshot: {

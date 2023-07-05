@@ -108,14 +108,16 @@ class KucoinClient extends BasicClient_1.BasicClient {
     async _connect() {
         if (!this._wss) {
             this._wss = { status: "connecting" };
-            if (this.wssPath)
+            if (this.wssPath) {
+                this._wss.wssPath = await this._getWssPath();
                 super._connect();
-            else
-                this._connectAsync();
+            }
+            else {
+                await this._connectAsync();
+            }
         }
         else {
-            this._wss.wssPath = await this._getWssPath();
-            this.wssPath = this._wss.wssPath;
+            await this._connectAsync();
         }
     }
     async _getWssPath() {
@@ -140,9 +142,9 @@ class KucoinClient extends BasicClient_1.BasicClient {
         return wssPath;
     }
     async _connectAsync() {
-        let wssPath = await this._getWssPath();
+        this.wssPath = await this._getWssPath();
         // Construct a socket and bind all events
-        this._wss = this._wssFactory(wssPath);
+        this._wss = this._wssFactory(this.wssPath);
         this._wss.on("error", this._onError.bind(this));
         this._wss.on("connecting", this._onConnecting.bind(this));
         this._wss.on("connected", this._onConnected.bind(this));
