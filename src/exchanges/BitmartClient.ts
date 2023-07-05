@@ -125,7 +125,8 @@ export class BitmartClient extends BasicClient {
         } catch (err) {
             // try inflating with zlib
             try {
-                msg = JSON.parse(zlib.inflateRawSync(raw).toString());
+                const raw_msg = zlib.inflateRawSync(raw).toString();
+                msg = JSON.parse(raw_msg);
                 this._processMessage(msg);
                 return;
             } catch {
