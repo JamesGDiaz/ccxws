@@ -142,7 +142,7 @@ export class KucoinClient extends BasicClient {
                 const { endpoint, pingInterval } = instanceServers[0];
                 this._connectId = crypto.randomBytes(24).toString("hex");
                 this._pingIntervalTime = pingInterval;
-                wssPath = `${endpoint}?token=${token}&connectId=${this._connectId}`;
+                this.wssPath = `${endpoint}?token=${token}&connectId=${this._connectId}`;
                 console.error(`Kucoin connection token: ${token} connectId: ${this._connectId}`);
             } catch (ex) {
                 this._onError(ex);
@@ -154,7 +154,7 @@ export class KucoinClient extends BasicClient {
     }
 
     protected async _connectAsync() {
-        this.wssPath = await this._getWssPath();
+        await this._getWssPath();
 
         // Construct a socket and bind all events
         this._wss = this._wssFactory(this.wssPath);
