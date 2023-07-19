@@ -93,25 +93,28 @@ class BitmartClient extends BasicClient_1.BasicClient {
             this._pingTimerTimestamp = null;
             return;
         }
-        // handle parse error
+        //console.log(raw.toString("utf8"));
+        //console.log(JSON.parse(raw.toString("utf8")));
+        //console.log(raw);
+        //console.log(zlib.inflateRawSync(raw).toString());
         let msg;
+        // try inflating with zlib
         try {
-            msg = JSON.parse(raw.toString("utf8"));
+            const raw_msg = zlib_1.default.inflateRawSync(raw).toString("utf8");
+            msg = JSON.parse(raw_msg);
             this._processMessage(msg);
+            return;
         }
         catch (err) {
-            // try inflating with zlib
             try {
-                const raw_msg = zlib_1.default.inflateRawSync(raw).toString();
-                msg = JSON.parse(raw_msg);
+                msg = JSON.parse(raw.toString("utf8"));
                 this._processMessage(msg);
+            }
+            catch (err) {
+                this.emit("error", err, raw);
                 return;
             }
-            catch {
-                this.emit("error", err, raw);
-            }
             this.emit("error", err, raw);
-            return;
         }
     }
     _processMessage(msg) {
